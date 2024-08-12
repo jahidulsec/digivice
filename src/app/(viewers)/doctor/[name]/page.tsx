@@ -19,8 +19,8 @@ function DoctorPage() {
       </div>
 
       {/* content */}
-      <div className="content relative h-full">
-        <div className="relative flex justify-center items-end flex-col pt-[20rem] md:pt-[17rem] text-p1 pr-10">
+      <div className="content relative h-full flex justify-center items-end flex-col">
+        <div className="relative flex justify-center items-end flex-col text-p1 pr-10">
           <div className="bg-p1 w-5 h-12 absolute right-0"></div>
           <h1 className="font-bold text-2xl">Prof. Dr. Rashida Begum’s</h1>
           <h2 className="font-light">Digital Advice Room</h2>
