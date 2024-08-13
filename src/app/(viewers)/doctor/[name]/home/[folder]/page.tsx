@@ -9,14 +9,14 @@ import FolderPageHeader from '@/components/folder/Header';
 function FolderPage() {
   return (
     <section className="relative ">
-      <div className="relative bg-[#f3dced] h-full ">
+      <div className="relative bg-[#f3dced] ">
         {/* background */}
-        <div className="absolute w-full h-screen">
+        <div className="absolute w-screen sm:w-full min-h-screen h-fit">
           <Image src={loginBg} alt="loginBg" width={360} height={640} className="w-full h-full object-cover" />
         </div>
 
         {/* contents */}
-        <div className="content relative flex justify-center py-[5rem] px-10 h-screen sm:h-full">
+        <div className="content relative flex justify-center py-[5rem] px-10 min-h-screen sm:h-full">
           <div className=" px-5 py-10 sm:py-5 w-full min-w-[360px] min-h-[85vh] h-fit font-light border-2 rounded-md border-pink-100 bg-pink-300/40">
             {/* header */}
             <FolderPageHeader />
