@@ -14,7 +14,7 @@ async function FolderPage() {
     <section className="relative ">
       <div className="relative bg-[#f3dced] ">
         {/* background */}
-        <div className="absolute w-screen sm:w-full min-h-screen h-fit">
+        <div className="absolute">
           <Image src={loginBg} alt="loginBg" width={360} height={640} className="w-full h-full object-cover" />
         </div>
 
