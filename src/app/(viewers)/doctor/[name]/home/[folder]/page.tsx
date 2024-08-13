@@ -21,35 +21,35 @@ function FolderPage() {
             {/* header */}
             <FolderPageHeader />
 
-            <div className="sm:flex sm:flex-wrap  grid grid-cols-2 justify-center items-center gap-2">
-              <article className="flex flex-col justify-center items-center p-2 gap-5 bg-pink-50 w-[10rem] md:w-[18.75rem] rounded-md shadow-md">
+            <div className="sm:flex sm:flex-wrap grid grid-cols-1 justify-center items-center gap-2">
+              <article className="flex flex-col justify-center items-center p-4 ms:p-2 gap-5 bg-pink-50  md:w-[18.75rem] rounded-md shadow-md">
                 <Image src={smockingImg} alt="" width={300} height={300} />
                 <div>
                   <h4 className="text-sm font-bk text-center">ধূমপান ৯০% ফুসফুসে ক্যান্সারের কারণ</h4>
                 </div>
               </article>
 
-              <article className="flex flex-col justify-center items-center p-2 gap-5 bg-pink-50 w-[10rem] md:w-[18.75rem] rounded-md shadow-md">
+              <article className="flex flex-col justify-center items-center p-2 gap-5 bg-pink-50  md:w-[18.75rem] rounded-md shadow-md">
                 <Image src={smockingImg} alt="" width={300} height={300} />
                 <div>
                   <h4 className="text-sm font-bk text-center">ধূমপান ৯০% ফুসফুসে ক্যান্সারের কারণ</h4>
                 </div>
               </article>
 
-              <article className="flex flex-col justify-center items-center p-2 gap-5 bg-pink-50 w-[10rem] md:w-[18.75rem] rounded-md shadow-md">
+              <article className="flex flex-col justify-center items-center p-2 gap-5 bg-pink-50  md:w-[18.75rem] rounded-md shadow-md">
                 <Image src={smockingImg} alt="" width={300} height={300} />
                 <div>
                   <h4 className="text-sm font-bk text-center">ধূমপান ৯০% ফুসফুসে ক্যান্সারের কারণ</h4>
                 </div>
               </article>
-              <article className="flex flex-col justify-center items-center p-2 gap-5 bg-pink-50 w-[10rem] md:w-[18.75rem] rounded-md shadow-md">
+              <article className="flex flex-col justify-center items-center p-2 gap-5 bg-pink-50  md:w-[18.75rem] rounded-md shadow-md">
                 <Image src={smockingImg} alt="" width={300} height={300} />
                 <div>
                   <h4 className="text-sm font-bk text-center">ধূমপান ৯০% ফুসফুসে ক্যান্সারের কারণ</h4>
                 </div>
               </article>
 
-              <article className="flex flex-col justify-center items-center p-2 gap-5 bg-pink-50 w-[10rem] md:w-[18.75rem] rounded-md shadow-md">
+              <article className="flex flex-col justify-center items-center p-2 gap-5 bg-pink-50  md:w-[18.75rem] rounded-md shadow-md">
                 <video src={'/uti.mp4'} width={300} height={300} controls className="w-[300px] aspect-square" />
                 <div>
                   <h4 className="text-sm font-bk text-center">UTI বা ইউরিনারি ট্র্যাক্ট ইনফেকশন হলে করনীয় কি?</h4>
