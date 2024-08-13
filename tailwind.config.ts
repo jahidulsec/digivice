@@ -13,6 +13,12 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: 'var(--font-cregular)',
+        cb: 'var(--font-cbold)',
+        cr: 'var(--font-cregular)',
+        bk: 'var(--font-bkohinnor)',
+      },
       colors: {
         p1: '#b11f8e',
         border: 'hsl(var(--border))',

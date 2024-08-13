@@ -12,7 +12,7 @@ function LoginForm() {
 
   return (
     <>
-      <form className="flex flex-col gap-10 px-5 py-10 sm:py-5 justify-center sm:h-[40vh] min-h-fit font-light border-2 rounded-md border-pink-100 bg-pink-300/40">
+      <form className="flex flex-col gap-10 px-5 py-10 w-full min-w-[20rem] sm:py-5 justify-center sm:h-[40vh] min-h-fit font-light border-2 rounded-md border-pink-100 bg-pink-300/40">
         <p>
           <label htmlFor="phone">Phone Number</label>
           <Input className="border-pink-300 focus-visible:ring-pink-400" type="text" id="phone" name="phone" />

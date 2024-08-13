@@ -2,11 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Century Gothic';
+  font-weight: normal;
+  src: url('/fonts/GOTHIC.TTF');
+}
 
+@font-face {
+  font-family: 'Century Gothic Bold';
+  font-weight: bold;
+  src: url('/fonts/GOTHICB.TTF');
+}
+
+@font-face {
+  font-family: 'Kohinoor';
+  src: url('/fonts/KohinoorBangla.otf');
+}
+
+
+* {
+  font-family: 'Century Gothic';
+}
 
 
 @layer base {
   :root {
+    --font-cbold: 'Century Gothic Bold';
+    --font-cregular: 'Century Gothic';
+    --font-bkohinnor: 'Kohinoor';
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -72,9 +95,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-/* .login-bg {
-  background-image: url('/loginBg.svg');
-  background-repeat: no-repeat;
-  object-fit: cover;
-} */
