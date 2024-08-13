@@ -1,12 +1,15 @@
+import type { Metadata } from 'next';
 import { loginBg } from '@/assets';
 import { smockingImg } from '@/assets/files';
-import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import React from 'react';
-import { ChevronLeft } from 'lucide-react';
 import FolderPageHeader from '@/components/folder/Header';
 
-function FolderPage() {
+export const metadata: Metadata = {
+  title: 'Folder - Doctor Chamber',
+};
+
+async function FolderPage() {
   return (
     <section className="relative ">
       <div className="relative bg-[#f3dced] ">

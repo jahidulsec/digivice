@@ -1,7 +1,12 @@
 import { loginBg } from '@/assets';
 import Button from '@/components/doctorHome/Button';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import React from 'react';
+
+export const metadata: Metadata = {
+  title: 'Home - Doctor Chamber',
+};
 
 function DoctorHome() {
   return (

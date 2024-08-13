@@ -1,11 +1,16 @@
 import { homeBgBottom, homeBgTop, welcome } from '@/assets';
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-function DoctorPage({ params }: { params: { name: string } }) {
+export const metadata: Metadata = {
+  title: 'Welcome - Doctor Chamber',
+};
+
+async function DoctorPage({ params }: { params: { name: string } }) {
   return (
     <section className="relative h-screen">
       {/* bg image top */}

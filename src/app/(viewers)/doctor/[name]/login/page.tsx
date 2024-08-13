@@ -1,9 +1,14 @@
 import { loginBg } from '@/assets';
 import LoginForm from '@/components/login/LoginForm';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import React from 'react';
 
-function LoginPage() {
+export const metadata: Metadata = {
+  title: 'Login - Doctor Chamber',
+};
+
+export default function LoginPage() {
   return (
     <section className="relative sm:flex sm:justify-center sm:items-center sm:h-screen sm:bg-pink-50/20 ">
       <div className="relative bg-[#f3dced] sm:bg-transparent sm:max-w-md sm:flex sm:rounded-md sm:shadow-sm sm:border sm:border-pink-300 sm:overflow-hidden">
@@ -25,5 +30,3 @@ function LoginPage() {
     </section>
   );
 }
-
-export default LoginPage;
