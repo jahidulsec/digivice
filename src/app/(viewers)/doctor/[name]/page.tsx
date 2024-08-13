@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-function DoctorPage() {
+function DoctorPage({ params }: { params: { name: string } }) {
   return (
     <section className="relative h-screen">
       {/* bg image top */}
@@ -29,7 +29,7 @@ function DoctorPage() {
 
         <div className="flex justify-end pr-10 mt-10">
           <Button className="bg-p1 hover:bg-p1/75" asChild>
-            <Link href={'/login'}>
+            <Link href={`/doctor/${params.name}/login`}>
               <span>Next</span>
               <ChevronRight className="size-4 ml-4" />
             </Link>
