@@ -1,3 +1,3 @@
-import { saltPressureImg, smockingImg } from './images';
+import { saltPressureImg, smockingImg, uti, doctorAvatar } from './images';
 
-export { saltPressureImg, smockingImg };
+export { saltPressureImg, smockingImg, uti, doctorAvatar };
