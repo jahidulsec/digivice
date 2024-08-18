@@ -12,3 +12,68 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Admin {
+  id            String          @id @default(uuid())
+  username      String          @unique
+  name          String?
+  password      String
+  createdAt     DateTime        @default(now())
+  updateAt      DateTime        @updatedAt
+  Doctor        Doctor[]
+  folder        Folder[]
+  folderContent FolderContent[]
+}
+
+model Doctor {
+  id             Int      @id @default(autoincrement())
+  fullName       String
+  slug           String   @unique
+  designation    String?
+  email          String?
+  chamberName    String?
+  chamberAddress String?
+  chamberMobile  String?
+  createdAt      DateTime @default(now())
+  updateAt       DateTime @updatedAt
+  adminId        String?
+
+  admin  Admin?   @relation(fields: [adminId], references: [id], onDelete: SetNull)
+  Visit  Visit[]
+  folder Folder[]
+}
+
+model Visit {
+  id        Int      @id @default(autoincrement())
+  mobile    String
+  createdAt DateTime @default(now())
+
+  doctorId Int
+  doctor   Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+}
+
+model Folder {
+  id        Int      @id @default(autoincrement())
+  name      String
+  doctorId  Int
+  adminId   String?
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  doctor        Doctor          @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  admin         Admin?          @relation(fields: [adminId], references: [id], onDelete: SetNull)
+  folderContent FolderContent[]
+}
+
+model FolderContent {
+  id        Int      @id @default(autoincrement())
+  name      String
+  filePath  String
+  folderId  Int
+  adminId   String?
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  folder Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  admin  Admin? @relation(fields: [adminId], references: [id], onDelete: SetNull)
+}
