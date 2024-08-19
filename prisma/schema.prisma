@@ -26,17 +26,14 @@ model Admin {
 }
 
 model Doctor {
-  id             Int      @id @default(autoincrement())
-  fullName       String
-  slug           String   @unique
-  designation    String?
-  email          String?
-  chamberName    String?
-  chamberAddress String?
-  chamberMobile  String?
-  createdAt      DateTime @default(now())
-  updateAt       DateTime @updatedAt
-  adminId        String?
+  id          Int      @id @default(autoincrement())
+  fullName    String
+  slug        String   @unique
+  designation String?
+  email       String?
+  createdAt   DateTime @default(now())
+  updateAt    DateTime @updatedAt
+  adminId     String?
 
   admin  Admin?   @relation(fields: [adminId], references: [id], onDelete: SetNull)
   Visit  Visit[]
