@@ -76,7 +76,7 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={5} align="center" className="py-20 border-b text-gray-400 pointer-events-none">
+              <TableCell colSpan={5} align="center" className="py-20 text-gray-400 pointer-events-none">
                 <MessageSquareOff className="size-10" />
                 <span className="text-[11px]">No data</span>
               </TableCell>

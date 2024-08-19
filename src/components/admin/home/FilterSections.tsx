@@ -5,11 +5,32 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Search } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DoctorForm from './DoctorForm';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
+import { useDebounce } from '@/hooks/useDebounce';
 
 export default function FilterSections() {
   const [addDoctor, setAddDoctor] = useState(false);
+  const [search, setSearch] = useState('');
+  const debounceValue = useDebounce(search);
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const params = new URLSearchParams(searchParams);
+
+  useEffect(() => {
+    if (search) {
+      params.set('q', debounceValue);
+      params.delete('p');
+    } else {
+      params.delete('q');
+    }
+    router.push(pathname + '?' + params.toString());
+  }, [debounceValue]);
 
   return (
     <>
@@ -18,7 +39,14 @@ export default function FilterSections() {
         <div className="filters">
           {/* search */}
           <div className="search relative">
-            <Input title="Search" className="pl-10 w-[18rem]" id="search" placeholder="Search by doctor name" />
+            <Input
+              title="Search"
+              className="pl-10 w-[18rem]"
+              id="search"
+              placeholder="Search by doctor name"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
             <Label htmlFor="search" className="absolute top-[50%] -translate-y-[50%] left-3">
               <Search className="size-4" />
             </Label>
