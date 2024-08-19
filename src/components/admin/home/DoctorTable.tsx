@@ -12,13 +12,16 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Tooltips from '@/components/ui/Tooltips';
 import { Doctor } from '@prisma/client';
+import { DialogTitle } from '@radix-ui/react-dialog';
 import { Edit, MessageSquareOff, Trash } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
+import DoctorForm from './DoctorForm';
 
 function DoctorTable({ doctors }: { doctors: Doctor[] }) {
   const [editDoctor, setEditDoctor] = useState<any>();
@@ -81,6 +84,16 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
           )}
         </TableBody>
       </Table>
+
+      {/* update doctor dialog */}
+      <Dialog open={editDoctor} onOpenChange={setEditDoctor}>
+        <DialogContent className="w-[75vw]">
+          <DialogHeader>
+            <DialogTitle className="text-sm font-cb">Edit Doctor</DialogTitle>
+          </DialogHeader>
+          <DoctorForm doctor={editDoctor as Doctor} onClose={() => setEditDoctor(false)} />
+        </DialogContent>
+      </Dialog>
 
       {/* alert delete vehicle modal */}
       <AlertDialog open={!!delDoctor} onOpenChange={setDelDoctor}>

@@ -53,6 +53,51 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
   }
 };
 
+export const updateDoctor = async (id: number, prevState: unknown, formData: FormData) => {
+  const result = addSchema.safeParse(Object.fromEntries(formData.entries()));
+
+  if (result.success === false) {
+    return { error: result.error.formErrors.fieldErrors, success: null, toast: null };
+  }
+
+  const doctor = await db.doctor.findUnique({ where: { id } });
+
+  if (doctor == null) {
+    return { error: null, success: null, toast: 'Doctor is not exists' };
+  }
+
+  const data = result.data;
+  const cookie = cookies().get('session')?.value;
+  const session = await decrypt(cookie);
+
+  if (session?.userId == null) {
+    return redirect('/login');
+  }
+
+  const slug = doctor.id + '-' + data.fullName.replaceAll('.', '').split(' ').join('-').toLowerCase();
+
+  try {
+    await db.doctor.update({
+      where: { id },
+      data: {
+        fullName: data.fullName,
+        designation: data.designation,
+        email: data.email,
+        adminId: session?.userId as string,
+        slug: slug,
+      },
+    });
+
+    revalidatePath('/');
+    revalidatePath('/admin');
+
+    return { error: null, success: 'Doctor has been updated', toast: null };
+  } catch (error) {
+    console.log(error);
+    return { error: null, success: null, toast: 'Something went wrong' };
+  }
+};
+
 export const deleteDoctor = async (id: number) => {
   const doctor = await db.doctor.findUnique({ where: { id } });
 
