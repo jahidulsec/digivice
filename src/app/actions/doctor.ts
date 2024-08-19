@@ -4,7 +4,7 @@ import { decrypt } from '@/lib/session';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 import db from '../../../db/db';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 const addSchema = z.object({
@@ -23,13 +23,10 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
   const data = result.data;
   const cookie = cookies().get('session')?.value;
   const session = await decrypt(cookie);
-  const user = await decrypt(session?.userId as string);
 
   if (session?.userId == null) {
     return redirect('/login');
   }
-
-  console.log(session);
 
   const doctorPrev = await db.doctor.findFirst({ orderBy: { createdAt: 'desc' } });
   const slug =
@@ -54,4 +51,14 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
     console.log(error);
     return { error: null, success: null, toast: 'Something went wrong' };
   }
+};
+
+export const deleteDoctor = async (id: number) => {
+  const doctor = await db.doctor.findUnique({ where: { id } });
+
+  if (doctor == null) return notFound();
+
+  await db.doctor.delete({ where: { id } });
+
+  revalidatePath('/admin');
 };

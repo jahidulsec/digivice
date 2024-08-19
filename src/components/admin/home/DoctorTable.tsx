@@ -1,16 +1,30 @@
 'use client';
 
+import { deleteDoctor } from '@/app/actions/doctor';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Tooltips from '@/components/ui/Tooltips';
 import { Doctor } from '@prisma/client';
 import { Edit, MessageSquareOff, Trash } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
+import { toast } from 'sonner';
 
 function DoctorTable({ doctors }: { doctors: Doctor[] }) {
   const [editDoctor, setEditDoctor] = useState<any>();
   const [delDoctor, setDelDoctor] = useState<any>();
+
+  const [isPending, startTransition] = useTransition();
 
   return (
     <>
@@ -67,6 +81,32 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
           )}
         </TableBody>
       </Table>
+
+      {/* alert delete vehicle modal */}
+      <AlertDialog open={!!delDoctor} onOpenChange={setDelDoctor}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete this Doctor and remove data from servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              disabled={isPending}
+              onClick={() => {
+                startTransition(async () => {
+                  await deleteDoctor(delDoctor);
+                  toast.success('Vehicle has been deleted');
+                });
+              }}
+            >
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }
