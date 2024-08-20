@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useTransition } from 'react';
 import { EllipsisVertical, Eye, MessageSquareOff, Trash } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -13,9 +13,24 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { FolderContent } from '@prisma/client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { toast } from 'sonner';
+import { deleteFile } from '@/app/actions/files';
 
 export default function FilesSections({ contents }: { contents: FolderContent[] }) {
   const [preview, setPreview] = useState<any>();
+  const [delFile, setDelFile] = useState<any>();
+
+  const [isPending, startTransition] = useTransition();
 
   if (contents.length == 0) {
     return (
@@ -51,7 +66,12 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
                     <span>Preview</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="flex gap-2 items-center text-destructive focus:text-white focus:bg-destructive">
+                  <DropdownMenuItem
+                    className="flex gap-2 items-center text-destructive focus:text-white focus:bg-destructive"
+                    onClick={() => {
+                      setDelFile(item.id);
+                    }}
+                  >
                     <Trash className="size-4" />
                     <span>Delete</span>
                   </DropdownMenuItem>
@@ -88,6 +108,32 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
           )}
         </DialogContent>
       </Dialog>
+
+      {/* alert delete vehicle modal */}
+      <AlertDialog open={!!delFile} onOpenChange={setDelFile}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete this Doctor and remove data from servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              disabled={isPending}
+              onClick={() => {
+                startTransition(async () => {
+                  await deleteFile(delFile);
+                  toast.success('file has been deleted');
+                });
+              }}
+            >
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

@@ -2,7 +2,7 @@
 
 import { decrypt } from '@/lib/session';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import db from '../../../db/db';
 import fs from 'fs/promises';
 import { revalidatePath } from 'next/cache';
@@ -59,4 +59,20 @@ export const addFiles = async (prevState: unknown, formData: FormData) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const deleteFile = async (id: number) => {
+  const file = await db.folderContent.findUnique({ where: { id }, include: { folder: { include: { doctor: true } } } });
+
+  if (file == null) return notFound();
+
+  await db.folderContent.delete({ where: { id } });
+
+  // delete file and image when delete the product
+  await fs.unlink(`public${file.filePath}`);
+
+  revalidatePath(`/admin/doctor/${file.folder.doctor.slug}/${file.folderId}`);
+  revalidatePath(`/doctor/${file.folder.doctor.slug}/home/${file.folderId}`);
+
+  return;
 };
