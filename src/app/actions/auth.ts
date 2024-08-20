@@ -33,9 +33,9 @@ export const adminLogin = async (prevData: unknown, formData: FormData) => {
     return { error: null, success: null, db: 'Invalid password' };
   }
 
-  const session = await encrypt({ userId: user.id });
+  const userId = user.id;
 
-  await createSession(session);
+  await createSession(userId);
 
   return redirect('/admin');
 };

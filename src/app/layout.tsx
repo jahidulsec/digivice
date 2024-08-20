@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <NextProgressProvider>
           {children}
-          <Toaster position="top-center" richColors />
+          <Toaster position="top-right" richColors />
         </NextProgressProvider>
       </body>
     </html>
