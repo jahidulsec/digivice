@@ -1,9 +1,10 @@
 import DoctorTable from '@/components/admin/home/DoctorTable';
 import FilterSections from '@/components/admin/home/FilterSections';
-import React from 'react';
+import React, { Suspense } from 'react';
 import db from '../../../db/db';
 import { Doctor } from '@prisma/client';
 import PagePagination from '@/components/ui/PagePagination';
+import TableSkeleton from '@/components/ui/TableSkeleton';
 
 export default async function DashboardHomePage({ searchParams }: { searchParams: { q: string; p: string } }) {
   return (
@@ -12,7 +13,9 @@ export default async function DashboardHomePage({ searchParams }: { searchParams
       <FilterSections />
 
       {/* table */}
-      <DataTable searchParams={searchParams} />
+      <Suspense fallback={<TableSkeleton />}>
+        <DataTable searchParams={searchParams} />
+      </Suspense>
     </div>
   );
 }

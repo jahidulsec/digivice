@@ -1,15 +1,18 @@
 import FolderTable from '@/components/admin/doctor/folders/FolderTable';
 import FolderHeader from '@/components/admin/doctor/folders/Header';
-import React from 'react';
+import React, { Suspense } from 'react';
 import db from '../../../../../db/db';
 import { Prisma } from '@prisma/client';
+import TableSkeleton from '@/components/ui/TableSkeleton';
 
 export default async function DoctorFolderPage({ params }: { params: { slug: string } }) {
   return (
     <div className="my-6 container">
       <FolderHeader />
 
-      <DataTable params={params} />
+      <Suspense fallback={<TableSkeleton />}>
+        <DataTable params={params} />
+      </Suspense>
     </div>
   );
 }

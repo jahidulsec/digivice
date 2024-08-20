@@ -17,11 +17,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Tooltips from '@/components/ui/Tooltips';
 import { formatDate } from '@/lib/formatters';
 import { DialogTitle } from '@radix-ui/react-dialog';
-import { Edit, MessageSquareOff, Trash, Folder as FolderIcon } from 'lucide-react';
+import { Edit, MessageSquareOff, Trash, Folder as FolderIcon, FolderOpen } from 'lucide-react';
 import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import FolderForm from './FolderForm';
 import { deleteFolder } from '@/app/actions/folder';
+import Link from 'next/link';
 
 function FolderTable({ folders }: { folders: FolderProps[] }) {
   const [editFolder, setEditFolder] = useState<any>();
@@ -48,13 +49,20 @@ function FolderTable({ folders }: { folders: FolderProps[] }) {
             folders.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>
-                  <FolderIcon className="size-4" />
+                  <FolderIcon className="size-4 fill-slate-700" />
                 </TableCell>
                 <TableCell>{item.name}</TableCell>
                 <TableCell>{item.doctor.fullName}</TableCell>
                 <TableCell>{formatDate(item.createdAt)}</TableCell>
                 <TableCell>{item.admin?.name}</TableCell>
                 <TableCell className="flex gap-2 justify-end">
+                  <Tooltips title="Open">
+                    <Button size={'icon'} variant={'outline'} className="rounded-full size-8" asChild>
+                      <Link href={`/admin/doctor/${item.doctor.slug}/${item.id}`}>
+                        <FolderOpen className="size-4" />
+                      </Link>
+                    </Button>
+                  </Tooltips>
                   <Tooltips title="Edit">
                     <Button
                       size={'icon'}
