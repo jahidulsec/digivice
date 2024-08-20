@@ -1,6 +1,5 @@
 'use client';
 
-import { deleteDoctor } from '@/app/actions/doctor';
 import { FolderProps } from '@/app/admin/doctor/[slug]/page';
 import {
   AlertDialog,
@@ -22,6 +21,7 @@ import { Edit, MessageSquareOff, Trash, Folder as FolderIcon } from 'lucide-reac
 import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import FolderForm from './FolderForm';
+import { deleteFolder } from '@/app/actions/folder';
 
 function FolderTable({ folders }: { folders: FolderProps[] }) {
   const [editFolder, setEditFolder] = useState<any>();
@@ -114,8 +114,8 @@ function FolderTable({ folders }: { folders: FolderProps[] }) {
               disabled={isPending}
               onClick={() => {
                 startTransition(async () => {
-                  await deleteDoctor(delFolder);
-                  toast.success('Vehicle has been deleted');
+                  await deleteFolder(delFolder);
+                  toast.success('Folder has been deleted');
                 });
               }}
             >

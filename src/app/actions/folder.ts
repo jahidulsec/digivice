@@ -4,7 +4,7 @@ import { z } from 'zod';
 import db from '../../../db/db';
 import { cookies } from 'next/headers';
 import { decrypt } from '@/lib/session';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 const addSchema = z.object({
@@ -91,4 +91,17 @@ export const updateFolder = async (id: number, prevState: unknown, formData: For
     console.log(error);
     return { error: null, success: null, toast: 'Something went wrong' };
   }
+};
+
+export const deleteFolder = async (id: number) => {
+  const folder = await db.folder.findUnique({ where: { id }, include: { doctor: true } });
+
+  if (folder == null) return notFound();
+
+  await db.folder.delete({ where: { id } });
+
+  revalidatePath(`/admin/doctor/${folder.doctor.slug}`);
+  revalidatePath(`/doctor/${folder.doctor.slug}/home`);
+
+  return;
 };
