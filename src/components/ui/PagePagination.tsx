@@ -86,17 +86,19 @@ function PagePagination({ limit, count }: { limit: number; count: number }) {
           </PaginationItem>
         )}
 
-        <PaginationItem>
-          <PaginationLink
-            onClick={() => {
-              params.set('p', noOfPages.toString());
-              params.toString();
-              router.push(pathname + '?' + params.toString());
-            }}
-          >
-            {noOfPages}
-          </PaginationLink>
-        </PaginationItem>
+        {noOfPages > 1 && (
+          <PaginationItem>
+            <PaginationLink
+              onClick={() => {
+                params.set('p', noOfPages.toString());
+                params.toString();
+                router.push(pathname + '?' + params.toString());
+              }}
+            >
+              {noOfPages}
+            </PaginationLink>
+          </PaginationItem>
+        )}
 
         {noOfPages > Number(searchParams.get('p') || 1) && (
           <PaginationItem>

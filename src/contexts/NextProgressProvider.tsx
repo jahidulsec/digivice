@@ -6,7 +6,7 @@ const NextProgressProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       {children}
-      <ProgressBar height="2px" color="#0ea5e9" options={{ showSpinner: false }} shallowRouting />
+      <ProgressBar height="4px" color="#0ea5e9" options={{ showSpinner: false }} shallowRouting />
     </>
   );
 };

@@ -1,6 +1,7 @@
 'use client';
 
 import { deleteDoctor } from '@/app/actions/doctor';
+import { FolderProps } from '@/app/admin/doctor/[slug]/page';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,17 +16,16 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Tooltips from '@/components/ui/Tooltips';
-import { Doctor } from '@prisma/client';
+import { formatDate } from '@/lib/formatters';
 import { DialogTitle } from '@radix-ui/react-dialog';
-import { Edit, Folder, MessageSquareOff, Trash } from 'lucide-react';
-import Link from 'next/link';
+import { Edit, MessageSquareOff, Trash, Folder as FolderIcon } from 'lucide-react';
 import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
-import DoctorForm from './DoctorForm';
+import FolderForm from './FolderForm';
 
-function DoctorTable({ doctors }: { doctors: Doctor[] }) {
-  const [editDoctor, setEditDoctor] = useState<any>();
-  const [delDoctor, setDelDoctor] = useState<any>();
+function FolderTable({ folders }: { folders: FolderProps[] }) {
+  const [editFolder, setEditFolder] = useState<any>();
+  const [delFolder, setDelFolder] = useState<any>();
 
   const [isPending, startTransition] = useTransition();
 
@@ -34,36 +34,33 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Id</TableHead>
-            <TableHead>Full Name</TableHead>
-            <TableHead>Designation</TableHead>
-            <TableHead>Email</TableHead>
+            <TableHead></TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Doctor Name</TableHead>
+            <TableHead>Created At</TableHead>
+            <TableHead>Created By</TableHead>
             <TableHead className="text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
 
         <TableBody>
-          {doctors.length > 0 ? (
-            doctors.map((item) => (
+          {folders.length > 0 ? (
+            folders.map((item) => (
               <TableRow key={item.id}>
-                <TableCell>{item.id}</TableCell>
-                <TableCell>{item.fullName}</TableCell>
-                <TableCell>{item.designation}</TableCell>
-                <TableCell>{item.email}</TableCell>
+                <TableCell>
+                  <FolderIcon className="size-4" />
+                </TableCell>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>{item.doctor.fullName}</TableCell>
+                <TableCell>{formatDate(item.createdAt)}</TableCell>
+                <TableCell>{item.admin?.name}</TableCell>
                 <TableCell className="flex gap-2 justify-end">
-                  <Tooltips title="Folders">
-                    <Button asChild size={'icon'} variant={'outline'} className="rounded-full size-8">
-                      <Link href={`/admin/doctor/${item.slug}`}>
-                        <Folder className="size-4" />
-                      </Link>
-                    </Button>
-                  </Tooltips>
                   <Tooltips title="Edit">
                     <Button
                       size={'icon'}
                       variant={'outline'}
                       className="rounded-full size-8"
-                      onClick={() => setEditDoctor(item)}
+                      onClick={() => setEditFolder(item)}
                     >
                       <Edit className="size-4" />
                     </Button>
@@ -73,7 +70,7 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
                       size={'icon'}
                       variant={'destructive'}
                       className="rounded-full size-8"
-                      onClick={() => setDelDoctor(item.id)}
+                      onClick={() => setDelFolder(item.id)}
                     >
                       <Trash className="size-4" />
                     </Button>
@@ -83,7 +80,7 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={5} align="center" className="py-20 text-gray-400 pointer-events-none">
+              <TableCell colSpan={6} align="center" className="py-20 text-gray-400 pointer-events-none">
                 <MessageSquareOff className="size-10" />
                 <span className="text-[11px]">No data</span>
               </TableCell>
@@ -93,17 +90,17 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
       </Table>
 
       {/* update doctor dialog */}
-      <Dialog open={editDoctor} onOpenChange={setEditDoctor}>
+      <Dialog open={editFolder} onOpenChange={setEditFolder}>
         <DialogContent className="w-[75vw]">
           <DialogHeader>
             <DialogTitle className="text-sm font-cb">Edit Doctor</DialogTitle>
           </DialogHeader>
-          <DoctorForm doctor={editDoctor as Doctor} onClose={() => setEditDoctor(false)} />
+          <FolderForm onClick={() => setEditFolder(false)} folder={editFolder} />
         </DialogContent>
       </Dialog>
 
       {/* alert delete vehicle modal */}
-      <AlertDialog open={!!delDoctor} onOpenChange={setDelDoctor}>
+      <AlertDialog open={!!delFolder} onOpenChange={setDelFolder}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
@@ -117,7 +114,7 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
               disabled={isPending}
               onClick={() => {
                 startTransition(async () => {
-                  await deleteDoctor(delDoctor);
+                  await deleteDoctor(delFolder);
                   toast.success('Vehicle has been deleted');
                 });
               }}
@@ -131,4 +128,4 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
   );
 }
 
-export default DoctorTable;
+export default FolderTable;

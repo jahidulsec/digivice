@@ -20,7 +20,7 @@ export default async function DashboardHomePage({ searchParams }: { searchParams
 async function DataTable({ searchParams }: { searchParams: { q: string; p: string } }) {
   let count;
   let doctors;
-  const limit = 1;
+  const limit = 20;
 
   if (searchParams.q) {
     [doctors, count] = await Promise.all([
