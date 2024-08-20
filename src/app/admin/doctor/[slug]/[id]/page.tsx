@@ -1,5 +1,5 @@
 import FolderContentHeader from '@/components/admin/doctor/folderContent/Header';
-import React from 'react';
+import React, { Suspense } from 'react';
 import db from '../../../../../../db/db';
 import { Folder } from '@prisma/client';
 import FilesSections from '@/components/admin/doctor/folderContent/FilesSections';
@@ -11,7 +11,15 @@ export default async function FolderContentPage({ params }: { params: { id: stri
     <div className="container my-6">
       <FolderContentHeader folder={folder as Folder} />
 
-      <FilesSections params={params} />
+      <Suspense fallback={<p>loading...</p>}>
+        <DataView params={params} />
+      </Suspense>
     </div>
   );
 }
+
+const DataView = async ({ params }: { params: { id: string } }) => {
+  const contents = await db.folderContent.findMany({ where: { folderId: Number(params.id) } });
+
+  return <FilesSections contents={contents} />;
+};
