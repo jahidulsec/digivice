@@ -43,7 +43,7 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
 
   return (
     <>
-      <div className="my-6 flex gap-5">
+      <div className="my-6 grid sm:grid-cols-2 md:grid-cols-3 gap-5 flex-wrap">
         {contents.map((item) => (
           <div className=" border rounded-md p-5 flex flex-col gap-2 justify-between bg-gray-50" key={item.id}>
             <div className="header flex justify-between items-center ">
@@ -79,11 +79,11 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
               </DropdownMenu>
             </div>
             {item.name.split('.').pop() != 'mp4' ? (
-              <div className="w-[220px] aspect-square relative">
+              <div className="w-full aspect-video relative">
                 <Image src={item.filePath} alt={item.name} fill objectFit="cover" />
               </div>
             ) : (
-              <div className="w-[380px] aspect-video relative">
+              <div className="w-full aspect-video relative">
                 <video src={item.filePath} controls />
               </div>
             )}
@@ -93,13 +93,13 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
 
       {/* preview dialog */}
       <Dialog open={preview} onOpenChange={setPreview}>
-        <DialogContent className="w-[75vw]">
+        <DialogContent className="w-[50vw]">
           <DialogHeader>
             <DialogTitle className="text-sm font-cb">Preview</DialogTitle>
           </DialogHeader>
           {preview != undefined && preview?.name != undefined && preview?.name.split('.').pop() != 'mp4' ? (
             <div className="w-full relative flex justify-center items-center">
-              <Image src={preview?.filePath} alt={preview?.name} width={700} height={700} />
+              <Image src={preview?.filePath} alt={preview?.name} width={500} height={500} />
             </div>
           ) : (
             <div className="w-full aspect-video relative">
