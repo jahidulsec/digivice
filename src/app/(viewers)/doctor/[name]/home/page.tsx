@@ -31,7 +31,7 @@ export default async function DoctorHome({ params }: { params: { name: string } 
         </div>
 
         {/* contents */}
-        <div className="content relative flex flex-col justify-center py-[5rem] px-10 min-h-screen sm:h-full">
+        <div className="content relative flex flex-col justify-center py-[5rem] px-10 min-h-[80vh] sm:h-full">
           {/* doctor card */}
           <div className="flex gap-2 items-center mb-5">
             <span className="size-10 flex justify-center items-center bg-pink-50 border rounded-full">
@@ -45,7 +45,7 @@ export default async function DoctorHome({ params }: { params: { name: string } 
               folders.map((item) => <Button key={item.id} title={item.name} folderId={item.id} />)
             ) : (
               <>
-                <div className="flex justify-center items-center flex-col py-20 text-gray-50 pointer-events-none">
+                <div className="flex justify-center items-center flex-col py-20 text-gray-200 pointer-events-none">
                   <MessageSquareOff className="size-10" />
                   <span className="text-[11px]">No data</span>
                 </div>
