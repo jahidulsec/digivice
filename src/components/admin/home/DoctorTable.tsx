@@ -17,17 +17,30 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Tooltips from '@/components/ui/Tooltips';
 import { Doctor } from '@prisma/client';
 import { DialogTitle } from '@radix-ui/react-dialog';
-import { Edit, Folder, MessageSquareOff, Trash } from 'lucide-react';
+import { Edit, Folder, MessageSquareOff, QrCode, Trash } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import DoctorForm from './DoctorForm';
+import QRCode from 'qrcode.react';
 
 function DoctorTable({ doctors }: { doctors: Doctor[] }) {
   const [editDoctor, setEditDoctor] = useState<any>();
   const [delDoctor, setDelDoctor] = useState<any>();
+  const [previewQR, setPreviewQR] = useState<any>();
 
   const [isPending, startTransition] = useTransition();
+
+  const handleQrDownload = () => {
+    const qrCode = document.getElementById('qrCodeEl') as HTMLCanvasElement;
+    const qrCodeURL = qrCode.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+    let aEl = document.createElement('a');
+    aEl.href = qrCodeURL;
+    aEl.download = `${previewQR != undefined ? previewQR.slug : ''}.png`;
+    document.body.appendChild(aEl);
+    aEl.click();
+    document.body.removeChild(aEl);
+  };
 
   return (
     <>
@@ -51,6 +64,18 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
                 <TableCell>{item.designation}</TableCell>
                 <TableCell>{item.email}</TableCell>
                 <TableCell className="flex gap-2 justify-end">
+                  <Tooltips title="QR Code">
+                    <Button
+                      size={'icon'}
+                      variant={'outline'}
+                      className="rounded-full size-8"
+                      onClick={() => {
+                        setPreviewQR(item);
+                      }}
+                    >
+                      <QrCode className="size-4" />
+                    </Button>
+                  </Tooltips>
                   <Tooltips title="Folders">
                     <Button asChild size={'icon'} variant={'outline'} className="rounded-full size-8">
                       <Link href={`/admin/doctor/${item.slug}`}>
@@ -127,6 +152,26 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* update doctor dialog */}
+      <Dialog open={previewQR} onOpenChange={setPreviewQR}>
+        <DialogContent className="w-[18rem] aspect-square">
+          <DialogHeader>
+            <DialogTitle className="text-sm font-cb">QR Code</DialogTitle>
+          </DialogHeader>
+
+          <div className="flex justify-center items-center">
+            <QRCode
+              id="qrCodeEl"
+              size={220}
+              value={`${process.env.NEXT_PUBLIC_DOMAIN_NAME}/doctor/${previewQR != undefined ? previewQR.slug : ''}`}
+            />
+          </div>
+          <Button type="button" onClick={handleQrDownload}>
+            Download
+          </Button>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
