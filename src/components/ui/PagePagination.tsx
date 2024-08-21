@@ -25,7 +25,7 @@ function PagePagination({ limit, count }: { limit: number; count: number }) {
   const currentPage = Number(searchParams.get('p')) || 1;
 
   let pageStart = currentPage <= 4 ? 2 : currentPage - 2;
-  let pageStop = currentPage >= noOfPages - 3 ? noOfPages - 1 : currentPage + 2;
+  let pageStop = currentPage >= noOfPages - 2 ? noOfPages - 1 : currentPage + 2;
 
   return (
     <Pagination>
