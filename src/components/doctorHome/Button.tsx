@@ -5,7 +5,7 @@ import React from 'react';
 import { Button as ButtonUI } from '@/components/ui/button';
 import { useParams } from 'next/navigation';
 
-function Button({ title }: { title: string }) {
+function Button({ title, folderId }: { title: string; folderId: number }) {
   const params = useParams();
 
   return (
@@ -14,7 +14,7 @@ function Button({ title }: { title: string }) {
       type="button"
       className="bg-white hover:bg-pink-50 hover:text-pink-800 text-gray-900 font-light w-full"
     >
-      <Link href={`/doctor/${params.name}/home/health`}>
+      <Link href={`/doctor/${params.name}/home/${folderId}`}>
         <span className="w-full text-left">{title}</span>
       </Link>
     </ButtonUI>

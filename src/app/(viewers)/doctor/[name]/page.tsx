@@ -1,16 +1,20 @@
 import { homeBgBottom, homeBgTop, welcome } from '@/assets';
 import { Button } from '@/components/ui/button';
+import { cache } from '@/lib/cache';
 import { ChevronRight } from 'lucide-react';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import db from '../../../../../db/db';
 
 export const metadata: Metadata = {
   title: 'Welcome - Doctor Chamber',
 };
 
-async function DoctorPage({ params }: { params: { name: string } }) {
+export default async function DoctorPage({ params }: { params: { name: string } }) {
+  const doctor = await db.doctor.findUnique({ where: { slug: params.name }, select: { fullName: true } });
+
   return (
     <section className="relative h-screen">
       {/* bg image top */}
@@ -27,7 +31,7 @@ async function DoctorPage({ params }: { params: { name: string } }) {
       <div className="content relative h-full flex justify-center items-end flex-col">
         <div className="relative flex justify-center items-end flex-col text-p1 pr-10">
           <div className="bg-p1 w-5 h-12 absolute right-0"></div>
-          <h1 className="font-cb text-2xl">Prof. Dr. Rashida Begum’s</h1>
+          <h1 className="font-cb text-2xl">{doctor?.fullName}’s</h1>
           <h2 className="font-cr font-light">Digital Advice Room</h2>
         </div>
         {/* button */}
@@ -48,5 +52,3 @@ async function DoctorPage({ params }: { params: { name: string } }) {
     </section>
   );
 }
-
-export default DoctorPage;

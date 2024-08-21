@@ -41,7 +41,7 @@ export default function FilterSections() {
           <div className="search relative">
             <Input
               title="Search"
-              className="pl-10 w-[18rem]"
+              className="pl-10 max-w-[18rem]"
               id="search"
               placeholder="Search by doctor name"
               value={search}
