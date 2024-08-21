@@ -7,6 +7,7 @@ import { cache } from '@/lib/cache';
 import db from '../../../../../../../db/db';
 import { DialogHeader } from '@/components/ui/dialog';
 import ContentSection from '@/components/folder/ContentSection';
+import { MessageSquareOff } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Folder - Doctor Chamber',
@@ -38,7 +39,14 @@ async function FolderPage({ params }: { params: { name: string; folder: string }
               {/* header */}
               <FolderPageHeader />
 
-              <ContentSection folderContent={folderContent} />
+              {folderContent.length > 0.0 ? (
+                <ContentSection folderContent={folderContent} />
+              ) : (
+                <div className="flex justify-center items-center flex-col py-20 text-black pointer-events-none">
+                  <MessageSquareOff className="size-20" />
+                  <span className="text-[11px]">No data</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
