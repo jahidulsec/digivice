@@ -100,4 +100,9 @@
   body {
     @apply bg-background text-foreground;
   }
+
+}
+
+.toolbar {
+  display: none;
 }
