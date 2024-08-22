@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useTransition } from 'react';
+import React, { useState, useTransition } from 'react';
 import { EllipsisVertical, Eye, MessageSquareOff, Trash } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
