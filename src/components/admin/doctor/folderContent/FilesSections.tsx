@@ -78,13 +78,21 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            {item.name.split('.').pop() != 'mp4' ? (
-              <div className="w-full aspect-video relative">
-                <Image src={item.filePath} alt={item.name} fill objectFit="cover" />
-              </div>
-            ) : (
+            {item.name.split('.').pop() == 'mp4' ? (
               <div className="w-full aspect-video relative">
                 <video src={item.filePath} controls />
+              </div>
+            ) : item.name.split('.').pop() == 'pdf' ? (
+              <>
+                <object
+                  type="application/pdf"
+                  data={item.filePath}
+                  className="pdf-thumbnail w-full overflow-hidden"
+                ></object>
+              </>
+            ) : (
+              <div className="w-full aspect-video relative">
+                <Image src={item.filePath} alt={item.name} fill objectFit="cover" />
               </div>
             )}
           </div>
@@ -97,13 +105,21 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
           <DialogHeader>
             <DialogTitle className="text-sm font-cb">Preview</DialogTitle>
           </DialogHeader>
-          {preview != undefined && preview?.name != undefined && preview?.name.split('.').pop() != 'mp4' ? (
-            <div className="w-full relative flex justify-center items-center">
-              <Image src={preview?.filePath} alt={preview?.name} width={500} height={500} />
-            </div>
-          ) : (
+          {preview != undefined && preview?.name != undefined && preview?.name.split('.').pop() == 'mp4' ? (
             <div className="w-full aspect-video relative">
               <video src={preview?.filePath} controls />
+            </div>
+          ) : preview != undefined && preview?.name != undefined && preview?.name.split('.').pop() == 'pdf' ? (
+            <div className="h-[70vh]">
+              <object
+                type="application/pdf"
+                data={preview.filePath}
+                className="pdf-thumbnail w-full h-full overflow-hidden"
+              ></object>
+            </div>
+          ) : (
+            <div className="w-full relative flex justify-center items-center">
+              <Image src={preview?.filePath} alt={preview?.name} width={500} height={500} />
             </div>
           )}
         </DialogContent>

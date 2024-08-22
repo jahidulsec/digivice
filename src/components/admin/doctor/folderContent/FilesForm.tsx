@@ -37,7 +37,7 @@ export default function FilesForm({ onClick }: FilesFormProps) {
           className="mt-2"
           type="file"
           multiple
-          accept="image/jpeg, image/jpg, image/png, video/mp4"
+          accept="image/jpeg, image/jpg, image/png, video/mp4, application/pdf"
         />
         {data?.error && <p className="error-msg">{data.error}</p>}
 
