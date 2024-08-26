@@ -44,7 +44,7 @@ function PagePagination({ limit, count }: { limit: number; count: number }) {
           />
         </PaginationItem>
 
-        <div className="flex gap-1">
+        <div className="hidden sm:flex gap-1">
           <PaginationItem>
             <PaginationLink
               isActive={currentPage === 1}
