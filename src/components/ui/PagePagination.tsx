@@ -29,90 +29,91 @@ function PagePagination({ limit, count }: { limit: number; count: number }) {
 
   return (
     <Pagination>
-      <PaginationContent>
-        {!searchParams.has('p') ||
-          (searchParams.get('p') !== '1' && (
+      <PaginationContent className="flex justify-between w-full">
+        <PaginationItem>
+          <PaginationPrevious
+            onClick={() => {
+              let value = Number(searchParams.get('p')) || 1;
+              if (value > 1) {
+                value -= 1;
+                params.set('p', value.toString());
+                params.toString();
+                router.push(pathname + '?' + params.toString());
+              }
+            }}
+          />
+        </PaginationItem>
+
+        <div className="flex gap-1">
+          <PaginationItem>
+            <PaginationLink
+              isActive={currentPage === 1}
+              onClick={() => {
+                params.set('p', '1');
+                params.toString();
+                router.push(pathname + '?' + params.toString());
+              }}
+            >
+              1
+            </PaginationLink>
+          </PaginationItem>
+
+          {currentPage > 4 && (
             <PaginationItem>
-              <PaginationPrevious
+              <PaginationEllipsis />
+            </PaginationItem>
+          )}
+
+          {range(pageStart, pageStop).map((item, index) => (
+            <PaginationItem key={item}>
+              <PaginationLink
+                isActive={Number(searchParams.get('p') || 1) === item}
                 onClick={() => {
-                  let value = Number(searchParams.get('p')) || 1;
-                  value -= 1;
+                  let value = item;
                   params.set('p', value.toString());
                   params.toString();
                   router.push(pathname + '?' + params.toString());
                 }}
-              />
+              >
+                {item}
+              </PaginationLink>
             </PaginationItem>
           ))}
 
+          {currentPage < noOfPages - 3 && (
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          )}
+
+          {noOfPages > 1 && (
+            <PaginationItem>
+              <PaginationLink
+                onClick={() => {
+                  params.set('p', noOfPages.toString());
+                  params.toString();
+                  router.push(pathname + '?' + params.toString());
+                }}
+              >
+                {noOfPages}
+              </PaginationLink>
+            </PaginationItem>
+          )}
+        </div>
+
         <PaginationItem>
-          <PaginationLink
-            isActive={currentPage === 1}
+          <PaginationNext
             onClick={() => {
-              params.set('p', '1');
-              params.toString();
-              router.push(pathname + '?' + params.toString());
-            }}
-          >
-            1
-          </PaginationLink>
-        </PaginationItem>
-
-        {currentPage > 4 && (
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-        )}
-
-        {range(pageStart, pageStop).map((item, index) => (
-          <PaginationItem key={item}>
-            <PaginationLink
-              isActive={Number(searchParams.get('p') || 1) === item}
-              onClick={() => {
-                let value = item;
-                params.set('p', value.toString());
-                params.toString();
-                router.push(pathname + '?' + params.toString());
-              }}
-            >
-              {item}
-            </PaginationLink>
-          </PaginationItem>
-        ))}
-
-        {currentPage < noOfPages - 3 && (
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-        )}
-
-        {noOfPages > 1 && (
-          <PaginationItem>
-            <PaginationLink
-              onClick={() => {
-                params.set('p', noOfPages.toString());
-                params.toString();
-                router.push(pathname + '?' + params.toString());
-              }}
-            >
-              {noOfPages}
-            </PaginationLink>
-          </PaginationItem>
-        )}
-
-        {noOfPages > Number(searchParams.get('p') || 1) && (
-          <PaginationItem>
-            <PaginationNext
-              onClick={() => {
-                let value = Number(searchParams.get('p')) || 1;
+              let value = Number(searchParams.get('p')) || 1;
+              if (value < noOfPages) {
                 value += 1;
                 params.set('p', value.toString());
                 params.toString();
                 router.push(pathname + '?' + params.toString());
-              }}
-            />
-          </PaginationItem>
-        )}
+              }
+            }}
+          />
+        </PaginationItem>
       </PaginationContent>
     </Pagination>
   );
