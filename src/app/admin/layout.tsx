@@ -1,4 +1,6 @@
 import Nav, { NavLink } from '@/components/ui/Nav';
+import { logout } from '../actions/auth';
+import Header from '@/components/admin/home/Header';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,11 +11,7 @@ export default function AdminLayout({
 }>) {
   return (
     <>
-      <header>
-        <Nav>
-          <NavLink href="/admin">Dashboard</NavLink>
-        </Nav>
-      </header>
+      <Header />
       <main>{children}</main>
     </>
   );

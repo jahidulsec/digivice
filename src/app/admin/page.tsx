@@ -31,6 +31,7 @@ async function DataTable({ searchParams }: { searchParams: { q: string; p: strin
         where: {
           fullName: { contains: searchParams.q },
         },
+        orderBy: { createdAt: 'desc' },
         take: limit,
         skip: limit * (Number(searchParams.p || 1) - 1),
       }),
@@ -43,6 +44,7 @@ async function DataTable({ searchParams }: { searchParams: { q: string; p: strin
   } else {
     [doctors, count] = await Promise.all([
       db.doctor.findMany({
+        orderBy: { createdAt: 'desc' },
         take: limit,
         skip: limit * (Number(searchParams.p || 1) - 1),
       }),

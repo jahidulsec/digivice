@@ -17,9 +17,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Tooltips from '@/components/ui/Tooltips';
 import { Doctor } from '@prisma/client';
 import { DialogTitle } from '@radix-ui/react-dialog';
-import { Edit, Folder, MessageSquareOff, QrCode, Trash } from 'lucide-react';
+import { Download, Edit, Folder, MessageSquareOff, QrCode, Trash } from 'lucide-react';
 import Link from 'next/link';
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import DoctorForm from './DoctorForm';
 import QRCode from 'qrcode.react';
@@ -28,6 +28,7 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
   const [editDoctor, setEditDoctor] = useState<any>();
   const [delDoctor, setDelDoctor] = useState<any>();
   const [previewQR, setPreviewQR] = useState<any>();
+  const [visitId, setVisitId] = useState<any>();
 
   const [isPending, startTransition] = useTransition();
 
@@ -40,6 +41,36 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
     document.body.appendChild(aEl);
     aEl.click();
     document.body.removeChild(aEl);
+  };
+
+  // export csv
+  const convertToCSV = (objArray: object[]) => {
+    const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
+    let str = "ID, Viewer's Mobile, Visited_at, Doctor_id \r\n";
+
+    for (let i = 0; i < array.length; i++) {
+      let line = '';
+      for (let index in array[i]) {
+        if (line !== '') line += ',';
+
+        line += array[i][index];
+      }
+      str += line + '\r\n';
+    }
+    return str;
+  };
+
+  const downloadCSV = async (id: number, name: string) => {
+    const res = await fetch(`/api/visit/${id}`);
+    const data = await res.json();
+    const csvData = new Blob([convertToCSV(data)], { type: 'text/csv' });
+    const csvURL = URL.createObjectURL(csvData);
+    const link = document.createElement('a');
+    link.href = csvURL;
+    link.download = `${name}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -64,6 +95,18 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
                 <TableCell>{item.designation}</TableCell>
                 <TableCell>{item.email}</TableCell>
                 <TableCell className="flex gap-2 justify-end">
+                  <Tooltips title="Download Visits">
+                    <Button
+                      size={'icon'}
+                      variant={'outline'}
+                      className="rounded-full size-8"
+                      onClick={() => {
+                        downloadCSV(item.id, item.slug);
+                      }}
+                    >
+                      <Download className="size-4" />
+                    </Button>
+                  </Tooltips>
                   <Tooltips title="QR Code">
                     <Button
                       size={'icon'}
@@ -76,6 +119,7 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
                       <QrCode className="size-4" />
                     </Button>
                   </Tooltips>
+
                   <Tooltips title="Folders">
                     <Button asChild size={'icon'} variant={'outline'} className="rounded-full size-8">
                       <Link href={`/admin/doctor/${item.slug}`}>
