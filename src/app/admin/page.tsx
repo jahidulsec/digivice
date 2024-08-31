@@ -2,7 +2,7 @@ import DoctorTable from '@/components/admin/home/DoctorTable';
 import FilterSections from '@/components/admin/home/FilterSections';
 import React, { Suspense } from 'react';
 import db from '../../../db/db';
-import { Doctor } from '@prisma/client';
+import { Doctor, Prisma } from '@prisma/client';
 import PagePagination from '@/components/ui/PagePagination';
 import TableSkeleton from '@/components/ui/TableSkeleton';
 
@@ -20,6 +20,8 @@ export default async function DashboardHomePage({ searchParams }: { searchParams
   );
 }
 
+export type DoctorTableProps = Prisma.DoctorGetPayload<{ include: { _count: { select: { Viewers: true } } } }>;
+
 async function DataTable({ searchParams }: { searchParams: { q: string; p: string } }) {
   let count;
   let doctors;
@@ -30,6 +32,13 @@ async function DataTable({ searchParams }: { searchParams: { q: string; p: strin
       db.doctor.findMany({
         where: {
           fullName: { contains: searchParams.q },
+        },
+        include: {
+          _count: {
+            select: {
+              Viewers: true,
+            },
+          },
         },
         orderBy: { createdAt: 'desc' },
         take: limit,
@@ -44,6 +53,13 @@ async function DataTable({ searchParams }: { searchParams: { q: string; p: strin
   } else {
     [doctors, count] = await Promise.all([
       db.doctor.findMany({
+        include: {
+          _count: {
+            select: {
+              Viewers: true,
+            },
+          },
+        },
         orderBy: { createdAt: 'desc' },
         take: limit,
         skip: limit * (Number(searchParams.p || 1) - 1),
@@ -52,9 +68,11 @@ async function DataTable({ searchParams }: { searchParams: { q: string; p: strin
     ]);
   }
 
+  console.log(doctors);
+
   return (
     <>
-      <DoctorTable doctors={doctors as Doctor[]} />
+      <DoctorTable doctors={doctors as DoctorTableProps[]} />
 
       <div className="border-t pt-5">
         <PagePagination limit={limit} count={count} />
