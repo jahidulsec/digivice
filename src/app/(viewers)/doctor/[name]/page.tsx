@@ -13,7 +13,12 @@ export const metadata: Metadata = {
 };
 
 export default async function DoctorPage({ params }: { params: { name: string } }) {
-  const doctor = await db.doctor.findUnique({ where: { slug: params.name }, select: { fullName: true } });
+  const doctor = await db.doctor.findUnique({ where: { slug: params.name }, select: { fullName: true, id: true } });
+  await db.viewers.create({
+    data: {
+      doctorId: Number(doctor?.id),
+    },
+  });
 
   return (
     <section className="relative h-screen">
