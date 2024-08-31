@@ -84,7 +84,7 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
             <TableHead>Full Name</TableHead>
             <TableHead>Designation</TableHead>
             <TableHead>Email</TableHead>
-            <TableHead>Viewer's Count</TableHead>
+            <TableHead className="text-center">Viewer's Count</TableHead>
             <TableHead className="text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -97,7 +97,7 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
                 <TableCell>{item.fullName}</TableCell>
                 <TableCell>{item.designation}</TableCell>
                 <TableCell>{item.email}</TableCell>
-                <TableCell>{formatNumber(item._count.Viewers)}</TableCell>
+                <TableCell className="text-right">{formatNumber(item._count.Viewers)}</TableCell>
                 <TableCell className="flex gap-2 justify-end">
                   <Tooltips title="Download Visits">
                     <Button
