@@ -35,9 +35,10 @@ model Doctor {
   updateAt    DateTime @updatedAt
   adminId     String?
 
-  admin  Admin?   @relation(fields: [adminId], references: [id], onDelete: SetNull)
-  Visit  Visit[]
-  folder Folder[]
+  admin   Admin?    @relation(fields: [adminId], references: [id], onDelete: SetNull)
+  Visit   Visit[]
+  folder  Folder[]
+  Viewers Viewers[]
 }
 
 model Visit {
@@ -73,4 +74,12 @@ model FolderContent {
 
   folder Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
   admin  Admin? @relation(fields: [adminId], references: [id], onDelete: SetNull)
+}
+
+model Viewers {
+  id        Int      @id @default(autoincrement())
+  doctorId  Int
+  createdAt DateTime @default(now())
+
+  doctor Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
 }

@@ -19,12 +19,14 @@ import { Doctor } from '@prisma/client';
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { Download, Edit, Folder, MessageSquareOff, QrCode, Trash } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import DoctorForm from './DoctorForm';
 import QRCode from 'qrcode.react';
+import { DoctorTableProps } from '@/app/admin/page';
+import { formatNumber } from '@/lib/formatters';
 
-function DoctorTable({ doctors }: { doctors: Doctor[] }) {
+function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
   const [editDoctor, setEditDoctor] = useState<any>();
   const [delDoctor, setDelDoctor] = useState<any>();
   const [previewQR, setPreviewQR] = useState<any>();
@@ -82,6 +84,7 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
             <TableHead>Full Name</TableHead>
             <TableHead>Designation</TableHead>
             <TableHead>Email</TableHead>
+            <TableHead>Viewer's Count</TableHead>
             <TableHead className="text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -94,6 +97,7 @@ function DoctorTable({ doctors }: { doctors: Doctor[] }) {
                 <TableCell>{item.fullName}</TableCell>
                 <TableCell>{item.designation}</TableCell>
                 <TableCell>{item.email}</TableCell>
+                <TableCell>{formatNumber(item._count.Viewers)}</TableCell>
                 <TableCell className="flex gap-2 justify-end">
                   <Tooltips title="Download Visits">
                     <Button
