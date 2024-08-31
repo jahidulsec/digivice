@@ -84,7 +84,7 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
             <TableHead>Full Name</TableHead>
             <TableHead>Designation</TableHead>
             <TableHead>Email</TableHead>
-            <TableHead className="text-center">Viewer's Count</TableHead>
+            <TableHead className="text-center">Viewer&apos;s Count</TableHead>
             <TableHead className="text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
