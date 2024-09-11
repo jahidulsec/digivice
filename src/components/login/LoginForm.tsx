@@ -9,11 +9,10 @@ import { useParams, useRouter } from 'next/navigation';
 import { useFormState, useFormStatus } from 'react-dom';
 import { addViewer } from '@/app/actions/viewer';
 
-function LoginForm() {
+export default function LoginForm() {
   const params = useParams();
 
   const [data, action] = useFormState(addViewer, null);
-  const { pending } = useFormStatus();
 
   const router = useRouter();
 
@@ -37,13 +36,17 @@ function LoginForm() {
           <input type="hidden" name="doctorSlug" value={params.name} />
         </p>
 
-        <Button type="submit" disabled={pending} className="bg-p1 hover:bg-p1/75">
-          <span>{pending ? 'Logging...' : 'Login'}</span>
-          <ChevronRight className="size-4 ml-4" />
-        </Button>
+        <SubmitButton />
       </form>
     </>
   );
 }
 
-export default LoginForm;
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" disabled={pending} className="bg-p1 hover:bg-p1/75">
+      {pending ? `Login...` : `Login`}
+    </Button>
+  );
+};
