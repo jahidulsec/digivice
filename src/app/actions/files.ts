@@ -68,9 +68,12 @@ export const deleteFile = async (id: number) => {
 
   await db.folderContent.delete({ where: { id } });
 
-  // delete file and image when delete the product
-  await fs.unlink(`public${file.filePath}`);
-
+  try {
+    // delete file and image when delete the product
+    await fs.unlink(`public${file.filePath}`);
+  } catch (error) {
+    console.log(error);
+  }
   revalidatePath(`/admin/doctor/${file.folder.doctor.slug}/${file.folderId}`);
   revalidatePath(`/doctor/${file.folder.doctor.slug}/home/${file.folderId}`);
 

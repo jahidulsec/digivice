@@ -68,8 +68,6 @@ async function DataTable({ searchParams }: { searchParams: { q: string; p: strin
     ]);
   }
 
-  console.log(doctors);
-
   return (
     <>
       <DoctorTable doctors={doctors as DoctorTableProps[]} />
