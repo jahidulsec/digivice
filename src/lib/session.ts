@@ -30,7 +30,7 @@ export async function createSession(userId: string) {
 
   cookies().set('session', session, {
     httpOnly: true,
-    secure: true,
+    secure: false,
     expires: expiresAt,
     sameSite: 'lax',
     path: '/',
