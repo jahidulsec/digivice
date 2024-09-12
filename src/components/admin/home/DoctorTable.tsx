@@ -191,7 +191,7 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
               onClick={() => {
                 startTransition(async () => {
                   await deleteDoctor(delDoctor);
-                  toast.success('Vehicle has been deleted');
+                  toast.success('Doctor has been deleted');
                 });
               }}
             >

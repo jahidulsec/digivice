@@ -2,10 +2,9 @@
 
 import { z } from 'zod';
 import db from '../../../db/db';
-import { cookies } from 'next/headers';
-import { decrypt } from '@/lib/session';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { getUser } from '@/lib/dal';
 
 const addSchema = z.object({
   name: z.string().min(1),
@@ -27,11 +26,10 @@ export const addFolder = async (prevState: unknown, formData: FormData) => {
     return { error: null, success: null, toast: 'Something Went Wrong' };
   }
 
-  const cookie = cookies().get('session')?.value;
-  const session = await decrypt(cookie);
+  const session = await getUser();
 
-  if (session?.userId == null) {
-    return redirect('/login');
+  if (!session) {
+    return { error: null, success: null, toast: 'Invalid user, please login again' };
   }
 
   try {
@@ -39,7 +37,7 @@ export const addFolder = async (prevState: unknown, formData: FormData) => {
       data: {
         name: data.name,
         doctorId: doctor.id as number,
-        adminId: session.userId as string,
+        adminId: session.id as string,
       },
     });
 
@@ -68,11 +66,10 @@ export const updateFolder = async (id: number, prevState: unknown, formData: For
     return { error: null, success: null, toast: 'Folder does not exist' };
   }
 
-  const cookie = cookies().get('session')?.value;
-  const session = await decrypt(cookie);
+  const session = await getUser();
 
-  if (session?.userId == null) {
-    return redirect('/login');
+  if (!session) {
+    return { error: null, success: null, toast: 'Invalid user, please login again' };
   }
 
   try {

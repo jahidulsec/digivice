@@ -1,10 +1,8 @@
 'use server';
 
-import { decrypt } from '@/lib/session';
-import { cookies } from 'next/headers';
 import { z } from 'zod';
 import db from '../../../db/db';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { getUser } from '@/lib/dal';
 
@@ -29,6 +27,10 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
 
   try {
     const session = await getUser();
+
+    if (!session) {
+      return { error: null, success: null, toast: 'Invalid user, please login again' };
+    }
 
     await db.doctor.create({
       data: {
@@ -69,6 +71,10 @@ export const updateDoctor = async (id: number, prevState: unknown, formData: For
 
   try {
     const session = await getUser();
+
+    if (!session) {
+      return { error: null, success: null, toast: 'Invalid user, please login again' };
+    }
 
     if (session == null) {
       throw new Error('invalid user');

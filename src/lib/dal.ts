@@ -22,8 +22,8 @@ export const getUser = async () => {
   if (!session) return null;
 
   try {
-    const data = await db.admin.findMany({
-      where: { id: session.userId },
+    const data = await db.admin.findUnique({
+      where: { id: session.userId as string },
       // Explicitly return the columns you need rather than the whole user object
       select: {
         username: true,
@@ -32,7 +32,7 @@ export const getUser = async () => {
       },
     });
 
-    const user = data[0];
+    const user = data;
 
     return user;
   } catch (error) {

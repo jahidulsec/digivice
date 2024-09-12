@@ -9,7 +9,7 @@ export async function encrypt(payload: any) {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
-    .setExpirationTime('7d')
+    .setExpirationTime('1d')
     .sign(encodedKey);
 }
 
@@ -21,7 +21,6 @@ export async function decrypt(session: string | undefined = '') {
     return payload;
   } catch (error) {
     console.log('Failed to verify session');
-    return null;
   }
 }
 

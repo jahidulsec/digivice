@@ -1,8 +1,6 @@
 'use server';
 
-import { decrypt } from '@/lib/session';
-import { cookies } from 'next/headers';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import db from '../../../db/db';
 import fs from 'fs/promises';
 import { revalidatePath } from 'next/cache';
@@ -30,17 +28,10 @@ export const addFiles = async (prevState: unknown, formData: FormData) => {
       return { error: null, success: null, toast: 'Folder does not exist' };
     }
 
-    // const cookie = cookies().get('session')?.value;
-    // const session = await decrypt(cookie);
-
-    // if (session?.userId == null) {
-    //   return redirect('/login');
-    // }
-
     const session = await getUser();
 
-    if (session == null) {
-      throw new Error('invalid user');
+    if (!session) {
+      return { error: null, success: null, toast: 'Invalid user, please login again' };
     }
 
     fs.mkdir(`public/assets/${doctorSlug}`, { recursive: true });
