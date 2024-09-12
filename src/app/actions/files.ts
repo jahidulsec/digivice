@@ -6,6 +6,7 @@ import { notFound, redirect } from 'next/navigation';
 import db from '../../../db/db';
 import fs from 'fs/promises';
 import { revalidatePath } from 'next/cache';
+import { getUser } from '@/lib/dal';
 
 export const addFiles = async (prevState: unknown, formData: FormData) => {
   try {
@@ -29,11 +30,17 @@ export const addFiles = async (prevState: unknown, formData: FormData) => {
       return { error: null, success: null, toast: 'Folder does not exist' };
     }
 
-    const cookie = cookies().get('session')?.value;
-    const session = await decrypt(cookie);
+    // const cookie = cookies().get('session')?.value;
+    // const session = await decrypt(cookie);
 
-    if (session?.userId == null) {
-      return redirect('/login');
+    // if (session?.userId == null) {
+    //   return redirect('/login');
+    // }
+
+    const session = await getUser();
+
+    if (session == null) {
+      throw new Error('invalid user');
     }
 
     fs.mkdir(`public/assets/${doctorSlug}`, { recursive: true });
@@ -47,7 +54,7 @@ export const addFiles = async (prevState: unknown, formData: FormData) => {
           name: files[i].name,
           filePath: filePath,
           folderId: Number(folderId),
-          adminId: session?.userId as string,
+          adminId: session?.id as string,
         },
       });
     }
@@ -58,6 +65,7 @@ export const addFiles = async (prevState: unknown, formData: FormData) => {
     return { error: null, success: 'Files are added', toast: null };
   } catch (error) {
     console.log(error);
+    return { error: null, success: null, toast: 'Something went wrong' };
   }
 };
 

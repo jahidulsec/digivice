@@ -9,7 +9,7 @@ export default async function middleware(req: NextRequest) {
 
   // Redirect to /login if the user is not authenticated
   if (!session?.userId) {
-    return NextResponse.redirect(new URL('/login', req.nextUrl));
+    return NextResponse.redirect(new URL('/login', req.nextUrl), { status: 307 });
   }
 
   // Redirect to /admin if the user is authenticated

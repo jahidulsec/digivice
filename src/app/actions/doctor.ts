@@ -6,6 +6,7 @@ import { z } from 'zod';
 import db from '../../../db/db';
 import { notFound, redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { getUser } from '@/lib/dal';
 
 const addSchema = z.object({
   fullName: z.string().min(1),
@@ -21,24 +22,20 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
   }
 
   const data = result.data;
-  const cookie = cookies().get('session')?.value;
-  const session = await decrypt(cookie);
-
-  if (session?.userId == null) {
-    return redirect('/login');
-  }
 
   const doctorPrev = await db.doctor.findFirst({ orderBy: { createdAt: 'desc' } });
   const slug =
     Number(doctorPrev?.id || 0) + 1 + '-' + data.fullName.replaceAll('.', '').split(' ').join('-').toLowerCase();
 
   try {
+    const session = await getUser();
+
     await db.doctor.create({
       data: {
         fullName: data.fullName,
         designation: data.designation,
         email: data.email,
-        adminId: session?.userId as string,
+        adminId: session?.id as string,
         slug: slug,
       },
     });
@@ -67,23 +64,23 @@ export const updateDoctor = async (id: number, prevState: unknown, formData: For
   }
 
   const data = result.data;
-  const cookie = cookies().get('session')?.value;
-  const session = await decrypt(cookie);
-
-  if (session?.userId == null) {
-    return redirect('/login');
-  }
 
   const slug = doctor.id + '-' + data.fullName.replaceAll('.', '').split(' ').join('-').toLowerCase();
 
   try {
+    const session = await getUser();
+
+    if (session == null) {
+      throw new Error('invalid user');
+    }
+
     await db.doctor.update({
       where: { id },
       data: {
         fullName: data.fullName,
         designation: data.designation,
         email: data.email,
-        adminId: session?.userId as string,
+        adminId: session?.id as string,
         slug: slug,
       },
     });
