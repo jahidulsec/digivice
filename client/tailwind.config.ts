@@ -23,6 +23,9 @@ const config = {
       },
       colors: {
         p1: '#b11f8e',
+        p2: '#fdedf4',
+        p3: '#b11f8e',
+        inputB: '#f8b4c2',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

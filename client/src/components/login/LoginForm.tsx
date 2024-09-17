@@ -26,14 +26,40 @@ export default function LoginForm() {
     <>
       <form
         action={action}
-        className="flex flex-col gap-10 px-5 py-10 w-full min-w-[20rem] sm:py-5 justify-center sm:h-[40vh] min-h-fit font-light border-2 rounded-md border-pink-100 bg-pink-300/40"
+        className="flex flex-col gap-10 px-5 py-10 w-full min-w-[20rem] sm:py-5 justify-center sm:h-[40vh] min-h-fit rounded-m"
       >
-        <p>
-          <label htmlFor="phone">Phone Number</label>
-          <Input className="border-pink-300 focus-visible:ring-pink-400" type="text" id="phone" name="phone" />
-          {data?.error && <p className="error-msg">{data.error.phone}</p>}
+        <input type="hidden" name="doctorSlug" value={params.name} />
 
-          <input type="hidden" name="doctorSlug" value={params.name} />
+        <p>
+          <Input
+            className="border-inputB focus-visible:ring-inputB text-center placeholder:text-muted-foreground/50"
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Name"
+            title="Name"
+          />
+          {data?.error && <p className="error-msg">{data.error.phone}</p>}
+        </p>
+        <p>
+          <Input
+            className="border-inputB focus-visible:ring-inputB text-center placeholder:text-muted-foreground/50"
+            type="text"
+            id="phone"
+            name="phone"
+            placeholder="Phone Number"
+          />
+          {data?.error && <p className="error-msg">{data.error.phone}</p>}
+        </p>
+        <p>
+          <Input
+            className="border-inputB focus-visible:ring-inputB text-center placeholder:text-muted-foreground/50"
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email Address (optional)"
+          />
+          {data?.error && <p className="error-msg">{data.error.phone}</p>}
         </p>
 
         <SubmitButton />
@@ -45,7 +71,7 @@ export default function LoginForm() {
 const SubmitButton = () => {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending} className="bg-p1 hover:bg-p1/75">
+    <Button type="submit" disabled={pending} className="bg-p1 font-cr text-lg hover:bg-p1/75">
       {pending ? `Login...` : `Login`}
     </Button>
   );
