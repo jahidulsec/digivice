@@ -4,5 +4,6 @@ import welcome from './doctor/welocom.svg';
 import loginBg from './background/loginBg.svg';
 import homeBgTop from './background/homeBgTop.svg';
 import homeBgBottom from './background/homeBgBottom.svg';
+import halfQ from './background/halfQ.svg';
 
-export { homeBg, pageBg, welcome, homeBgTop, homeBgBottom, loginBg };
+export { homeBg, pageBg, welcome, homeBgTop, homeBgBottom, loginBg, halfQ };

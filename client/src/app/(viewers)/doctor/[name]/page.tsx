@@ -1,12 +1,12 @@
-import { homeBgBottom, homeBgTop, welcome } from '@/assets';
+import { halfQ, homeBgBottom, homeBgTop, welcome } from '@/assets';
 import { Button } from '@/components/ui/button';
-import { cache } from '@/lib/cache';
 import { ChevronRight } from 'lucide-react';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import db from '../../../../../db/db';
+import Background from '@/components/background/Background';
 
 export const metadata: Metadata = {
   title: 'Welcome - Doctor Chamber',
@@ -22,14 +22,19 @@ export default async function DoctorPage({ params }: { params: { name: string } 
 
   return (
     <section className="relative h-screen">
-      {/* bg image top */}
-      <div className="absolute right-0">
-        <Image src={homeBgTop} alt="home-bg" width={400} height={400} />
+      <Background />
+
+      {/* top half q */}
+      <div className="absolute top-0 left-0 opacity-[8%]">
+        <Image src={halfQ} alt="welcom" width={500} height={500} className="w-[12rem]" />
       </div>
 
-      {/* bg image bottom */}
-      <div className="absolute bottom-0">
-        <Image src={homeBgBottom} alt="home-bg" width={307} height={280} />
+      {/* advice content */}
+      <div className="absolute top-9 left-10 ">
+        <p className='flex flex-col items-end'>
+          <h3 className="font-car text-3xl text-p1">Advice</h3>
+          <h4 className="font-ar -mt-4 text-md text-muted-foreground">from</h4>
+        </p>
       </div>
 
       {/* content */}
@@ -42,10 +47,10 @@ export default async function DoctorPage({ params }: { params: { name: string } 
         {/* button */}
 
         <div className="flex justify-end pr-10 mt-10">
-          <Button className="bg-p1 hover:bg-p1/75 font-cb" asChild>
-            <Link href={`/doctor/${params.name}/login`}>
-              <span>Next</span>
-              <ChevronRight className="size-4 ml-4" />
+          <Button className="bg-p1 hover:bg-p1/75 px-4 py-1 h-auto rounded flex justify-center items-center" asChild>
+            <Link href={`/doctor/${params.name}/login`} >
+              <span className='font-cr'>Next</span>
+              <ChevronRight className="size-4 ml-1" />
             </Link>
           </Button>
         </div>
