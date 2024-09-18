@@ -5,7 +5,7 @@ import db from '../../../../../../db/db';
 import PageBackground from '@/components/background/PageBackground';
 import PageCardSection from '@/components/section/PageCardSection';
 import Button from '@/components/doctorHome/Button';
-import { infoIcon, pdfIcon, videoIcon } from '@/assets';
+import { folderIcon, infoIcon, pdfIcon, videoIcon } from '@/assets';
 
 export const metadata: Metadata = {
   title: 'Home - Doctor Chamber',
@@ -29,9 +29,15 @@ export default async function DoctorHome({ params }: { params: { name: string } 
 
       <PageCardSection>
         <div className="button-container px-6 my-14 flex flex-col gap-14">
-          <Button src={videoIcon} name="Video" />
-          <Button src={infoIcon} name="Infographic" />
-          <Button src={pdfIcon} name="PDF" />
+          {
+            folders.map(item => (
+              <Button key={item.id} name={item.name} folderId={item.id.toString()} src={
+                item.name.toLowerCase() === 'video' ? videoIcon :
+                item.name.toLowerCase() === 'infographic' ? infoIcon :
+                item.name.toLowerCase() === 'pdf' ? pdfIcon : folderIcon
+              } />
+            ))
+          }
         </div>
       </PageCardSection>
     </section>
