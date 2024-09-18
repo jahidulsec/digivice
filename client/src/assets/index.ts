@@ -6,5 +6,8 @@ import homeBgTop from './background/homeBgTop.svg';
 import homeBgBottom from './background/homeBgBottom.svg';
 import halfQ from './background/halfQ.svg';
 import bgQ from './background/bgQ.svg';
+import infoIcon from './icons/infoIcon.svg';
+import pdfIcon from './icons/pdfIcon.svg';
+import videoIcon from './icons/videoIcon.svg';
 
-export { homeBg, pageBg, welcome, homeBgTop, homeBgBottom, loginBg, halfQ, bgQ };
+export { homeBg, pageBg, welcome, homeBgTop, homeBgBottom, loginBg, halfQ, bgQ, infoIcon, pdfIcon, videoIcon };
