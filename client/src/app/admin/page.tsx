@@ -2,7 +2,7 @@ import DoctorTable from '@/components/admin/home/DoctorTable';
 import FilterSections from '@/components/admin/home/FilterSections';
 import React, { Suspense } from 'react';
 import db from '../../../db/db';
-import { Doctor, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import PagePagination from '@/components/ui/PagePagination';
 import TableSkeleton from '@/components/ui/TableSkeleton';
 

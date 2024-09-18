@@ -32,7 +32,7 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
       return { error: null, success: null, toast: 'Invalid user, please login again' };
     }
 
-    await db.doctor.create({
+    const doctor = await db.doctor.create({
       data: {
         fullName: data.fullName,
         designation: data.designation,
@@ -42,8 +42,29 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
       },
     });
 
+    await db.folder.createMany({
+      data: [
+        {
+          name: 'Video',
+          doctorId: doctor.id,
+          adminId: session?.id as string, 
+        },
+        {
+          name: 'Infographic',
+          doctorId: doctor.id,
+          adminId: session?.id as string, 
+        },
+        {
+          name: 'PDF',
+          doctorId: doctor.id,
+          adminId: session?.id as string, 
+        },
+      ]
+    })
+
     revalidatePath('/');
     revalidatePath('/admin');
+    revalidatePath('/admin/' + doctor.slug);
 
     return { error: null, success: 'Doctor has been added', toast: null };
   } catch (error) {

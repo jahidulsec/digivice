@@ -39,7 +39,7 @@ export default function LoginForm() {
             placeholder="Name"
             title="Name"
           />
-          {data?.error && <p className="error-msg">{data.error.phone}</p>}
+          {data?.error && <p className="error-msg">{data.error.name}</p>}
         </p>
         <p>
           <Input
@@ -59,7 +59,7 @@ export default function LoginForm() {
             name="email"
             placeholder="Email Address (optional)"
           />
-          {data?.error && <p className="error-msg">{data.error.phone}</p>}
+          {data?.error && <p className="error-msg">{data.error.email}</p>}
         </p>
 
         <SubmitButton />

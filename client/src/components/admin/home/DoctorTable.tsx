@@ -30,7 +30,6 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
   const [editDoctor, setEditDoctor] = useState<any>();
   const [delDoctor, setDelDoctor] = useState<any>();
   const [previewQR, setPreviewQR] = useState<any>();
-  const [visitId, setVisitId] = useState<any>();
 
   const [isPending, startTransition] = useTransition();
 
@@ -156,7 +155,7 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={5} align="center" className="py-20 text-gray-400 pointer-events-none">
+              <TableCell colSpan={6} align="center" className="py-20 text-gray-400 pointer-events-none">
                 <MessageSquareOff className="size-10" />
                 <span className="text-[11px]">No data</span>
               </TableCell>

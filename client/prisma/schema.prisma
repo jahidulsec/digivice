@@ -43,9 +43,9 @@ model Doctor {
 
 model Visit {
   id        Int      @id @default(autoincrement())
-  // name      String
+  name      String
   mobile    String
-  // email     String?
+  email     String?
   createdAt DateTime @default(now())
 
   doctorId Int
