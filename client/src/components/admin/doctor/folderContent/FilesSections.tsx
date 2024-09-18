@@ -78,7 +78,7 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            {item.name.split('.').pop() == 'mp4' ? (
+            {item.filePath.split('.').pop() == 'mp4' ? (
               <div className="w-full aspect-video relative">
                 <video src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`} controls />
               </div>
@@ -105,7 +105,7 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
           <DialogHeader>
             <DialogTitle className="text-sm font-cb">Preview</DialogTitle>
           </DialogHeader>
-          {preview != undefined && preview?.name != undefined && preview?.name.split('.').pop() == 'mp4' ? (
+          {preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'mp4' ? (
             <div className="w-full aspect-video relative">
               <video src={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + '/' + preview?.filePath} controls />
             </div>

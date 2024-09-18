@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useParams } from 'next/navigation';
-import React, { FormEvent, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
@@ -28,11 +28,17 @@ export default function FilesForm({ onClick }: FilesFormProps) {
   }, [data]);
 
   return (
-    <form className="flex flex-col gap-8" action={action}>
+    <form className="flex flex-col gap-5" action={action}>
+
       <p>
-        <Label htmlFor="name">Select Files</Label>
+        <Label htmlFor='name'>File Name</Label>
+        <Input className='mt-2' name='name' id='name' />
+      </p>
+
+      <p>
+        <Label htmlFor="file">Select Files</Label>
         <Input
-          id="name"
+          id="file"
           name="file"
           className="mt-2"
           type="file"

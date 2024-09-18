@@ -10,6 +10,7 @@ export const addFiles = async (prevState: unknown, formData: FormData) => {
   try {
     const files = formData.getAll('file') as File[];
     const folderId = formData.get('folderId');
+    const name = formData.get('name')?.toString();
     const doctorSlug = formData.get('doctorSlug');
 
     if (files[0].size == 0) {
@@ -42,7 +43,7 @@ export const addFiles = async (prevState: unknown, formData: FormData) => {
 
       await db.folderContent.create({
         data: {
-          name: files[i].name,
+          name: name || files[i].name,
           filePath: filePath,
           folderId: Number(folderId),
           adminId: session?.id as string,
