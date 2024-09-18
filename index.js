@@ -7,6 +7,10 @@ const app = express()
 
 app.use(express.static(path.join(__dirname, 'client', 'public')))
 
+app.get('/', (req, res) => {
+    return res.send('Welcome to Digivice Asset')
+})
+
 app.listen(port, () => {
     console.log("Server listening on PORT", port)
 })
