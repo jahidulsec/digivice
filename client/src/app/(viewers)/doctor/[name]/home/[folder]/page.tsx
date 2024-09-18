@@ -11,7 +11,7 @@ import PageBackground from '@/components/background/PageBackground';
 import PageCardSection from '@/components/section/PageCardSection';
 
 export const metadata: Metadata = {
-  title: 'Folder - Doctor Chamber',
+  title: 'Folder - Digivice',
 };
 
 async function FolderPage({ params }: { params: { name: string; folder: string } }) {

@@ -9,7 +9,7 @@ import db from '../../../../../db/db';
 import Background from '@/components/background/Background';
 
 export const metadata: Metadata = {
-  title: 'Welcome - Doctor Chamber',
+  title: 'Welcome - Digivice',
 };
 
 export default async function DoctorPage({ params }: { params: { name: string } }) {

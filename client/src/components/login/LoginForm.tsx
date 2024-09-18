@@ -26,7 +26,7 @@ export default function LoginForm() {
     <>
       <form
         action={action}
-        className="flex flex-col gap-10 px-5 py-10 w-full min-w-[20rem] sm:py-5 justify-center sm:h-[40vh] min-h-fit rounded-m"
+        className="flex flex-col gap-10 px-5 my-10 w-full min-w-[20rem] sm:py-5 justify-center sm:h-[40vh] min-h-fit rounded-m"
       >
         <input type="hidden" name="doctorSlug" value={params.name} />
 

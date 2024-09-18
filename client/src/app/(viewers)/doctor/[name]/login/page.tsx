@@ -7,7 +7,7 @@ import Image from 'next/image';
 import React from 'react';
 
 export const metadata: Metadata = {
-  title: 'Login - Doctor Chamber',
+  title: 'Login - Digivice',
 };
 
 export default function LoginPage() {

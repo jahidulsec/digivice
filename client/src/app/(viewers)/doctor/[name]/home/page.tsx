@@ -8,7 +8,7 @@ import Button from '@/components/doctorHome/Button';
 import { folderIcon, infoIcon, pdfIcon, videoIcon } from '@/assets';
 
 export const metadata: Metadata = {
-  title: 'Home - Doctor Chamber',
+  title: 'Home - Digivice',
 };
 
 export default async function DoctorHome({ params }: { params: { name: string } }) {
