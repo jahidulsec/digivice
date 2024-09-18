@@ -82,7 +82,7 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
               <div className="w-full aspect-video relative">
                 <video src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`} controls />
               </div>
-            ) : item.name.split('.').pop() == 'pdf' ? (
+            ) : item.filePath.split('.').pop() == 'pdf' ? (
               <>
                 <object
                   type="application/pdf"
@@ -109,7 +109,7 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
             <div className="w-full aspect-video relative">
               <video src={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + '/' + preview?.filePath} controls />
             </div>
-          ) : preview != undefined && preview?.name != undefined && preview?.name.split('.').pop() == 'pdf' ? (
+          ) : preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'pdf' ? (
             <div className="h-[70vh]">
               <object
                 type="application/pdf"

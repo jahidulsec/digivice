@@ -13,13 +13,13 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
     <>
       <div className="  md:grid-cols-2 lg:grid-cols-3 grid grid-cols-1 justify-center items-center gap-2">
         {folderContent.map((item) => (
-          <div className=" border rounded-md p-5 flex flex-col gap-2 justify-between bg-pink-50" key={item.id}>
+          <div className=" border rounded-md p-5 flex flex-col gap-2 justify-between bg-white" key={item.id}>
             <div className="header flex gap-2 items-center mb-2 text-pink-700">
-              {item.name.split('.').pop() == 'mp4' ? (
+              {item.filePath.split('.').pop() == 'mp4' ? (
                 <>
                   <Film className="size-4" />
                 </>
-              ) : item.name.split('.').pop() == 'pdf' ? (
+              ) : item.filePath.split('.').pop() == 'pdf' ? (
                 <>
                   <FileText className="size-4" />
                 </>
@@ -32,14 +32,14 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
             </div>
 
 
-            {item.name.split('.').pop() == 'mp4' ? (
+            {item.filePath.split('.').pop() == 'mp4' ? (
               <div className="w-full aspect-video relative" onClick={() => setPreview(item)}>
                 <video src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`} />
-                <div className="icon p-5 bg-pink-200 rounded-full absolute top-[50%] -translate-x-[50%] -translate-y-[50%] left-[50%]">
+                <div className="icon p-5 bg-pink-100 rounded-full absolute top-[50%] -translate-x-[50%] -translate-y-[50%] left-[50%]">
                   <Play className="size-6 fill-pink-500 stroke-pink-500" />
                 </div>
               </div>
-            ) : item.name.split('.').pop() == 'pdf' ? (
+            ) : item.filePath.split('.').pop() == 'pdf' ? (
               <div className="" onClick={() => setPreview(item)}>
                 <div className="w-full aspect-video pointer-events-none">
                   <object
@@ -63,11 +63,11 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
           <DialogHeader>
             <DialogTitle className="text-sm font-cb">Preview</DialogTitle>
           </DialogHeader>
-          {preview != undefined && preview?.name != undefined && preview?.name.split('.').pop() == 'mp4' ? (
+          {preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'mp4' ? (
             <div className="w-full aspect-video relative">
               <video src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${preview?.filePath}`} controls />
             </div>
-          ) : preview?.name != undefined && preview?.name.split('.').pop() == 'pdf' ? (
+          ) : preview?.filePath != undefined && preview?.name.split('.').pop() == 'pdf' ? (
             <div className="h-[70vh]">
               <object
                 type="application/pdf"
