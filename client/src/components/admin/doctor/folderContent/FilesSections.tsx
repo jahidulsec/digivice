@@ -86,7 +86,7 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
               <>
                 <object
                   type="application/pdf"
-                  data={item.filePath}
+                  data={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`}
                   className="pdf-thumbnail w-full overflow-hidden"
                 ></object>
               </>
