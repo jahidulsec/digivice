@@ -5,11 +5,14 @@ import db from '../../../db/db';
 import { notFound } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { getUser } from '@/lib/dal';
+import { Prisma } from '@prisma/client';
 
 const addSchema = z.object({
   fullName: z.string().min(1),
   designation: z.string().optional(),
   email: z.string().nullable(),
+  mobile: z.string().nullable(),
+  childId: z.coerce.number().min(1, 'At least a number'),
 });
 
 export const addDoctor = async (prevState: unknown, formData: FormData) => {
@@ -37,11 +40,14 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
         fullName: data.fullName,
         designation: data.designation,
         email: data.email,
+        mobile: data.mobile,
+        childId: data.childId,
         adminId: session?.id as string,
         slug: slug,
       },
     });
 
+    // create initial three folders
     await db.folder.createMany({
       data: [
         {
@@ -68,6 +74,11 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
 
     return { error: null, success: 'Doctor has been added', toast: null };
   } catch (error) {
+    if(error instanceof Prisma.PrismaClientKnownRequestError) {
+      if(error.code === 'P2002') {
+        return { error: null, success: null, toast: 'This ID already exist' };
+      }
+    }
     console.log(error);
     return { error: null, success: null, toast: 'Something went wrong' };
   }
@@ -107,6 +118,8 @@ export const updateDoctor = async (id: number, prevState: unknown, formData: For
         fullName: data.fullName,
         designation: data.designation,
         email: data.email,
+        childId: data.childId,
+        mobile: data.mobile,
         adminId: session?.id as string,
         slug: slug,
       },
@@ -117,6 +130,11 @@ export const updateDoctor = async (id: number, prevState: unknown, formData: For
 
     return { error: null, success: 'Doctor has been updated', toast: null };
   } catch (error) {
+    if(error instanceof Prisma.PrismaClientKnownRequestError) {
+      if(error.code === 'P2002') {
+        return { error: null, success: null, toast: 'This ID already exist' };
+      }
+    }
     console.log(error);
     return { error: null, success: null, toast: 'Something went wrong' };
   }

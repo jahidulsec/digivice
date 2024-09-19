@@ -29,8 +29,10 @@ model Doctor {
   id          Int      @id @default(autoincrement())
   fullName    String
   slug        String   @unique
+  childId     Int      @unique
   designation String?
   email       String?
+  mobile      String?  @default("")
   createdAt   DateTime @default(now())
   updateAt    DateTime @updatedAt
   adminId     String?

@@ -3,8 +3,6 @@
 import React, { useEffect } from 'react';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useFormState, useFormStatus } from 'react-dom';
 import { addViewer } from '@/app/actions/viewer';

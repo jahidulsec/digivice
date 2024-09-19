@@ -92,7 +92,7 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
           {doctors.length > 0 ? (
             doctors.map((item) => (
               <TableRow key={item.id}>
-                <TableCell>{item.id}</TableCell>
+                <TableCell>{item.childId}</TableCell>
                 <TableCell>{item.fullName}</TableCell>
                 <TableCell>{item.designation}</TableCell>
                 <TableCell>{item.email}</TableCell>

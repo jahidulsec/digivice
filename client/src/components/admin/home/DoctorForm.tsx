@@ -28,8 +28,13 @@ export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
 
   return (
     <>
-      <form action={action} className="grid grid-cols-1 gap-5">
+      <form action={action} className="grid grid-cols-2 gap-5">
         <p className="flex flex-col gap-2">
+          <Label htmlFor="childId">ID</Label>
+          <Input type='number' id="childId" name="childId" defaultValue={doctor != null ? doctor.childId : ''} />
+          {data?.error != null && data?.error.childId && <p className="error-msg">{data.error.childId}</p>}
+        </p>
+        <p className="flex flex-col gap-2 col-span-2">
           <Label htmlFor="fullName">Full Name</Label>
           <Input id="fullName" name="fullName" defaultValue={doctor != null ? doctor.fullName : ''} />
           {data?.error != null && data?.error.fullName && <p className="error-msg">{data.error.fullName}</p>}
@@ -48,27 +53,21 @@ export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
           <Input id="email" name="email" defaultValue={doctor != null ? (doctor.email as string) : ''} />
           {data?.error != null && data?.error.email && <p className="error-msg">{data.error.email}</p>}
         </p>
+        <p className="flex flex-col gap-2 col-span-2">
+          <Label htmlFor="mobile">Mobile No.</Label>
+          <Input id="mobile" name="mobile" defaultValue={doctor != null ? (doctor.mobile as string) : ''} />
+          {data?.error != null && data?.error.mobile && <p className="error-msg">{data.error.mobile}</p>}
+        </p>
         <SubmitButton />
       </form>
     </>
   );
 }
 
-type FormFieldProps = {
-  title: string;
-  id: string;
-  error: {
-    email?: string[] | undefined;
-    fullName?: string[] | undefined;
-    designation?: string[] | undefined;
-  };
-  type?: string;
-};
-
 const SubmitButton = () => {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending}>
+    <Button className='col-span-2' type="submit" disabled={pending}>
       {pending ? `Saving...` : `Save`}
     </Button>
   );
