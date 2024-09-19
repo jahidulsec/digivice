@@ -83,6 +83,7 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
             <TableHead>Full Name</TableHead>
             <TableHead>Designation</TableHead>
             <TableHead>Email</TableHead>
+            <TableHead>Mobile</TableHead>
             <TableHead className="text-center">Viewer&apos;s Count</TableHead>
             <TableHead className="text-right">Action</TableHead>
           </TableRow>
@@ -96,6 +97,7 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
                 <TableCell>{item.fullName}</TableCell>
                 <TableCell>{item.designation}</TableCell>
                 <TableCell>{item.email}</TableCell>
+                <TableCell>{item.mobile}</TableCell>
                 <TableCell className="text-right">{formatNumber(item._count.Viewers)}</TableCell>
                 <TableCell className="flex gap-2 justify-end">
                   <Tooltips title="Download Visits">
@@ -155,7 +157,7 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={6} align="center" className="py-20 text-gray-400 pointer-events-none">
+              <TableCell colSpan={7} align="center" className="py-20 text-gray-400 pointer-events-none">
                 <MessageSquareOff className="size-10" />
                 <span className="text-[11px]">No data</span>
               </TableCell>
