@@ -1,6 +1,4 @@
 import type { Metadata } from 'next';
-import { loginBg } from '@/assets';
-import Image from 'next/image';
 import React from 'react';
 import FolderPageHeader from '@/components/folder/Header';
 import { cache } from '@/lib/cache';
@@ -15,15 +13,27 @@ export const metadata: Metadata = {
 };
 
 async function FolderPage({ params }: { params: { name: string; folder: string } }) {
+  
+  const getFolderName = cache(() => {
+    return db.folder.findUnique({
+      where: {id: Number(params.folder)},
+      select: {name: true}
+    })
+  }, 
+  [`/doctor/${params.name}/home/${params.folder}`, 'getDoctorFolderContent'],
+)
+  
   const getDoctorFolderContent = cache(
     () => {
       return db.folderContent.findMany({ where: { folderId: Number(params.folder) } });
     },
     [`/doctor/${params.name}/home/${params.folder}`, 'getDoctorFolderContent'],
-    { revalidate: 24 * 60 * 60 }
   );
 
-  const folderContent = await getDoctorFolderContent();
+  const [folderContent, folder] = await Promise.all([
+    getDoctorFolderContent(),
+    getFolderName()
+  ])
 
   return (
     <>
@@ -32,7 +42,8 @@ async function FolderPage({ params }: { params: { name: string; folder: string }
         <PageBackground />
 
         <PageCardSection>
-          <div className="px-6 my-14 flex flex-col gap-14">
+          <FolderPageHeader folderName={folder?.name as string} />
+          <div className="px-6 flex mb-14 flex-col gap-14">
             {folderContent.length > 0.0 ? (
               <ContentSection folderContent={folderContent} />
             ) : (

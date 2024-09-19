@@ -29,15 +29,22 @@ export default async function DoctorHome({ params }: { params: { name: string } 
 
       <PageCardSection>
         <div className="button-container px-6 my-14 flex flex-col gap-14">
-          {
-            folders.map(item => (
-              <Button key={item.id} name={item.name} folderId={item.id.toString()} src={
-                item.name.toLowerCase() === 'video' ? videoIcon :
-                item.name.toLowerCase() === 'infographic' ? infoIcon :
-                item.name.toLowerCase() === 'pdf' ? pdfIcon : folderIcon
-              } />
-            ))
-          }
+          {folders.map((item) => (
+            <Button
+              key={item.id}
+              name={item.name}
+              folderId={item.id.toString()}
+              src={
+                item.name.toLowerCase() === 'video'
+                  ? videoIcon
+                  : item.name.toLowerCase() === 'infographic'
+                    ? infoIcon
+                    : item.name.toLowerCase() === 'pdf'
+                      ? pdfIcon
+                      : folderIcon
+              }
+            />
+          ))}
         </div>
       </PageCardSection>
     </section>

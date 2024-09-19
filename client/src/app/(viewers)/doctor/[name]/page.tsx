@@ -7,6 +7,7 @@ import Link from 'next/link';
 import React from 'react';
 import db from '../../../../../db/db';
 import Background from '@/components/background/Background';
+import { notFound } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Welcome - Digivice',
@@ -14,11 +15,17 @@ export const metadata: Metadata = {
 
 export default async function DoctorPage({ params }: { params: { name: string } }) {
   const doctor = await db.doctor.findUnique({ where: { slug: params.name }, select: { fullName: true, id: true } });
+  
+  if(doctor == null) {
+    return notFound()
+  }
+
   await db.viewers.create({
     data: {
       doctorId: Number(doctor?.id),
     },
   });
+
 
   return (
     <section className="relative h-screen">

@@ -24,9 +24,8 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
 
   const data = result.data;
 
-  const doctorPrev = await db.doctor.findFirst({ orderBy: { createdAt: 'desc' } });
   const slug =
-    Number(doctorPrev?.id || 0) + 1 + '-' + data.fullName.replaceAll('.', '').split(' ').join('-').toLowerCase();
+    Number(data.childId || 0) + '-' + data.fullName.replaceAll('.', '').split(' ').join('-').toLowerCase();
 
   try {
     const session = await getUser();
@@ -99,7 +98,7 @@ export const updateDoctor = async (id: number, prevState: unknown, formData: For
 
   const data = result.data;
 
-  const slug = doctor.id + '-' + data.fullName.replaceAll('.', '').split(' ').join('-').toLowerCase();
+  const slug = data.childId + '-' + data.fullName.replaceAll('.', '').split(' ').join('-').toLowerCase();
 
   try {
     const session = await getUser();
