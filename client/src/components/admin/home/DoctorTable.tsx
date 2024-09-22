@@ -25,6 +25,7 @@ import DoctorForm from './DoctorForm';
 import QRCode from 'qrcode.react';
 import { DoctorTableProps } from '@/app/admin/page';
 import { formatNumber } from '@/lib/formatters';
+import { format } from 'date-fns';
 
 function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
   const [editDoctor, setEditDoctor] = useState<any>();
@@ -47,14 +48,21 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
   // export csv
   const convertToCSV = (objArray: object[]) => {
     const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
-    let str = "ID, Viewer's Mobile, Visited_at, Doctor_id \r\n";
+    let str = `Doctor - ${array[0].doctor.fullName} (${array[0].doctor.childId})  \r\n`;
+    str += `\r\n`;
+    str += "ID, Viewer's Name, Viewer's Email, Viewer's Mobile, Visited_at \r\n";
 
     for (let i = 0; i < array.length; i++) {
-      let line = '';
+      let line = `${i + 1}`;
       for (let index in array[i]) {
         if (line !== '') line += ',';
-
-        line += array[i][index];
+        if (index !== 'doctor') {
+          if (index !== 'createdAt') {
+            line += array[i][index];
+          } else {
+            line += format(new Date(array[i][index]), 'dd LLL yyyy - h:mm aaa');
+          }
+        }
       }
       str += line + '\r\n';
     }
