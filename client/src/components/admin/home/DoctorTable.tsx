@@ -212,12 +212,12 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
 
       {/* update doctor dialog */}
       <Dialog open={previewQR} onOpenChange={setPreviewQR}>
-        <DialogContent className="max-w-[10rem] md:w-[550px] aspect-square">
+        <DialogContent className="min-w-[18rem] md:max-w-[550px] aspect-square">
           <DialogHeader>
             <DialogTitle className="text-sm font-cb">QR Code</DialogTitle>
           </DialogHeader>
 
-          <div className="flex justify-center items-center md:hidden">
+          <div className="flex justify-center items-center sm:hidden">
             <QRCode
               id="qrCodeEl"
               size={220}
@@ -225,7 +225,7 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
             />
           </div>
 
-          <div className="justify-center items-center hidden md:flex">
+          <div className="justify-center items-center hidden sm:flex">
             <QRCode
               id="qrCodeEl"
               size={500}
