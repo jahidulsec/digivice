@@ -37,10 +37,20 @@ model Doctor {
   updateAt    DateTime @updatedAt
   adminId     String?
 
-  admin   Admin?    @relation(fields: [adminId], references: [id], onDelete: SetNull)
-  Visit   Visit[]
-  folder  Folder[]
-  Viewers Viewers[]
+  admin            Admin?             @relation(fields: [adminId], references: [id], onDelete: SetNull)
+  Visit            Visit[]
+  folder           Folder[]
+  Viewers          Viewers[]
+  SocialMediaLinks SocialMediaLinks[]
+}
+
+model SocialMediaLinks {
+  id       Int    @id @default(autoincrement())
+  siteName String
+  url      String
+  doctorId Int?
+
+  doctor Doctor? @relation(references: [id], fields: [doctorId], onDelete: Cascade)
 }
 
 model Visit {
