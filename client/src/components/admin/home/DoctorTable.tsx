@@ -48,6 +48,7 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
   // export csv
   const convertToCSV = (objArray: object[]) => {
     const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
+    console.log(array)
     let str = `Doctor - ${array[0].doctor.fullName} (${array[0].doctor.childId})  \r\n`;
     str += `\r\n`;
     str += "ID, Viewer's Name, Viewer's Email, Viewer's Mobile, Visited_at \r\n";
@@ -72,6 +73,10 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
   const downloadCSV = async (id: number, name: string) => {
     const res = await fetch(`/api/visit/${id}`);
     const data = await res.json();
+    if(data.length == 0) {
+      toast.warning('No user login for this doctor')
+      return
+    }
     const csvData = new Blob([convertToCSV(data)], { type: 'text/csv' });
     const csvURL = URL.createObjectURL(csvData);
     const link = document.createElement('a');
