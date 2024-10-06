@@ -6,14 +6,17 @@ import fs from 'fs/promises';
 import { revalidatePath } from 'next/cache';
 import { getUser } from '@/lib/dal';
 
+
+
 export const addFiles = async (prevState: unknown, formData: FormData) => {
   try {
-    const files = formData.getAll('file') as File[];
+    const file = formData.get('file') as File;
+    const thumbnail = formData.get('thumbnail') as File;
     const folderId = formData.get('folderId');
     const name = formData.get('name')?.toString();
     const doctorSlug = formData.get('doctorSlug');
 
-    if (files[0].size == 0) {
+    if (file.size == 0) {
       return { error: 'Please select a file', success: null, toast: null };
     }
 
@@ -37,19 +40,40 @@ export const addFiles = async (prevState: unknown, formData: FormData) => {
 
     fs.mkdir(`public/assets/${doctorSlug}`, { recursive: true });
 
-    for (let i = 0; i < files.length; i++) {
-      const filePath = `/assets/${doctorSlug}/${crypto.randomUUID()}-${files[i].name}`;
-      await fs.writeFile(`public${filePath}`, Buffer.from(await files[i].arrayBuffer()));
+
+    const filePath = `/assets/${doctorSlug}/${crypto.randomUUID()}-${file.name}`;
+      await fs.writeFile(`public${filePath}`, Buffer.from(await file.arrayBuffer()));
+
+    let thumbnailPath = ''
+
+    if(thumbnail && thumbnail.size != 0) {
+      thumbnailPath = `/assets/${doctorSlug}/${crypto.randomUUID()}-${thumbnail.name}`;
+      await fs.writeFile(`public${thumbnailPath}`, Buffer.from(await thumbnail.arrayBuffer()));
+    }
 
       await db.folderContent.create({
         data: {
-          name: name || files[i].name,
+          name: name || file.name,
           filePath: filePath,
+          thumbnailPath: thumbnailPath,
           folderId: Number(folderId),
           adminId: session?.id as string,
         },
       });
-    }
+
+    // for (let i = 0; i < files.length; i++) {
+    //   const filePath = `/assets/${doctorSlug}/${crypto.randomUUID()}-${files[i].name}`;
+    //   await fs.writeFile(`public${filePath}`, Buffer.from(await files[i].arrayBuffer()));
+
+    //   await db.folderContent.create({
+    //     data: {
+    //       name: name || files[i].name,
+    //       filePath: filePath,
+    //       folderId: Number(folderId),
+    //       adminId: session?.id as string,
+    //     },
+    //   });
+    // }
 
     revalidatePath(`/admin/doctor/${doctorSlug}/${folderId}`);
     revalidatePath(`/doctor/${doctorSlug}/home/${folderId}`);
@@ -71,6 +95,7 @@ export const deleteFile = async (id: number) => {
   try {
     // delete file and image when delete the product
     await fs.unlink(`public${file.filePath}`);
+    await fs.unlink(`public${file.thumbnailPath}`);
   } catch (error) {
     console.log(error);
   }

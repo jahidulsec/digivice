@@ -34,7 +34,7 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
 
             {item.filePath.split('.').pop() == 'mp4' ? (
               <div className="w-full aspect-video relative" onClick={() => setPreview(item)}>
-                <video src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`} />
+                <video poster={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.thumbnailPath}`} src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`} />
                 <div className="icon p-5 bg-pink-100 rounded-full absolute top-[50%] -translate-x-[50%] -translate-y-[50%] left-[50%]">
                   <Play className="size-6 fill-pink-500 stroke-pink-500" />
                 </div>

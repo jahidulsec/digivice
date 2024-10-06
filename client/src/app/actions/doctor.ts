@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { getUser } from '@/lib/dal';
 import { Prisma } from '@prisma/client';
+import fs from 'fs/promises';
 
 const phoneRegex = new RegExp(/^01(\d{9})$/)
 
@@ -148,6 +149,7 @@ export const deleteDoctor = async (id: number) => {
   const doctor = await db.doctor.findUnique({ where: { id } });
 
   if (doctor == null) return notFound();
+
 
   await db.doctor.delete({ where: { id } });
 

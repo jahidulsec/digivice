@@ -80,7 +80,7 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
             </div>
             {item.filePath.split('.').pop() == 'mp4' ? (
               <div className="w-full aspect-video relative">
-                <video src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`} controls />
+                <video poster={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item?.thumbnailPath}`} src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`} controls />
               </div>
             ) : item.filePath.split('.').pop() == 'pdf' ? (
               <>

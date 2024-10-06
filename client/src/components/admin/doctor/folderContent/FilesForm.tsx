@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
@@ -15,6 +15,7 @@ type FilesFormProps = {
 
 export default function FilesForm({ onClick }: FilesFormProps) {
   const params = useParams();
+  const [fileType, setFileType] = useState('');
 
   const [data, action] = useFormState(addFiles, null);
 
@@ -29,20 +30,23 @@ export default function FilesForm({ onClick }: FilesFormProps) {
 
   return (
     <form className="flex flex-col gap-5" action={action}>
-
       <p>
-        <Label htmlFor='name'>File Name</Label>
-        <Input className='mt-2' name='name' id='name' />
+        <Label htmlFor="name">File Name</Label>
+        <Input className="mt-2" name="name" id="name" />
       </p>
 
       <p>
-        <Label htmlFor="file">Select Files</Label>
+        <Label htmlFor="file">Select File</Label>
         <Input
           id="file"
           name="file"
           className="mt-2"
           type="file"
-          multiple
+          onChange={(e) => {
+            if (e.target.files) {
+              setFileType(e.target.files[0].type as string);
+            }
+          }}
           accept="image/jpeg, image/jpg, image/png, video/mp4, application/pdf"
         />
         {data?.error && <p className="error-msg">{data.error}</p>}
@@ -50,6 +54,18 @@ export default function FilesForm({ onClick }: FilesFormProps) {
         <input type="hidden" name="folderId" value={params.id} />
         <input type="hidden" name="doctorSlug" value={params.slug} />
       </p>
+      {fileType === 'video/mp4' && (
+        <p>
+          <Label htmlFor="thumbnail">Select Thumbnail</Label>
+          <Input
+            id="thumbnail"
+            name="thumbnail"
+            className="mt-2"
+            type="file"
+            accept="image/jpeg, image/jpg, image/png"
+          />
+        </p>
+      )}
 
       <SubmitButton />
     </form>

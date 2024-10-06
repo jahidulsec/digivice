@@ -32,7 +32,7 @@ model Doctor {
   childId     Int      @unique
   designation String
   email       String?
-  mobile      String  @default("")
+  mobile      String   @default("")
   createdAt   DateTime @default(now())
   updateAt    DateTime @updatedAt
   adminId     String?
@@ -68,13 +68,14 @@ model Folder {
 }
 
 model FolderContent {
-  id        Int      @id @default(autoincrement())
-  name      String
-  filePath  String
-  folderId  Int
-  adminId   String?
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  name          String
+  thumbnailPath String?  @default("")
+  filePath      String
+  folderId      Int
+  adminId       String?
+  createdAt     DateTime @default(now())
+  updateAt      DateTime @updatedAt
 
   folder Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
   admin  Admin? @relation(fields: [adminId], references: [id], onDelete: SetNull)
