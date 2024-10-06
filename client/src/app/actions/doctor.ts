@@ -7,14 +7,16 @@ import { revalidatePath } from 'next/cache';
 import { getUser } from '@/lib/dal';
 import { Prisma } from '@prisma/client';
 
+const phoneRegex = new RegExp(/^01(\d{9})$/)
+
 const addSchema = z.object({
   fullName: z.string().min(1),
-  designation: z.string().optional(),
+  designation: z.string(),
   email: z.union([
     z.literal(''),
     z.string().email()
   ]),
-  mobile: z.string().nullable(),
+  mobile: z.string().regex(phoneRegex, 'At least 11 numbers and startwith 01'),
   childId: z.coerce.number().min(1, 'At least a number'),
 });
 
@@ -42,7 +44,7 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
         fullName: data.fullName,
         designation: data.designation,
         email: data.email,
-        mobile: data.mobile,
+        mobile: '+88'+ data.mobile,
         childId: data.childId,
         adminId: session?.id as string,
         slug: slug,
@@ -121,7 +123,7 @@ export const updateDoctor = async (id: number, prevState: unknown, formData: For
         designation: data.designation,
         email: data.email,
         childId: data.childId,
-        mobile: data.mobile,
+        mobile: "+88" +data.mobile,
         adminId: session?.id as string,
         slug: slug,
       },

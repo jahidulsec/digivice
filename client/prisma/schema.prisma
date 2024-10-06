@@ -30,9 +30,9 @@ model Doctor {
   fullName    String
   slug        String   @unique
   childId     Int      @unique
-  designation String?
+  designation String
   email       String?
-  mobile      String?  @default("")
+  mobile      String  @default("")
   createdAt   DateTime @default(now())
   updateAt    DateTime @updatedAt
   adminId     String?

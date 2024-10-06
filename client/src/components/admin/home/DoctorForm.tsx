@@ -55,7 +55,7 @@ export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
         </p>
         <p className="flex flex-col gap-2 col-span-2">
           <Label htmlFor="mobile">Mobile No.</Label>
-          <Input id="mobile" name="mobile" defaultValue={doctor != null ? (doctor.mobile as string) : ''} />
+          <Input id="mobile" name="mobile" defaultValue={doctor != null ? (doctor.mobile?.slice(3) as string) : ''} />
           {data?.error != null && data?.error.mobile && <p className="error-msg">{data.error.mobile}</p>}
         </p>
         <SubmitButton />
