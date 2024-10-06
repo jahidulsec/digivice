@@ -10,7 +10,10 @@ import { Prisma } from '@prisma/client';
 const addSchema = z.object({
   fullName: z.string().min(1),
   designation: z.string().optional(),
-  email: z.string().nullable(),
+  email: z.union([
+    z.literal(''),
+    z.string().email()
+  ]),
   mobile: z.string().nullable(),
   childId: z.coerce.number().min(1, 'At least a number'),
 });
