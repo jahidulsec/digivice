@@ -65,7 +65,7 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
           </DialogHeader>
           {preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'mp4' ? (
             <div className="w-full aspect-video relative">
-              <video src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${preview?.filePath}`} controls />
+              <video poster={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${preview?.thumbnailPath}`} src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${preview?.filePath}`} controls />
             </div>
           ) : preview?.filePath != undefined && preview?.name.split('.').pop() == 'pdf' ? (
             <div className="h-[70vh]">
