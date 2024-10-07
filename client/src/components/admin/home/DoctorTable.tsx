@@ -26,6 +26,7 @@ import QRCode from 'qrcode.react';
 import { DoctorTableProps } from '@/app/admin/page';
 import { formatNumber } from '@/lib/formatters';
 import { format } from 'date-fns';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
   const [editDoctor, setEditDoctor] = useState<any>();
@@ -48,7 +49,7 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
   // export csv
   const convertToCSV = (objArray: object[]) => {
     const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
-    console.log(array)
+    console.log(array);
     let str = `Doctor - ${array[0].doctor.fullName} (${array[0].doctor.childId})  \r\n`;
     str += `\r\n`;
     str += "ID, Viewer's Name, Viewer's Email, Viewer's Mobile, Visited_at \r\n";
@@ -73,9 +74,9 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
   const downloadCSV = async (id: number, name: string) => {
     const res = await fetch(`/api/visit/${id}`);
     const data = await res.json();
-    if(data.length == 0) {
-      toast.warning('No user login for this doctor')
-      return
+    if (data.length == 0) {
+      toast.warning('No user login for this doctor');
+      return;
     }
     const csvData = new Blob([convertToCSV(data)], { type: 'text/csv' });
     const csvURL = URL.createObjectURL(csvData);
@@ -181,11 +182,13 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
 
       {/* update doctor dialog */}
       <Dialog open={editDoctor} onOpenChange={setEditDoctor}>
-        <DialogContent className="w-[75vw]">
-          <DialogHeader>
-            <DialogTitle className="text-sm font-cb">Edit Doctor</DialogTitle>
-          </DialogHeader>
-          <DoctorForm doctor={editDoctor as Doctor} onClose={() => setEditDoctor(false)} />
+        <DialogContent className="w-[75vw] p-0 ">
+          <ScrollArea className="max-h-[85vh] px-6 my-6">
+            <DialogHeader>
+              <DialogTitle className="text-sm font-cb">Edit Doctor</DialogTitle>
+            </DialogHeader>
+            <DoctorForm doctor={editDoctor as Doctor} onClose={() => setEditDoctor(false)} />
+          </ScrollArea>
         </DialogContent>
       </Dialog>
 

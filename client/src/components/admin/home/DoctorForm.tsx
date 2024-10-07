@@ -3,9 +3,11 @@
 import { addDoctor, updateDoctor } from '@/app/actions/doctor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Doctor } from '@prisma/client';
 import { Label } from '@radix-ui/react-label';
-import React, { useEffect } from 'react';
+import { Plus, X } from 'lucide-react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
@@ -17,6 +19,9 @@ interface DoctorFromProps {
 export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
   const [data, action] = useFormState(doctor == null ? addDoctor : updateDoctor.bind(null, doctor.id), null);
 
+  const [socialMediaLinks, setSocialMediaLinks] = useState<any[]>([]);
+  const [addFields, setAddFields] = useState(false);
+
   useEffect(() => {
     if (data?.toast != null) {
       toast.error(data.toast);
@@ -26,12 +31,16 @@ export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
     }
   }, [data]);
 
+  useEffect(() => {
+    console.log(socialMediaLinks);
+  }, [socialMediaLinks]);
+
   return (
     <>
-      <form action={action} className="grid grid-cols-2 gap-5">
+      <form action={action} className="grid grid-cols-2 gap-5 mt-5 px-1">
         <p className="flex flex-col gap-2">
           <Label htmlFor="childId">ID</Label>
-          <Input type='number' id="childId" name="childId" defaultValue={doctor != null ? doctor.childId : ''} />
+          <Input type="number" id="childId" name="childId" defaultValue={doctor != null ? doctor.childId : ''} />
           {data?.error != null && data?.error.childId && <p className="error-msg">{data.error.childId}</p>}
         </p>
         <p className="flex flex-col gap-2 col-span-2">
@@ -58,6 +67,69 @@ export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
           <Input id="mobile" name="mobile" defaultValue={doctor != null ? (doctor.mobile?.slice(3) as string) : ''} />
           {data?.error != null && data?.error.mobile && <p className="error-msg">{data.error.mobile}</p>}
         </p>
+
+        {/* add social link button */}
+        <Button
+          type="button"
+          variant={'outline'}
+          className="border-dashed border-primary"
+          onClick={() => {
+            setSocialMediaLinks(() => {
+              return [...socialMediaLinks, { siteName: '', url: '' }];
+            });
+          }}
+        >
+          <Plus className="size-4 mr-2" />
+          <span>Social Media Links</span>
+        </Button>
+          
+        {/* social media link fields */}
+        <div className="social col-span-2 flex flex-col gap-3">
+          {socialMediaLinks &&
+            socialMediaLinks.map((_, index) => (
+              <div className="grid grid-cols-[0.3fr_0.67fr_2rem] gap-3 items-end" key={index}>
+                <p>
+                  <Label>Site Name</Label>
+                  <Input
+                    className="mt-2"
+                    onChange={(e) => {
+                      setSocialMediaLinks((prev: any[]) => {
+                        prev[index].siteName = e.target.value;
+                        return [...prev];
+                      });
+                    }}
+                  />
+                </p>
+                <p>
+                  <Label>Url</Label>
+                  <Input
+                    className="mt-2"
+                    onChange={(e) => {
+                      setSocialMediaLinks((prev: any[]) => {
+                        prev[index].url = e.target.value;
+                        return [...prev];
+                      });
+                    }}
+                  />
+                </p>
+                <Button
+                  type="button"
+                  variant={'outline'}
+                  size={'icon'}
+                  onClick={() => {
+                    setSocialMediaLinks(() => {
+                      return socialMediaLinks.filter((item, idx) => {
+                        return idx !== index;
+                      });
+                    });
+                  }}
+                >
+                  <X className="size-4" />
+                </Button>
+              </div>
+            ))}
+            <input type='hidden' name='socialLinks' value={JSON.stringify(socialMediaLinks)} />
+        </div>
         <SubmitButton />
       </form>
     </>
@@ -67,7 +139,7 @@ export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
 const SubmitButton = () => {
   const { pending } = useFormStatus();
   return (
-    <Button className='col-span-2' type="submit" disabled={pending}>
+    <Button className="col-span-2" type="submit" disabled={pending}>
       {pending ? `Saving...` : `Save`}
     </Button>
   );

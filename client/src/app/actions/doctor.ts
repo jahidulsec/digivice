@@ -19,6 +19,7 @@ const addSchema = z.object({
   ]),
   mobile: z.string().regex(phoneRegex, 'At least 11 numbers and startwith 01'),
   childId: z.coerce.number().min(1, 'At least a number'),
+  socialLinks: z.string().optional()
 });
 
 export const addDoctor = async (prevState: unknown, formData: FormData) => {
@@ -29,6 +30,7 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
   }
 
   const data = result.data;
+  const socialMediaLinks = data.socialLinks ? JSON.parse(data.socialLinks) : null
 
   const slug =
     Number(data.childId || 0) + '-' + data.fullName.replaceAll('.', '').split(' ').join('-').toLowerCase();
@@ -49,6 +51,11 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
         childId: data.childId,
         adminId: session?.id as string,
         slug: slug,
+        SocialMediaLinks: {
+          createMany: {
+            data: socialMediaLinks
+          }
+        }
       },
     });
 

@@ -10,6 +10,7 @@ import DoctorForm from './DoctorForm';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next-nprogress-bar';
 import { useDebounce } from '@/hooks/useDebounce';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function FilterSections() {
   const [addDoctor, setAddDoctor] = useState(false);
@@ -58,11 +59,13 @@ export default function FilterSections() {
 
       {/* add doctor dialog */}
       <Dialog open={addDoctor} onOpenChange={setAddDoctor}>
-        <DialogContent className="w-[75vw]">
-          <DialogHeader>
-            <DialogTitle className="text-sm">Add Doctor</DialogTitle>
-          </DialogHeader>
-          <DoctorForm onClose={() => setAddDoctor(false)} />
+        <DialogContent className="w-[75vw] p-0">
+          <ScrollArea className="max-h-[85vh] px-6 my-6">
+            <DialogHeader>
+              <DialogTitle className="text-sm">Add Doctor</DialogTitle>
+            </DialogHeader>
+            <DoctorForm onClose={() => setAddDoctor(false)} />
+          </ScrollArea>
         </DialogContent>
       </Dialog>
     </>
