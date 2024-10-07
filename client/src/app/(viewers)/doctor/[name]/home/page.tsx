@@ -32,45 +32,47 @@ export default async function DoctorHome({ params }: { params: { name: string } 
       <PageBackground />
 
       <PageCardSection>
-        <div className="button-container px-6 my-14 flex flex-col gap-14">
-          {folders.map((item) => {
-            if (item._count.folderContent == 0) return null 
-            return (
-              <Button
-                key={item.id}
-                name={item.name}
-                folderId={item.id.toString()}
-                src={
-                  item.name.toLowerCase() === 'video'
-                    ? videoIcon
-                    : item.name.toLowerCase() === 'infographic'
-                      ? infoIcon
-                      : item.name.toLowerCase() === 'pdf'
-                        ? pdfIcon
-                        : folderIcon
-                }
-              />
-            );
-          })}
-        </div>
+        <div className="flex flex-col justify-between gap-5 min-h-[50vh]">
+          <section className="button-container px-6 my-14 flex flex-col gap-14">
+            {folders.map((item) => {
+              if (item._count.folderContent == 0) return null;
+              return (
+                <Button
+                  key={item.id}
+                  name={item.name}
+                  folderId={item.id.toString()}
+                  src={
+                    item.name.toLowerCase() === 'video'
+                      ? videoIcon
+                      : item.name.toLowerCase() === 'infographic'
+                        ? infoIcon
+                        : item.name.toLowerCase() === 'pdf'
+                          ? pdfIcon
+                          : folderIcon
+                  }
+                />
+              );
+            })}
+          </section>
 
-        <section className="links flex items-center justify-center gap-3 mb-5">
-          {socialLinks.map((item) => (
-            <ButtonUi asChild variant={'outline'} size={'icon'} className="rounded-full">
-              <Link target="_blank" href={`//${item.url}/`} className="text-p1  border-p1">
-                {item.siteName.toLowerCase() === 'facebook' ? (
-                  <Facebook className="size-4" />
-                ) : item.siteName.toLowerCase() === 'instagram' ? (
-                  <Instagram className="size-4" />
-                ) : item.siteName.toLowerCase() === 'twiter' ? (
-                  <Twitter className="size-4" />
-                ) : (
-                  <LinkIcon className="size-4" />
-                )}
-              </Link>
-            </ButtonUi>
-          ))}
-        </section>
+          <section className="links flex items-center justify-center gap-3 mb-5">
+            {socialLinks.map((item) => (
+              <ButtonUi asChild variant={'outline'} size={'icon'} className="rounded-full">
+                <Link target="_blank" href={`//${item.url}/`} className="text-p1  border-p1">
+                  {item.siteName.toLowerCase() === 'facebook' ? (
+                    <Facebook className="size-4" />
+                  ) : item.siteName.toLowerCase() === 'instagram' ? (
+                    <Instagram className="size-4" />
+                  ) : item.siteName.toLowerCase() === 'twiter' ? (
+                    <Twitter className="size-4" />
+                  ) : (
+                    <LinkIcon className="size-4" />
+                  )}
+                </Link>
+              </ButtonUi>
+            ))}
+          </section>
+        </div>
       </PageCardSection>
     </section>
   );
