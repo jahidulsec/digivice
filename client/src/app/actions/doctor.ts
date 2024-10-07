@@ -175,3 +175,14 @@ export const deleteDoctor = async (id: number) => {
 
   revalidatePath('/admin');
 };
+
+
+export const deleteSocialMediaLink = async(id: number) => {
+  const doctorLinks = await db.socialMediaLinks.findUnique({ where: { id } });
+
+  if (doctorLinks == null) return;
+
+  await db.socialMediaLinks.delete({ where: { id } });
+
+  revalidatePath('/admin');
+}

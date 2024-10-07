@@ -1,6 +1,6 @@
 'use client';
 
-import { addDoctor, updateDoctor } from '@/app/actions/doctor';
+import { addDoctor, deleteSocialMediaLink, updateDoctor } from '@/app/actions/doctor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -84,7 +84,6 @@ export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
           <span>Social Media Links</span>
         </Button>
 
-        {socialMediaLinks != undefined ? JSON.stringify(socialMediaLinks) : ''}
         {/* social media link fields */}
         <div className="social col-span-2 flex flex-col gap-3">
           {socialMediaLinks &&
@@ -120,12 +119,15 @@ export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
                   type="button"
                   variant={'outline'}
                   size={'icon'}
-                  onClick={() => {
+                  onClick={async () => {
                     setSocialMediaLinks(() => {
-                      return socialMediaLinks.filter((item, idx) => {
+                      return socialMediaLinks.filter((_, idx) => {
                         return idx !== index;
                       });
                     });
+                    if (socialMediaLinks[index].id) {
+                      await deleteSocialMediaLink(socialMediaLinks[index].id);
+                    }
                   }}
                 >
                   <X className="size-4" />
