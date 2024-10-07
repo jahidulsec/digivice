@@ -34,7 +34,6 @@ export default async function DoctorHome({ params }: { params: { name: string } 
 
       <PageCardSection>
         <div className="button-container px-6 my-14 flex flex-col gap-14">
-          {JSON.stringify(folders)}
           {folders.map((item) => {
             if (item._count.folderContent == 0) return null 
             return (
@@ -59,7 +58,7 @@ export default async function DoctorHome({ params }: { params: { name: string } 
         <section className="links flex items-center justify-center gap-3 mb-5">
           {socialLinks.map((item) => (
             <ButtonUi asChild variant={'outline'} size={'icon'} className="rounded-full">
-              <Link target="_blank" href={`https://${item.url}`} className="text-p1  border-p1">
+              <Link target="_blank" href={`//${item.url}/`} className="text-p1  border-p1">
                 {item.siteName.toLowerCase() === 'facebook' ? (
                   <Facebook className="size-4" />
                 ) : item.siteName.toLowerCase() === 'instagram' ? (
