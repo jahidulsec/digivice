@@ -79,6 +79,7 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
     revalidatePath('/');
     revalidatePath('/admin');
     revalidatePath('/admin/' + doctor.slug);
+    revalidatePath('/doctor/' + doctor?.slug + '/home');
 
     return { error: null, success: 'Doctor has been added', toast: null };
   } catch (error) {
@@ -141,13 +142,13 @@ export const updateDoctor = async (id: number, prevState: unknown, formData: For
         },
         update: {
           siteName: socialMediaLinks[i].siteName,
-          url: socialMediaLinks[i].url
+          url: socialMediaLinks[i].url,
         },
         create: {
           siteName: socialMediaLinks[i].siteName,
           url: socialMediaLinks[i].url,
-          doctorId: id
-        }
+          doctorId: id,
+        },
       });
     }
 
@@ -174,15 +175,16 @@ export const deleteDoctor = async (id: number) => {
   await db.doctor.delete({ where: { id } });
 
   revalidatePath('/admin');
+  revalidatePath('/doctor/' + doctor?.slug + '/home');
 };
 
-
-export const deleteSocialMediaLink = async(id: number) => {
-  const doctorLinks = await db.socialMediaLinks.findUnique({ where: { id } });
+export const deleteSocialMediaLink = async (id: number) => {
+  const doctorLinks = await db.socialMediaLinks.findUnique({ where: { id }, include: { doctor: true } });
 
   if (doctorLinks == null) return;
 
   await db.socialMediaLinks.delete({ where: { id } });
 
   revalidatePath('/admin');
-}
+  revalidatePath('/doctor/' + doctorLinks.doctor?.slug + '/home');
+};
