@@ -1,4 +1,3 @@
-import { cache } from '@/lib/cache';
 import { Metadata } from 'next';
 import React from 'react';
 import db from '../../../../../../db/db';
