@@ -4,23 +4,24 @@ import { addDoctor, updateDoctor } from '@/app/actions/doctor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Doctor } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { Label } from '@radix-ui/react-label';
-import { Plus, X } from 'lucide-react';
-import React, { Fragment, useEffect, useState } from 'react';
+import { Dice1, Plus, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
 interface DoctorFromProps {
-  doctor?: Doctor;
+  doctor?: Prisma.DoctorGetPayload<{ include: { SocialMediaLinks: true } }>;
   onClose: () => void;
 }
 
 export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
   const [data, action] = useFormState(doctor == null ? addDoctor : updateDoctor.bind(null, doctor.id), null);
 
-  const [socialMediaLinks, setSocialMediaLinks] = useState<any[]>([]);
-  const [addFields, setAddFields] = useState(false);
+  const [socialMediaLinks, setSocialMediaLinks] = useState<any[]>(
+    doctor?.SocialMediaLinks ? doctor.SocialMediaLinks : []
+  );
 
   useEffect(() => {
     if (data?.toast != null) {
@@ -82,7 +83,8 @@ export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
           <Plus className="size-4 mr-2" />
           <span>Social Media Links</span>
         </Button>
-          
+
+        {socialMediaLinks != undefined ? JSON.stringify(socialMediaLinks) : ''}
         {/* social media link fields */}
         <div className="social col-span-2 flex flex-col gap-3">
           {socialMediaLinks &&
@@ -92,6 +94,7 @@ export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
                   <Label>Site Name</Label>
                   <Input
                     className="mt-2"
+                    value={socialMediaLinks[index].siteName}
                     onChange={(e) => {
                       setSocialMediaLinks((prev: any[]) => {
                         prev[index].siteName = e.target.value;
@@ -104,6 +107,7 @@ export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
                   <Label>Url</Label>
                   <Input
                     className="mt-2"
+                    value={socialMediaLinks[index].url}
                     onChange={(e) => {
                       setSocialMediaLinks((prev: any[]) => {
                         prev[index].url = e.target.value;
@@ -128,7 +132,7 @@ export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
                 </Button>
               </div>
             ))}
-            <input type='hidden' name='socialLinks' value={JSON.stringify(socialMediaLinks)} />
+          <input type="hidden" name="socialLinks" value={JSON.stringify(socialMediaLinks)} />
         </div>
         <SubmitButton />
       </form>

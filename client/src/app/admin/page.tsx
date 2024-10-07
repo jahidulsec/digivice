@@ -20,7 +20,9 @@ export default async function DashboardHomePage({ searchParams }: { searchParams
   );
 }
 
-export type DoctorTableProps = Prisma.DoctorGetPayload<{ include: { _count: { select: { Viewers: true } } } }>;
+export type DoctorTableProps = Prisma.DoctorGetPayload<{
+  include: { _count: { select: { Viewers: true } }; SocialMediaLinks: true };
+}>;
 
 async function DataTable({ searchParams }: { searchParams: { q: string; p: string } }) {
   let count;
@@ -39,6 +41,7 @@ async function DataTable({ searchParams }: { searchParams: { q: string; p: strin
               Viewers: true,
             },
           },
+          SocialMediaLinks: true,
         },
         orderBy: { createdAt: 'desc' },
         take: limit,
@@ -59,6 +62,7 @@ async function DataTable({ searchParams }: { searchParams: { q: string; p: strin
               Viewers: true,
             },
           },
+          SocialMediaLinks: true,
         },
         orderBy: { createdAt: 'desc' },
         take: limit,

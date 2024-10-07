@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Tooltips from '@/components/ui/Tooltips';
-import { Doctor } from '@prisma/client';
+import { Doctor, Prisma } from '@prisma/client';
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { Download, Edit, Folder, MessageSquareOff, QrCode, Trash } from 'lucide-react';
 import Link from 'next/link';
@@ -27,6 +27,8 @@ import { DoctorTableProps } from '@/app/admin/page';
 import { formatNumber } from '@/lib/formatters';
 import { format } from 'date-fns';
 import { ScrollArea } from '@/components/ui/scroll-area';
+
+export type DoctorProps = Prisma.DoctorGetPayload<{ include: { SocialMediaLinks: true } }>
 
 function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
   const [editDoctor, setEditDoctor] = useState<any>();
@@ -87,6 +89,8 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
     link.click();
     document.body.removeChild(link);
   };
+
+
 
   return (
     <>
@@ -187,7 +191,7 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
             <DialogHeader>
               <DialogTitle className="text-sm font-cb">Edit Doctor</DialogTitle>
             </DialogHeader>
-            <DoctorForm doctor={editDoctor as Doctor} onClose={() => setEditDoctor(false)} />
+            <DoctorForm doctor={editDoctor as DoctorProps} onClose={() => setEditDoctor(false)} />
           </ScrollArea>
         </DialogContent>
       </Dialog>

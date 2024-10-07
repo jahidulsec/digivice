@@ -5,21 +5,18 @@ import db from '../../../db/db';
 import { notFound } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { getUser } from '@/lib/dal';
-import { Prisma } from '@prisma/client';
+import { Prisma, SocialMediaLinks } from '@prisma/client';
 import fs from 'fs/promises';
 
-const phoneRegex = new RegExp(/^01(\d{9})$/)
+const phoneRegex = new RegExp(/^01(\d{9})$/);
 
 const addSchema = z.object({
   fullName: z.string().min(1),
   designation: z.string(),
-  email: z.union([
-    z.literal(''),
-    z.string().email()
-  ]),
+  email: z.union([z.literal(''), z.string().email()]),
   mobile: z.string().regex(phoneRegex, 'At least 11 numbers and startwith 01'),
   childId: z.coerce.number().min(1, 'At least a number'),
-  socialLinks: z.string().optional()
+  socialLinks: z.string().optional(),
 });
 
 export const addDoctor = async (prevState: unknown, formData: FormData) => {
@@ -30,10 +27,9 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
   }
 
   const data = result.data;
-  const socialMediaLinks = data.socialLinks ? JSON.parse(data.socialLinks) : null
+  const socialMediaLinks = data.socialLinks ? JSON.parse(data.socialLinks) : null;
 
-  const slug =
-    Number(data.childId || 0) + '-' + data.fullName.replaceAll('.', '').split(' ').join('-').toLowerCase();
+  const slug = Number(data.childId || 0) + '-' + data.fullName.replaceAll('.', '').split(' ').join('-').toLowerCase();
 
   try {
     const session = await getUser();
@@ -47,15 +43,15 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
         fullName: data.fullName,
         designation: data.designation,
         email: data.email,
-        mobile: '+88'+ data.mobile,
+        mobile: '+88' + data.mobile,
         childId: data.childId,
         adminId: session?.id as string,
         slug: slug,
         SocialMediaLinks: {
           createMany: {
-            data: socialMediaLinks
-          }
-        }
+            data: socialMediaLinks,
+          },
+        },
       },
     });
 
@@ -65,20 +61,20 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
         {
           name: 'Video',
           doctorId: doctor.id,
-          adminId: session?.id as string, 
+          adminId: session?.id as string,
         },
         {
           name: 'Infographic',
           doctorId: doctor.id,
-          adminId: session?.id as string, 
+          adminId: session?.id as string,
         },
         {
           name: 'PDF',
           doctorId: doctor.id,
-          adminId: session?.id as string, 
+          adminId: session?.id as string,
         },
-      ]
-    })
+      ],
+    });
 
     revalidatePath('/');
     revalidatePath('/admin');
@@ -86,8 +82,8 @@ export const addDoctor = async (prevState: unknown, formData: FormData) => {
 
     return { error: null, success: 'Doctor has been added', toast: null };
   } catch (error) {
-    if(error instanceof Prisma.PrismaClientKnownRequestError) {
-      if(error.code === 'P2002') {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
         return { error: null, success: null, toast: 'This ID already exist' };
       }
     }
@@ -110,6 +106,7 @@ export const updateDoctor = async (id: number, prevState: unknown, formData: For
   }
 
   const data = result.data;
+  const socialMediaLinks: SocialMediaLinks[] = data.socialLinks ? JSON.parse(data.socialLinks) : null;
 
   const slug = data.childId + '-' + data.fullName.replaceAll('.', '').split(' ').join('-').toLowerCase();
 
@@ -131,19 +128,36 @@ export const updateDoctor = async (id: number, prevState: unknown, formData: For
         designation: data.designation,
         email: data.email,
         childId: data.childId,
-        mobile: "+88" +data.mobile,
+        mobile: '+88' + data.mobile,
         adminId: session?.id as string,
         slug: slug,
       },
     });
+
+    for (const i in socialMediaLinks) {
+      await db.socialMediaLinks.upsert({
+        where: {
+          id: socialMediaLinks[i]?.id || 0,
+        },
+        update: {
+          siteName: socialMediaLinks[i].siteName,
+          url: socialMediaLinks[i].url
+        },
+        create: {
+          siteName: socialMediaLinks[i].siteName,
+          url: socialMediaLinks[i].url,
+          doctorId: id
+        }
+      });
+    }
 
     revalidatePath('/');
     revalidatePath('/admin');
 
     return { error: null, success: 'Doctor has been updated', toast: null };
   } catch (error) {
-    if(error instanceof Prisma.PrismaClientKnownRequestError) {
-      if(error.code === 'P2002') {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
         return { error: null, success: null, toast: 'This ID already exist' };
       }
     }
@@ -156,7 +170,6 @@ export const deleteDoctor = async (id: number) => {
   const doctor = await db.doctor.findUnique({ where: { id } });
 
   if (doctor == null) return notFound();
-
 
   await db.doctor.delete({ where: { id } });
 
