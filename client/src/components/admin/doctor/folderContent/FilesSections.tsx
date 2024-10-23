@@ -26,11 +26,23 @@ import {
 import { toast } from 'sonner';
 import { deleteFile } from '@/app/actions/files';
 
+import { Viewer, Worker } from '@react-pdf-viewer/core';
+import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+import { thumbnailPlugin } from '@react-pdf-viewer/thumbnail';
+
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+
 export default function FilesSections({ contents }: { contents: FolderContent[] }) {
   const [preview, setPreview] = useState<any>();
   const [delFile, setDelFile] = useState<any>();
 
   const [isPending, startTransition] = useTransition();
+
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
+  const thumbnailPluginInstance = thumbnailPlugin();
+  const { Cover } = thumbnailPluginInstance;
+
 
   if (contents.length == 0) {
     return (
@@ -80,19 +92,31 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
             </div>
             {item.filePath.split('.').pop() == 'mp4' ? (
               <div className="w-full aspect-video relative">
-                <video poster={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item?.thumbnailPath}`} src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`} controls />
+                <video
+                  poster={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item?.thumbnailPath}`}
+                  src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`}
+                  controls
+                />
               </div>
             ) : item.filePath.split('.').pop() == 'pdf' ? (
               <>
-                <object
-                  type="application/pdf"
-                  data={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`}
-                  className="pdf-thumbnail w-full overflow-hidden"
-                ></object>
+                <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
+                  <div className="w-full aspect-video overflow-hidden">
+                    <Viewer
+                      fileUrl={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`}
+                      plugins={[thumbnailPluginInstance]}
+                    />
+                  </div>
+                </Worker>
               </>
             ) : (
               <div className="w-full aspect-video relative">
-                <Image src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`} alt={item.name} fill objectFit="cover" />
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`}
+                  alt={item.name}
+                  fill
+                  objectFit="cover"
+                />
               </div>
             )}
           </div>
@@ -110,16 +134,24 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
               <video src={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + '/' + preview?.filePath} controls />
             </div>
           ) : preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'pdf' ? (
-            <div className="h-[70vh]">
-              <object
-                type="application/pdf"
-                data={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + '/' + preview?.filePath}
-                className="pdf-thumbnail w-full h-full overflow-hidden"
-              ></object>
+            <div className="h-[70vh] preview">
+              <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
+                <div className="w-full h-full overflow-hidden">
+                  <Viewer
+                    plugins={[defaultLayoutPluginInstance]}
+                    fileUrl={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + '/' + preview?.filePath}
+                  />
+                </div>
+              </Worker>
             </div>
           ) : (
             <div className="w-full relative flex justify-center items-center">
-              <Image src={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + '/' + preview?.filePath} alt={preview?.name} width={500} height={500} />
+              <Image
+                src={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + '/' + preview?.filePath}
+                alt={preview?.name}
+                width={500}
+                height={500}
+              />
             </div>
           )}
         </DialogContent>

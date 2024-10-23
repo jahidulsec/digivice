@@ -113,3 +113,13 @@
   }
 
 }
+
+.rpv-core__inner-pages {
+  overflow: hidden !important;
+}
+
+
+.preview .rpv-core__inner-pages {
+  overflow: auto !important;
+}
+

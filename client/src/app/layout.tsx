@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: 'Digital Doctor Advice Room',
 };
 
+export const dynamic = 'force-dynamic' 
+
 export default function RootLayout({
   children,
 }: Readonly<{
