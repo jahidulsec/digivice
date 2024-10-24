@@ -41,7 +41,6 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
 
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   const thumbnailPluginInstance = thumbnailPlugin();
-  const { Cover } = thumbnailPluginInstance;
 
 
   if (contents.length == 0) {

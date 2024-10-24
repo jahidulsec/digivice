@@ -47,14 +47,14 @@ export default function FilesForm({ onClick }: FilesFormProps) {
               setFileType(e.target.files[0].type as string);
             }
           }}
-          accept="image/jpeg, image/jpg, image/png, video/mp4, application/pdf"
+          accept="image/*, video/*, application/pdf"
         />
         {data?.error && <p className="error-msg">{data.error}</p>}
 
         <input type="hidden" name="folderId" value={params.id} />
         <input type="hidden" name="doctorSlug" value={params.slug} />
       </p>
-      {fileType === 'video/mp4' && (
+      {fileType !== 'application/pdf' && (
         <p>
           <Label htmlFor="thumbnail">Select Thumbnail</Label>
           <Input
@@ -62,7 +62,7 @@ export default function FilesForm({ onClick }: FilesFormProps) {
             name="thumbnail"
             className="mt-2"
             type="file"
-            accept="image/jpeg, image/jpg, image/png"
+            accept="image/*"
           />
         </p>
       )}

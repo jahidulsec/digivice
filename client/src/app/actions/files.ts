@@ -20,6 +20,17 @@ export const addFiles = async (prevState: unknown, formData: FormData) => {
       return { error: 'Please select a file', success: null, toast: null };
     }
 
+    const validFileType = ["image/jpg", "image/jpeg", "image/png",  "video/mp4", "application/pdf"]
+    const validThumbnailType = ["image/jpg", "image/jpeg", "image/png"]
+
+    if(!validFileType.includes(file.type)) {
+      return { toast: `This ${file.name.split('.').pop()} is not acceptable`, success: null, error: null };
+    }
+
+    if( thumbnail.size !== 0 && !validThumbnailType.includes(thumbnail.type)) {
+      return { toast: `Thumbail should be image type`, success: null, error: null };
+    }
+
     const folder = await db.folder.findUnique({ where: { id: Number(folderId) } });
 
     if (folder == null) {
