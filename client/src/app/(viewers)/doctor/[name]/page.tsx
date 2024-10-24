@@ -38,10 +38,10 @@ export default async function DoctorPage({ params }: { params: { name: string } 
 
       {/* advice logo */}
       <div className="absolute top-9 left-10 ">
-        <p className='flex flex-col items-end'>
+        <div className='flex flex-col items-end'>
           <h3 className="font-car text-3xl text-p1">Advice</h3>
           <h4 className="font-ar -mt-4 text-md text-muted-foreground">from</h4>
-        </p>
+        </div>
       </div>
 
       {/* content */}

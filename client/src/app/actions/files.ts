@@ -27,7 +27,7 @@ export const addFiles = async (prevState: unknown, formData: FormData) => {
       return { toast: `This ${file.name.split('.').pop()} is not acceptable`, success: null, error: null };
     }
 
-    if( thumbnail.size !== 0 && !validThumbnailType.includes(thumbnail.type)) {
+    if( thumbnail && thumbnail?.size !== 0 && !validThumbnailType.includes(thumbnail.type)) {
       return { toast: `Thumbail should be image type`, success: null, error: null };
     }
 

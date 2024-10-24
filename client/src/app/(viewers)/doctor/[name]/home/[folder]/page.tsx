@@ -51,11 +51,4 @@ async function FolderPage({ params }: { params: { name: string; folder: string }
 
 export default FolderPage;
 
-// {folderContent.length > 0.0 ? (
-//   <ContentSection folderContent={folderContent} />
-// ) : (
-//   <div className="flex justify-center items-center flex-col py-20 text-p1/50 pointer-events-none">
-//     <MessageSquareOff className="size-20" />
-//     <span className="text-[11px]">No data</span>
-//   </div>
-// )}
+

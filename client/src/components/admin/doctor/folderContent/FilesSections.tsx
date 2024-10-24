@@ -111,7 +111,7 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
             ) : (
               <div className="w-full aspect-video relative">
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`}
+                  src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.thumbnailPath || item.filePath}`}
                   alt={item.name}
                   fill
                   objectFit="cover"

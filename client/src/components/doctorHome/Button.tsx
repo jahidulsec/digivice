@@ -31,7 +31,7 @@ function Button({ name, folderId, src, onClick, className, ...props }: ButtonPro
         {...props}
       >
         <div className="icon absolute -left-1 bg-p1 pl-4 pr-6 py-1.5 rounded">
-          <div className="relative w-[1.325rem] aspect-square text-white">
+          <div className="relative w-[1.325rem] min-w-[1rem] aspect-square text-white">
             <Image src={src} alt="video icon" fill objectFit="contain" />
           </div>
         </div>
