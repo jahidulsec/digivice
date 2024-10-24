@@ -27,7 +27,7 @@ export default async function DoctorHome({ params }: { params: { name: string } 
   ]);
 
   return (
-    <section className="relative  min-h-screen">
+    <section className="relative  min-h-[100dvh]">
       {/* background */}
       <PageBackground />
 

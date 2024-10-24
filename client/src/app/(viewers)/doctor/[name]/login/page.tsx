@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <section className="relative  min-h-screen">
+    <section className="relative  min-h-[100dvh]">
       {/* background */}
       <PageBackground />
 

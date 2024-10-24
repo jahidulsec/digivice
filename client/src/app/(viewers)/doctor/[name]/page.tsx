@@ -28,7 +28,7 @@ export default async function DoctorPage({ params }: { params: { name: string } 
 
 
   return (
-    <section className="relative h-screen">
+    <section className="relative h-[100dvh]">
       <Background />
 
       {/* top half q */}

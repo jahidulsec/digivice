@@ -27,7 +27,7 @@ async function FolderPage({ params }: { params: { name: string; folder: string }
 
   return (
     <>
-      <section className="relative  min-h-screen">
+      <section className="relative  min-h-[100dvh]">
         {/* background */}
         <PageBackground />
 
