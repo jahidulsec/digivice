@@ -19,6 +19,9 @@ export default function FilesForm({ onClick }: FilesFormProps) {
 
   const [data, action] = useFormState(addFiles, null);
 
+  const validFileType = ["image/jpg", "image/jpeg", "image/png",  "video/mp4", "application/pdf"]
+
+
   useEffect(() => {
     if (data?.toast) {
       toast.error(data.toast);
@@ -54,7 +57,7 @@ export default function FilesForm({ onClick }: FilesFormProps) {
         <input type="hidden" name="folderId" value={params.id} />
         <input type="hidden" name="doctorSlug" value={params.slug} />
       </p>
-      {fileType !== 'application/pdf' && (
+      {validFileType.includes(fileType) && (
         <p>
           <Label htmlFor="thumbnail">Select Thumbnail</Label>
           <Input
