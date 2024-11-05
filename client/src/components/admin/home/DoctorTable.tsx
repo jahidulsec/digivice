@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Tooltips from '@/components/ui/Tooltips';
-import { Doctor, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { Download, Edit, Folder, MessageSquareOff, QrCode, Trash } from 'lucide-react';
 import Link from 'next/link';
@@ -222,28 +222,30 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* update doctor dialog */}
+      {/* doctor qr code */}
       <Dialog open={previewQR} onOpenChange={setPreviewQR}>
         <DialogContent className="min-w-[18rem] md:max-w-[550px] aspect-square">
           <DialogHeader>
             <DialogTitle className="text-sm font-cb">QR Code</DialogTitle>
           </DialogHeader>
 
-          <div className="flex justify-center items-center sm:hidden">
+          <div className="justify-center items-center hidden">
             <QRCode
               id="qrCodeEl"
-              size={220}
+              size={1500}
+              includeMargin
               value={`${process.env.NEXT_PUBLIC_DOMAIN_NAME}/doctor/${previewQR != undefined ? previewQR.slug : ''}`}
             />
           </div>
 
-          <div className="justify-center items-center hidden sm:flex">
+          <div className="flex justify-center items-center">
             <QRCode
-              id="qrCodeEl"
-              size={500}
+              size={320}
               value={`${process.env.NEXT_PUBLIC_DOMAIN_NAME}/doctor/${previewQR != undefined ? previewQR.slug : ''}`}
             />
           </div>
+
+          
           <Button type="button" onClick={handleQrDownload}>
             Download
           </Button>
