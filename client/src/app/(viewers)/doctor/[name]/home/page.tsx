@@ -27,12 +27,12 @@ export default async function DoctorHome({ params }: { params: { name: string } 
   ]);
 
   return (
-    <section className="relative  min-h-[100dvh]">
+    <section className="relative min-h-[80%]">
       {/* background */}
       <PageBackground />
 
       <PageCardSection>
-        <div className="flex flex-col justify-between gap-5 min-h-[50vh]">
+        <div className="flex flex-col justify-between gap-5 min-h-[50%]">
           <section className="button-container px-6 my-14 flex flex-col gap-14">
             {folders.map((item) => {
               if (item._count.folderContent == 0) return null;
