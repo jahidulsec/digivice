@@ -57,8 +57,7 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
                   <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
                     <div className="w-full aspect-video overflow-hidden">
                       <Viewer
-                        // fileUrl={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${item.filePath}`}
-                        fileUrl={`http://116.68.200.97:6053/assets//assets/1-dr-jane/3c054982-1cb2-4166-9888-d683b89d6c68-uti.mp4`}
+                        fileUrl={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${item.filePath}`}
                         plugins={[thumbnailPluginInstance]}
                       />
                     </div>
