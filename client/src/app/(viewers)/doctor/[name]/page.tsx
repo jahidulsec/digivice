@@ -50,7 +50,7 @@ export default async function DoctorPage({ params }: { params: { name: string } 
       <div className="content relative h-full flex justify-center items-end flex-col">
         <div className="relative flex justify-center items-end flex-col text-p1 pr-10">
           <div className="bg-p1 w-5 h-12 absolute right-0"></div>
-          <h1 className="font-cb text-2xl">{doctor?.fullName}’s</h1>
+          <h1 className="font-cb text-2xl">{doctor?.fullName}</h1>
           <h2 className="font-cr font-light">{doctor?.designation || 'Digital Advice Room'}</h2>
         </div>
 

@@ -18,16 +18,12 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   const thumbnailPluginInstance = thumbnailPlugin();
 
-
-  React.useEffect(() => {
-    console.log(preview)
-  }, [preview])
-
   return (
     <>
       <div className=" cursor-pointer md:grid-cols-2 lg:grid-cols-3 grid grid-cols-1 justify-center gap-2">
         {folderContent.map((item) => (
           <div className=" border rounded-md p-5 flex flex-col gap-2 justify-between bg-white" key={item.id}>
+            
             <div className="header flex gap-2 mb-2 items-start text-pink-700 min-w-10">
               {item.filePath.split('.').pop() == 'mp4' ? (
                 <>
@@ -48,8 +44,8 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
             {item.filePath.split('.').pop() == 'mp4' ? (
               <div className="w-full aspect-video relative cursor-pointer" onClick={() => setPreview(item)}>
                 <video
-                  poster={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.thumbnailPath}`}
-                  src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`}
+                  poster={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${item.thumbnailPath}`}
+                  src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${item.filePath}`}
                 />
                 <div className="icon p-5 bg-pink-100 rounded-full absolute top-[50%] -translate-x-[50%] -translate-y-[50%] left-[50%]">
                   <Play className="size-6 fill-pink-500 stroke-pink-500" />
@@ -61,7 +57,7 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
                   <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
                     <div className="w-full aspect-video overflow-hidden">
                       <Viewer
-                        fileUrl={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`}
+                        fileUrl={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${item.filePath}`}
                         plugins={[thumbnailPluginInstance]}
                       />
                     </div>
@@ -71,7 +67,7 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
             ) : (
               <div className="w-full aspect-video relative" onClick={() => setPreview(item)}>
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.thumbnailPath || item.filePath}`}
+                  src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${item.thumbnailPath || item.filePath}`}
                   alt={item.name}
                   fill
                   objectFit="cover"
@@ -89,9 +85,10 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
           </DialogHeader>
           {preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'mp4' ? (
             <div className="w-full aspect-video relative">
+              {preview.f}
               <video
-                poster={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${preview?.thumbnailPath}`}
-                src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${preview?.filePath}`}
+                poster={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${preview?.thumbnailPath}`}
+                src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${preview?.filePath}`}
                 controls
               />
             </div>
