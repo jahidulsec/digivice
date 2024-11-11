@@ -6,7 +6,7 @@ function PageBackground() {
   return (
     <>
          {/* bg image top */}
-      <div className="fixed right-0">
+      <div className="fixed right-0 mix-blend-multiply">
         <Image src={homeBgTop} alt="home-bg" width={400} height={400} />
       </div>
     </>

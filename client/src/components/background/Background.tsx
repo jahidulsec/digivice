@@ -6,12 +6,12 @@ function Background() {
   return (
     <>
         {/* bg image top */}
-      <div className="fixed right-0">
+      <div className="fixed right-0 mix-blend-multiply">
         <Image src={homeBgTop} alt="home-bg" width={400} height={400} />
       </div>
 
       {/* bg image bottom */}
-      <div className="fixed bottom-0">
+      <div className="fixed bottom-0 mix-blend-multiply">
         <Image src={homeBgBottom} alt="home-bg" width={307} height={280} />
       </div>
     </>

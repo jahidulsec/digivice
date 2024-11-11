@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: 'Digital Doctor Advice Room',
 };
 
-export const dynamic = 'force-dynamic' 
+export const dynamic = 'force-dynamic';
 
 export default function RootLayout({
   children,
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} relative antialiased bg-background`}>
+      <body className={`${inter.className} relative antialiased bg-white`}>
         <NextProgressProvider>
           {children}
           <Toaster position="top-right" richColors closeButton />
