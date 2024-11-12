@@ -10,18 +10,20 @@ import infoIcon from './icons/infoIcon.svg';
 import pdfIcon from './icons/pdfIcon.svg';
 import videoIcon from './icons/videoIcon.svg';
 import folderIcon from './icons/folderIcon.svg';
+import bgw from './background/bgw.svg';
 
-export { 
-    homeBg, 
-    pageBg, 
-    welcome, 
-    homeBgTop, 
-    homeBgBottom, 
-    loginBg, 
-    halfQ, 
-    bgQ, 
-    infoIcon, 
-    pdfIcon, 
-    videoIcon,
-    folderIcon, 
+export {
+  homeBg,
+  pageBg,
+  welcome,
+  homeBgTop,
+  homeBgBottom,
+  loginBg,
+  halfQ,
+  bgQ,
+  infoIcon,
+  pdfIcon,
+  videoIcon,
+  folderIcon,
+  bgw,
 };

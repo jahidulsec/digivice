@@ -29,6 +29,7 @@ export default async function DoctorPage({ params }: { params: { name: string } 
     },
   });
 
+
   return (
     <section className="relative h-[100dvh] min-h-[100%]">
       <Background />
