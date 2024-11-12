@@ -8,8 +8,8 @@ export default function layout({
 }>) {
   return (
     <main className="relative w-full">
-      <div className="absolute w-full">
-        <div className="relative min-w-[100%] min-h-screen bg-red-100 object-fill">
+      <div className="absolute w-full -z-[1]">
+        <div className="relative min-w-[100%] min-h-screen">
           <Image src={bgw} fill alt="bg white" objectFit='cover' />
         </div>
       </div>
