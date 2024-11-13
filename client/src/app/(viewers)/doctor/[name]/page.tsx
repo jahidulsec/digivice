@@ -34,7 +34,7 @@ export default async function DoctorPage({ params }: { params: { name: string } 
       <Background />
 
       {/* top half q */}
-      <div className="fixed top-0 left-0 opacity-[8%]">
+      <div className="fixed top-0 left-0 opacity-[8%] dark:opacity-45">
         <Image src={halfQ} alt="welcom" width={500} height={500} className="w-[12rem]" />
       </div>
 
