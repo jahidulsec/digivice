@@ -84,11 +84,12 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
             <DialogTitle className="text-sm font-cb">Preview</DialogTitle>
           </DialogHeader>
           {preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'mp4' ? (
-            <div className="w-full aspect-video relative">
+            <div className="w-full aspect-video relative overflow-hidden">
               <video
                 poster={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${preview?.thumbnailPath}`}
                 src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${preview?.filePath}`}
                 controls
+                className='max-w-full w-full aspect-video'
               />
             </div>
           ) : preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'pdf' ? (
