@@ -130,7 +130,7 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
           </DialogHeader>
           {preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'mp4' ? (
             <div className="w-full aspect-video relative">
-              <video src={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + '/' + preview?.filePath} controls />
+              <video poster={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME  + preview?.thumbnailPath} src={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME  + preview?.filePath} controls />
             </div>
           ) : preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'pdf' ? (
             <div className="h-[70vh] preview">
@@ -138,7 +138,7 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
                 <div className="w-full h-full overflow-hidden">
                   <Viewer
                     plugins={[defaultLayoutPluginInstance]}
-                    fileUrl={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + '/' + preview?.filePath}
+                    fileUrl={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + preview?.filePath}
                   />
                 </div>
               </Worker>
@@ -146,7 +146,7 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
           ) : (
             <div className="w-full relative flex justify-center items-center">
               <Image
-                src={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + '/' + preview?.filePath}
+                src={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + preview?.filePath}
                 alt={preview?.name}
                 width={500}
                 height={500}

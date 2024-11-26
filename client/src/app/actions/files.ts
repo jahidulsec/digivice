@@ -7,8 +7,6 @@ import { revalidatePath } from 'next/cache';
 import { getUser } from '@/lib/dal';
 import path from 'path';
 
-
-
 export const addFiles = async (prevState: unknown, formData: FormData) => {
   try {
     const file = formData.get('file') as File;
@@ -21,14 +19,22 @@ export const addFiles = async (prevState: unknown, formData: FormData) => {
       return { error: 'Please select a file', success: null, toast: null };
     }
 
-    const validFileType = ["image/jpg", "image/jpeg", "image/png",  "video/mp4", "application/pdf"]
-    const validThumbnailType = ["image/jpg", "image/jpeg", "image/png"]
+    const validFileType = [
+      'image/jpg',
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+      'image/avif',
+      'video/mp4',
+      'application/pdf',
+    ];
+    const validThumbnailType = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp', 'image/avif'];
 
-    if(!validFileType.includes(file.type)) {
+    if (!validFileType.includes(file.type)) {
       return { toast: `This ${file.name.split('.').pop()} is not acceptable`, success: null, error: null };
     }
 
-    if( thumbnail && thumbnail?.size !== 0 && !validThumbnailType.includes(thumbnail.type)) {
+    if (thumbnail && thumbnail?.size !== 0 && !validThumbnailType.includes(thumbnail.type)) {
       return { toast: `Thumbail should be image type`, success: null, error: null };
     }
 
@@ -52,26 +58,25 @@ export const addFiles = async (prevState: unknown, formData: FormData) => {
 
     fs.mkdir(`../public/assets/${doctorSlug}`, { recursive: true });
 
-
     const filePath = `/assets/${doctorSlug}/${crypto.randomUUID()}-${file.name}`;
-      await fs.writeFile(`../public${filePath}`, Buffer.from(await file.arrayBuffer()));
+    await fs.writeFile(`../public${filePath}`, Buffer.from(await file.arrayBuffer()));
 
-    let thumbnailPath = ''
+    let thumbnailPath = '';
 
-    if(thumbnail && thumbnail.size != 0) {
+    if (thumbnail && thumbnail.size != 0) {
       thumbnailPath = `/assets/${doctorSlug}/${crypto.randomUUID()}-${thumbnail.name}`;
       await fs.writeFile(`../public${thumbnailPath}`, Buffer.from(await thumbnail.arrayBuffer()));
     }
 
-      await db.folderContent.create({
-        data: {
-          name: name || file.name,
-          filePath: filePath,
-          thumbnailPath: thumbnailPath,
-          folderId: Number(folderId),
-          adminId: session?.id as string,
-        },
-      });
+    await db.folderContent.create({
+      data: {
+        name: name || file.name,
+        filePath: filePath,
+        thumbnailPath: thumbnailPath,
+        folderId: Number(folderId),
+        adminId: session?.id as string,
+      },
+    });
 
     revalidatePath(`/admin/doctor/${doctorSlug}/${folderId}`);
     revalidatePath(`/doctor/${doctorSlug}/home/${folderId}`);
