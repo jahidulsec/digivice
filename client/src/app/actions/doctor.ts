@@ -141,11 +141,9 @@ export const updateDoctor = async (id: number, prevState: unknown, formData: For
           id: socialMediaLinks[i]?.id || 0,
         },
         update: {
-          siteName: socialMediaLinks[i].siteName,
           url: socialMediaLinks[i].url,
         },
         create: {
-          siteName: socialMediaLinks[i].siteName,
           url: socialMediaLinks[i].url,
           doctorId: id,
         },

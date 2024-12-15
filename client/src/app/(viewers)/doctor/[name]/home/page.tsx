@@ -7,7 +7,7 @@ import Button from '@/components/doctorHome/Button';
 import { Button as ButtonUi } from '@/components/ui/button';
 import { folderIcon, infoIcon, pdfIcon, videoIcon } from '@/assets';
 import Link from 'next/link';
-import { Facebook, Instagram, Twitter, Link as LinkIcon } from 'lucide-react';
+import { Facebook, Instagram, Twitter, Link as LinkIcon, Youtube } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Home - Digivice',
@@ -57,18 +57,18 @@ export default async function DoctorHome({ params }: { params: { name: string } 
 
           <section className="links flex items-center justify-center gap-3 mb-5">
             {socialLinks.map((item) => (
-              <ButtonUi key={item.id} asChild variant={'outline'} size={'icon'} className="rounded-full">
-                <Link target="_blank"
-                 href={{pathname: item.url}} 
-                 className="text-p1  border-p1">
-                  {item.siteName.toLowerCase() === 'facebook' ? (
-                    <Facebook className="size-4" />
-                  ) : item.siteName.toLowerCase() === 'instagram' ? (
-                    <Instagram className="size-4" />
-                  ) : item.siteName.toLowerCase() === 'twiter' ? (
-                    <Twitter className="size-4" />
+              <ButtonUi key={item.id} asChild variant={'outline'} size={'icon'} className="rounded-full h-12 w-12">
+                <Link target="_blank" href={{ pathname: item.url }} className="text-p1  border-p1">
+                  {item.url.includes('facebook') || item.url.includes('fb') ? (
+                    <Facebook className="size-7" />
+                  ) : item.url.includes('instagram') ? (
+                    <Instagram className="size-7" />
+                  ) : item.url.includes('twitter') ? (
+                    <Twitter className="size-7" />
+                  ) : item.url.includes('youtube') || item.url.includes('youtu.be') ? (
+                    <Youtube className="size-7" />
                   ) : (
-                    <LinkIcon className="size-4" />
+                    <LinkIcon className="size-7" />
                   )}
                 </Link>
               </ButtonUi>

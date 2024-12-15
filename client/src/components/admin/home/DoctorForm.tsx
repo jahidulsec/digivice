@@ -76,7 +76,7 @@ export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
           className="border-dashed border-primary"
           onClick={() => {
             setSocialMediaLinks(() => {
-              return [...socialMediaLinks, { siteName: '', url: '' }];
+              return [...socialMediaLinks, { url: '' }];
             });
           }}
         >
@@ -88,8 +88,8 @@ export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
         <div className="social col-span-2 flex flex-col gap-3">
           {socialMediaLinks &&
             socialMediaLinks.map((_, index) => (
-              <div className="grid grid-cols-[0.3fr_0.67fr_2rem] gap-3 items-end" key={index}>
-                <p>
+              <div className="grid grid-cols-[0.97fr_2rem] gap-3 items-end" key={index}>
+                {/* <p>
                   <Label>Site Name</Label>
                   <Input
                     className="mt-2"
@@ -101,7 +101,7 @@ export default function DoctorForm({ onClose, doctor }: DoctorFromProps) {
                       });
                     }}
                   />
-                </p>
+                </p> */}
                 <p>
                   <Label>Url</Label>
                   <Input

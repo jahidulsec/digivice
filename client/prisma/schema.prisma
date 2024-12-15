@@ -46,7 +46,7 @@ model Doctor {
 
 model SocialMediaLinks {
   id       Int    @id @default(autoincrement())
-  siteName String
+  // siteName String
   url      String
   doctorId Int?
 
