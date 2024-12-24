@@ -21,6 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content" />
+      </head>
       <body className={`${inter.className} relative antialiased bg-background`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <NextProgressProvider>
