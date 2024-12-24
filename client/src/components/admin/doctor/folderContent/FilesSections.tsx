@@ -146,7 +146,7 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
           ) : (
             <div className="w-full relative flex justify-center items-center">
               <Image
-                src={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + preview?.filePath}
+                src={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + '/' + preview?.filePath}
                 alt={preview?.name}
                 width={500}
                 height={500}
