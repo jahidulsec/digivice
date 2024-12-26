@@ -44,8 +44,8 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
             {item.filePath.split('.').pop() == 'mp4' ? (
               <div className="w-full aspect-video relative cursor-pointer" onClick={() => setPreview(item)}>
                 <video
-                  poster={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${item?.thumbnailPath}`}
-                  src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${item.filePath}`}
+                  poster={`/api/media/thumbnail/${item.id}`}
+                  src={`/api/media/${item.id}`}
                 />
                 <div className="icon p-5 bg-pink-100 rounded-full absolute top-[50%] -translate-x-[50%] -translate-y-[50%] left-[50%]">
                   <Play className="size-6 fill-pink-500 stroke-pink-500" />
@@ -57,7 +57,7 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
                   <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
                     <div className="w-full aspect-video overflow-hidden">
                       <Viewer
-                        fileUrl={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${item.filePath}`}
+                        fileUrl={`/api/media/${item.id}`}
                         plugins={[thumbnailPluginInstance]}
                       />
                     </div>
@@ -67,7 +67,7 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
             ) : (
               <div className="w-full aspect-video relative" onClick={() => setPreview(item)}>
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${item?.thumbnailPath || item.filePath}`}
+                  src={`/api/media/${item.id}`}
                   alt={item.name}
                   fill
                   objectFit="cover"
@@ -86,28 +86,28 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
           {preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'mp4' ? (
             <div className="w-full aspect-video relative overflow-hidden">
               <video
-                poster={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${preview?.thumbnailPath}`}
-                src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${preview?.filePath}`}
+                poster={`/api/media/thumbnail/${preview.id}`}
+                src={`/api/media/${preview.id}`}
                 controls
                 className='max-w-full w-full aspect-video'
               />
             </div>
-          ) : preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'pdf' ? (
+          ) : preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'pdf' ? (
             <div className="h-[70vh]">
               <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
                 <div className="w-full h-full preview">
                   <Viewer
                     plugins={[defaultLayoutPluginInstance]}
-                    fileUrl={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}${preview.filePath}`}
+                    fileUrl={`/api/media/${preview.id}`}
                   />
                 </div>
               </Worker>
             </div>
-          ) : (
+          ) : preview != undefined && preview?.filePath != undefined && (
             <>
               <div className="w-full relative flex justify-center items-center">
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${preview?.filePath}`}
+                  src={`/api/media/${preview.id}`}
                   alt={preview?.name}
                   width={500}
                   height={500}

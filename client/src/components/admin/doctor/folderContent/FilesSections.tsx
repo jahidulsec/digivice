@@ -42,7 +42,6 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   const thumbnailPluginInstance = thumbnailPlugin();
 
-
   if (contents.length == 0) {
     return (
       <div className="flex justify-center items-center flex-col py-20 text-gray-400 pointer-events-none">
@@ -91,31 +90,19 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
             </div>
             {item.filePath.split('.').pop() == 'mp4' ? (
               <div className="w-full aspect-video relative">
-                <video
-                  poster={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item?.thumbnailPath}`}
-                  src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`}
-                  controls
-                />
+                <video poster={`/api/media/thumbnail/${item.id}`} src={`/api/media/${item.id}`} controls />
               </div>
             ) : item.filePath.split('.').pop() == 'pdf' ? (
               <>
                 <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
                   <div className="w-full aspect-video overflow-hidden">
-                    <Viewer
-                      fileUrl={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.filePath}`}
-                      plugins={[thumbnailPluginInstance]}
-                    />
+                    <Viewer fileUrl={`/api/media/${item.id}`} plugins={[thumbnailPluginInstance]} />
                   </div>
                 </Worker>
               </>
             ) : (
               <div className="w-full aspect-video relative">
-                <Image
-                  src={`${process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME}/${item.thumbnailPath || item.filePath}`}
-                  alt={item.name}
-                  fill
-                  objectFit="cover"
-                />
+                <Image src={`/api/media/${item.id}`} alt={item.name} fill objectFit="cover" />
               </div>
             )}
           </div>
@@ -130,28 +117,22 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
           </DialogHeader>
           {preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'mp4' ? (
             <div className="w-full aspect-video relative">
-              <video poster={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME  + preview?.thumbnailPath} src={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME  + preview?.filePath} controls />
+              <video poster={`/api/media/thumbnail/${preview.id}`} src={`/api/media/${preview.id}`} controls />
             </div>
           ) : preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'pdf' ? (
             <div className="h-[70vh] preview">
               <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
                 <div className="w-full h-full overflow-hidden">
-                  <Viewer
-                    plugins={[defaultLayoutPluginInstance]}
-                    fileUrl={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + preview?.filePath}
-                  />
+                  <Viewer plugins={[defaultLayoutPluginInstance]} fileUrl={`/api/media/${preview.id}`} />
                 </div>
               </Worker>
             </div>
-          ) : (
+          ) : preview != undefined && preview?.filePath != undefined ? (
             <div className="w-full relative flex justify-center items-center">
-              <Image
-                src={process.env.NEXT_PUBLIC_ASSETS_DOMAIN_NAME + '/' + preview?.filePath}
-                alt={preview?.name}
-                width={500}
-                height={500}
-              />
+              <Image src={`/api/media/${preview.id}`} alt={preview?.name} width={500} height={500} />
             </div>
+          ) : (
+            <></>
           )}
         </DialogContent>
       </Dialog>

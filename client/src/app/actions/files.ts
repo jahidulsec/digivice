@@ -5,7 +5,7 @@ import db from '../../../db/db';
 import fs from 'fs/promises';
 import { revalidatePath } from 'next/cache';
 import { getUser } from '@/lib/dal';
-import path from 'path';
+
 
 export const addFiles = async (prevState: unknown, formData: FormData) => {
   try {
@@ -56,16 +56,16 @@ export const addFiles = async (prevState: unknown, formData: FormData) => {
       return { error: null, success: null, toast: 'Invalid user, please login again' };
     }
 
-    fs.mkdir(`../public/assets/${doctorSlug}`, { recursive: true });
+    fs.mkdir(`public/assets/${doctorSlug}`, { recursive: true });
 
     const filePath = `/assets/${doctorSlug}/${crypto.randomUUID()}-${file.name}`;
-    await fs.writeFile(`../public${filePath}`, Buffer.from(await file.arrayBuffer()));
+    await fs.writeFile(`public${filePath}`, Buffer.from(await file.arrayBuffer()));
 
     let thumbnailPath = '';
 
     if (thumbnail && thumbnail.size != 0) {
       thumbnailPath = `/assets/${doctorSlug}/${crypto.randomUUID()}-${thumbnail.name}`;
-      await fs.writeFile(`../public${thumbnailPath}`, Buffer.from(await thumbnail.arrayBuffer()));
+      await fs.writeFile(`public${thumbnailPath}`, Buffer.from(await thumbnail.arrayBuffer()));
     }
 
     await db.folderContent.create({
@@ -97,8 +97,8 @@ export const deleteFile = async (id: number) => {
 
   try {
     // delete file and image when delete the product
-    await fs.unlink(`../public${file.filePath}`);
-    await fs.unlink(`../public${file.thumbnailPath}`);
+    await fs.unlink(`public${file.filePath}`);
+    await fs.unlink(`public${file.thumbnailPath}`);
   } catch (error) {
     console.log(error);
   }
