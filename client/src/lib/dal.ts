@@ -23,7 +23,7 @@ export const getUser = async () => {
 
   try {
     const data = await db.admin.findUnique({
-      where: { id: session.userId as string },
+      where: { id: `${session.userId }`},
       // Explicitly return the columns you need rather than the whole user object
       select: {
         username: true,
