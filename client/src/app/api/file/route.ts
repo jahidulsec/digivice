@@ -95,6 +95,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ status: 'success', message: 'Succesfully added' });
   } catch (e) {
     console.error(e);
-    return NextResponse.json({ status: 'fail', message: JSON.stringify(e) }, { status: 400 });
+    return NextResponse.json({ status: 'fail', message: (e as any).message }, { status: 400 });
   }
 }

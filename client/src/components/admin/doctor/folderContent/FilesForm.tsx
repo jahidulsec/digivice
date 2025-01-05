@@ -63,20 +63,17 @@ export default function FilesForm({ onClick }: FilesFormProps) {
 
       toast.success(res.data.message);
       router.refresh();
+      onClick();
     } catch (error: any) {
       console.log(error);
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.message || error.message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form
-      className="flex flex-col gap-5"
-      // action={action}
-      onSubmit={handleSubmit}
-    >
+    <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
       <p>
         <Label htmlFor="name">File Name</Label>
         <Input
@@ -104,10 +101,6 @@ export default function FilesForm({ onClick }: FilesFormProps) {
           }}
           accept="image/*, video/*, application/pdf"
         />
-        {/* {data?.error && <p className="error-msg">{data.error}</p>} */}
-
-        {/* <input type="hidden" name="folderId" value={params.id} />
-        <input type="hidden" name="doctorSlug" value={params.slug} /> */}
       </p>
       {validFileType.includes(fileType) && (
         <p>
@@ -128,7 +121,9 @@ export default function FilesForm({ onClick }: FilesFormProps) {
       )}
 
       {/* <SubmitButton /> */}
-      <Button disabled={loading}>{uploadProgress > 0 && uploadProgress < 100 ? `Uploading ${uploadProgress} %` : 'Submit'}</Button>
+      <Button disabled={loading}>
+        {uploadProgress > 0 && uploadProgress < 100 ? `Uploading ${uploadProgress} %` : 'Submit'}
+      </Button>
     </form>
   );
 }
