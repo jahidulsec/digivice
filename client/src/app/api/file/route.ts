@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import db from '../../../../db/db';
 import { getUser } from '@/lib/dal';
 
+export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
   try {
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
     const name = formData.get('name')?.toString();
     const doctorSlug = formData.get('doctorSlug');
 
-    console.log(file.size)
+    console.log(file.size);
 
     if (file.size == undefined || file.size == 0) {
       return NextResponse.json({ status: 'error', message: 'Please select a file' }, { status: 400 });
@@ -60,7 +61,7 @@ export async function POST(req: Request) {
 
     const session = await getUser();
 
-    console.log(session)
+    console.log(session);
 
     if (!session) {
       return NextResponse.json({ status: 'error', message: 'Invalid user, please login again' }, { status: 401 });
