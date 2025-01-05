@@ -53,7 +53,6 @@ export default function FilesForm({ onClick }: FilesFormProps) {
     try {
       const res = await axios.post('/api/file', formData, {
         headers: {
-          ...(formData as any).getHeaders(),
           'Content-Type': 'multipart/form-data',
         },
         onUploadProgress: (progressEvent) => {
