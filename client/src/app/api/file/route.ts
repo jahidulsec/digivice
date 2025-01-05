@@ -4,6 +4,15 @@ import fs from 'node:fs/promises';
 import db from '../../../../db/db';
 import { getUser } from '@/lib/dal';
 
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '500mb', // Set the size limit as needed
+    },
+  },
+};
+
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
