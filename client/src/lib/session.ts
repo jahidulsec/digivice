@@ -30,7 +30,7 @@ export async function createSession(userId: string) {
 
   cookies().set('session', session, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NEXT_URL_TYPE === 'ssl',
     expires: expiresAt,
     sameSite: 'lax',
     path: '/',
