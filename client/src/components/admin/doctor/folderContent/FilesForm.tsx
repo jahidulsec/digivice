@@ -55,6 +55,8 @@ export default function FilesForm({ onClick }: FilesFormProps) {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+        maxBodyLength: Infinity, // Allow unlimited body length
+        maxContentLength: Infinity, // Allow unlimited content length
         onUploadProgress: (progressEvent) => {
           const progress = progressEvent.total ? Math.round((progressEvent.loaded * 100) / progressEvent.total) : 0;
           setUploadProgress(progress);

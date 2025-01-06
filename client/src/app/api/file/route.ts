@@ -4,7 +4,8 @@ import fs from 'node:fs/promises';
 import db from '../../../../db/db';
 import { getUser } from '@/lib/dal';
 
-export const runtime = 'nodejs';
+
+export const runtime = 'nodejs'; 
 
 export async function POST(req: Request) {
   try {
