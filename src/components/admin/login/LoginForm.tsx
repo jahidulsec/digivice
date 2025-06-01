@@ -29,15 +29,15 @@ const LoginForm = () => {
 
         {/* form */}
         <form action={action} className="flex flex-col gap-5 my-8">
-          <p>
+          <div>
             <Label className="text-primary" htmlFor="username">
               Username
             </Label>
             <Input type="text" name="username" id="username" />
             {data?.error?.username && <p className="error-msg">{data.error.username}</p>}
-          </p>
+          </div>
 
-          <p className="relative">
+          <div className="relative">
             <Label className="text-primary" htmlFor="password">
               Password
             </Label>
@@ -51,7 +51,7 @@ const LoginForm = () => {
               {showPassword ? <Eye className="size-4" /> : <EyeOff className="size-4" />}
             </div>
             {data?.error?.password && <p className="error-msg">{data.error.password}</p>}
-          </p>
+          </div>
 
           <SubmitButton />
         </form>

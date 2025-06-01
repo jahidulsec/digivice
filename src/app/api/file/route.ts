@@ -59,7 +59,6 @@ export async function POST(req: Request) {
 
     const session = await getUser();
 
-
     if (!session) {
       return NextResponse.json({ status: 'error', message: 'Invalid user, please login again' }, { status: 401 });
     }
@@ -72,7 +71,7 @@ export async function POST(req: Request) {
     let thumbnailPath = '';
 
     if (thumbnail.size != undefined) {
-      const thumbArrayBuffer = await file.arrayBuffer();
+      const thumbArrayBuffer = await thumbnail.arrayBuffer();
       const thumbBuffer = new Uint8Array(thumbArrayBuffer);
       thumbnailPath = `/assets/${doctorSlug}/${crypto.randomUUID()}-${thumbnail.name}`;
       await fs.writeFile(`public${thumbnailPath}`, thumbBuffer);
