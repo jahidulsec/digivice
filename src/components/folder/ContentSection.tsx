@@ -23,7 +23,6 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
       <div className=" cursor-pointer md:grid-cols-2 lg:grid-cols-3 grid grid-cols-1 justify-center gap-2">
         {folderContent.map((item) => (
           <div className=" border rounded-md p-5 flex flex-col gap-2 justify-between bg-white" key={item.id}>
-            
             <div className="header flex gap-2 mb-2 items-start text-pink-700 min-w-10">
               {item.filePath.split('.').pop() == 'mp4' ? (
                 <>
@@ -38,12 +37,15 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
                   <ImageIcon className="size-4 min-w-4" />
                 </>
               )}
-              <h5 className="text-sm line-clamp-2 -mt-1" title={item.name}>{item.name}</h5>
+              <h5 className="text-sm line-clamp-2 -mt-1" title={item.name}>
+                {item.name}
+              </h5>
             </div>
 
             {item.filePath.split('.').pop() == 'mp4' ? (
               <div className="w-full aspect-video relative cursor-pointer" onClick={() => setPreview(item)}>
                 <video
+                  className="w-full aspect-video"
                   poster={`/api/media/thumbnail/${item.id}`}
                   src={`/api/media/${item.id}`}
                 />
@@ -54,25 +56,31 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
             ) : item.filePath.split('.').pop() == 'pdf' ? (
               <div className="" onClick={() => setPreview(item)}>
                 <div className="w-full aspect-video pointer-events-none">
-                  <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
-                    <div className="w-full aspect-video overflow-hidden">
-                      <Viewer
-                        fileUrl={`/api/media/${item.id}`}
-                        plugins={[thumbnailPluginInstance]}
-                      />
+                  {item.thumbnailPath ? (
+                    <div className="relative w-full aspect-video">
+                      <Image src={`/api/media/thumbnail/${item.id}`} alt="thumbail" fill objectFit="cover" />
                     </div>
-                  </Worker>
+                  ) : (
+                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
+                      <div className="w-full aspect-video overflow-hidden">
+                        <Viewer fileUrl={`/api/media/${item.id}`} plugins={[thumbnailPluginInstance]} />
+                      </div>
+                    </Worker>
+                  )}
                 </div>
               </div>
             ) : (
-              <div className="w-full aspect-video relative" onClick={() => setPreview(item)}>
-                <Image
-                  src={`/api/media/${item.id}`}
-                  alt={item.name}
-                  fill
-                  objectFit="cover"
-                />
-              </div>
+              <>
+                {item.thumbnailPath ? (
+                  <div className="relative w-full aspect-video">
+                    <Image src={`/api/media/thumbnail/${item.id}`} alt="thumbail" fill objectFit="cover" />
+                  </div>
+                ) : (
+                  <div className="w-full aspect-video relative">
+                    <Image src={`/api/media/${item.id}`} alt={item.name} fill objectFit="cover" />
+                  </div>
+                )}
+              </>
             )}
           </div>
         ))}
@@ -86,34 +94,29 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
           {preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'mp4' ? (
             <div className="w-full aspect-video relative overflow-hidden">
               <video
+                className="w-full aspect-video"
                 poster={`/api/media/thumbnail/${preview.id}`}
                 src={`/api/media/${preview.id}`}
                 controls
-                className='max-w-full w-full aspect-video'
               />
             </div>
           ) : preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'pdf' ? (
             <div className="h-[70vh]">
               <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
                 <div className="w-full h-full preview">
-                  <Viewer
-                    plugins={[defaultLayoutPluginInstance]}
-                    fileUrl={`/api/media/${preview.id}`}
-                  />
+                  <Viewer plugins={[defaultLayoutPluginInstance]} fileUrl={`/api/media/${preview.id}`} />
                 </div>
               </Worker>
             </div>
-          ) : preview != undefined && preview?.filePath != undefined && (
-            <>
-              <div className="w-full relative flex justify-center items-center">
-                <Image
-                  src={`/api/media/${preview.id}`}
-                  alt={preview?.name}
-                  width={500}
-                  height={500}
-                />
-              </div>
-            </>
+          ) : (
+            preview != undefined &&
+            preview?.filePath != undefined && (
+              <>
+                <div className="w-full relative flex justify-center items-center">
+                  <Image src={`/api/media/${preview.id}`} alt={preview?.name} width={500} height={500} />
+                </div>
+              </>
+            )
           )}
         </DialogContent>
       </Dialog>

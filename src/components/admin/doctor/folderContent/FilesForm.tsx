@@ -104,23 +104,23 @@ export default function FilesForm({ onClick }: FilesFormProps) {
           accept="image/*, video/*, application/pdf"
         />
       </p>
-      {validFileType.includes(fileType) && (
-        <p>
-          <Label htmlFor="thumbnail">Select Thumbnail</Label>
-          <Input
-            id="thumbnail"
-            name="thumbnail"
-            className="mt-2"
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              if (e.target.files) {
-                setThumbnail(e.target.files[0]);
-              }
-            }}
-          />
-        </p>
-      )}
+      {/* {validFileType.includes(fileType) && ( */}
+      <p>
+        <Label htmlFor="thumbnail">Select Thumbnail</Label>
+        <Input
+          id="thumbnail"
+          name="thumbnail"
+          className="mt-2"
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            if (e.target.files) {
+              setThumbnail(e.target.files[0]);
+            }
+          }}
+        />
+      </p>
+      {/* )} */}
 
       {/* <SubmitButton /> */}
       <Button disabled={loading}>

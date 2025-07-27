@@ -90,20 +90,39 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
             </div>
             {item.filePath.split('.').pop() == 'mp4' ? (
               <div className="w-full aspect-video relative">
-                <video poster={`/api/media/thumbnail/${item.id}`} src={`/api/media/${item.id}`} controls />
+                <video
+                  className="w-full aspect-video"
+                  poster={`/api/media/thumbnail/${item.id}`}
+                  src={`/api/media/${item.id}`}
+                  controls
+                />
               </div>
             ) : item.filePath.split('.').pop() == 'pdf' ? (
               <>
-                <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
-                  <div className="w-full aspect-video overflow-hidden">
-                    <Viewer fileUrl={`/api/media/${item.id}`} plugins={[thumbnailPluginInstance]} />
+                {item.thumbnailPath ? (
+                  <div className="relative w-full aspect-video">
+                    <Image src={`/api/media/thumbnail/${item.id}`} alt="thumbail" fill objectFit="cover" />
                   </div>
-                </Worker>
+                ) : (
+                  <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
+                    <div className="w-full aspect-video overflow-hidden">
+                      <Viewer fileUrl={`/api/media/${item.id}`} plugins={[thumbnailPluginInstance]} />
+                    </div>
+                  </Worker>
+                )}
               </>
             ) : (
-              <div className="w-full aspect-video relative">
-                <Image src={`/api/media/${item.id}`} alt={item.name} fill objectFit="cover" />
-              </div>
+              <>
+                {item.thumbnailPath ? (
+                  <div className="relative w-full aspect-video">
+                    <Image src={`/api/media/thumbnail/${item.id}`} alt="thumbail" fill objectFit="cover" />
+                  </div>
+                ) : (
+                  <div className="w-full aspect-video relative">
+                    <Image src={`/api/media/${item.id}`} alt={item.name} fill objectFit="cover" />
+                  </div>
+                )}
+              </>
             )}
           </div>
         ))}
@@ -117,7 +136,12 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
           </DialogHeader>
           {preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'mp4' ? (
             <div className="w-full aspect-video relative">
-              <video poster={`/api/media/thumbnail/${preview.id}`} src={`/api/media/${preview.id}`} controls />
+              <video
+                className="w-full aspect-video"
+                poster={`/api/media/thumbnail/${preview.id}`}
+                src={`/api/media/${preview.id}`}
+                controls
+              />
             </div>
           ) : preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'pdf' ? (
             <div className="h-[70vh] preview">

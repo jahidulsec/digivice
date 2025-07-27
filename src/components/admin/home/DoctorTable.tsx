@@ -28,7 +28,7 @@ import { formatNumber } from '@/lib/formatters';
 import { format } from 'date-fns';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-export type DoctorProps = Prisma.DoctorGetPayload<{ include: { SocialMediaLinks: true } }>
+export type DoctorProps = Prisma.DoctorGetPayload<{ include: { SocialMediaLinks: true } }>;
 
 function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
   const [editDoctor, setEditDoctor] = useState<any>();
@@ -61,7 +61,9 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
       for (let index in array[i]) {
         if (line !== '') line += ',';
         if (index !== 'doctor') {
-          if (index !== 'createdAt') {
+          if (index === 'mobile') {
+            line += `="${array[i][index]}"`;
+          } else if (index !== 'createdAt') {
             line += array[i][index];
           } else {
             line += format(new Date(array[i][index]), 'dd LLL yyyy - h:mm aaa');
@@ -89,8 +91,6 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
     link.click();
     document.body.removeChild(link);
   };
-
-
 
   return (
     <>
@@ -241,11 +241,10 @@ function DoctorTable({ doctors }: { doctors: DoctorTableProps[] }) {
           <div className="flex justify-center items-center">
             <QRCode
               size={320}
-              value={`${process.env.NEXT_PUBLIC_DOMAIN_NAME}/doctor/${previewQR != undefined ? previewQR.slug : ''}`}
+              value={`${window.location.protocol}//${window.location.hostname}/doctor/${previewQR != undefined ? previewQR.slug : ''}`}
             />
           </div>
 
-          
           <Button type="button" onClick={handleQrDownload}>
             Download
           </Button>
