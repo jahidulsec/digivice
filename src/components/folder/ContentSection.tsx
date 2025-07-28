@@ -8,7 +8,6 @@ import { Play, Image as ImageIcon, Film, FileText, ExternalLink } from 'lucide-r
 import Link from 'next/link';
 import 'video-react/dist/video-react.css';
 import { Player } from 'video-react';
-import HlsPlayer from '../player/HlsPlayer';
 
 function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
   const [preview, setPreview] = useState<any>();
@@ -45,7 +44,7 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
           </DialogHeader>
           {preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'mp4' ? (
             <div className="w-full aspect-video relative overflow-hidden">
-              <HlsPlayer autoPlay poster={`/api/media/thumbnail/${preview.id}`} src={`/api/media/${preview.id}`} />
+              <Player playsInline poster={`/api/media/thumbnail/${preview.id}`} src={`/api/media/${preview.id}`} />
             </div>
           ) : (
             preview != undefined &&
