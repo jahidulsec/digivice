@@ -28,19 +28,15 @@ import { deleteFile } from '@/app/actions/files';
 
 import { Viewer, Worker } from '@react-pdf-viewer/core';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
-import { thumbnailPlugin } from '@react-pdf-viewer/thumbnail';
 
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import Link from 'next/link';
-import router from 'next/router';
-import { useRouter } from 'next-nprogress-bar';
+import { Player } from 'video-react';
 
 export default function FilesSections({ contents }: { contents: FolderContent[] }) {
   const [preview, setPreview] = useState<any>();
   const [delFile, setDelFile] = useState<any>();
-
-  const router = useRouter();
 
   const [isPending, startTransition] = useTransition();
 
@@ -106,12 +102,7 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
           </DialogHeader>
           {preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'mp4' ? (
             <div className="w-full aspect-video relative">
-              <video
-                className="w-full aspect-video"
-                poster={`/api/media/thumbnail/${preview.id}`}
-                src={`/api/media/${preview.id}`}
-                controls
-              />
+              <Player playsInline poster={`/api/media/thumbnail/${preview.id}`} src={`/api/media/${preview.id}`} />
             </div>
           ) : preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'pdf' ? (
             <div className="h-[70vh] preview">
@@ -122,8 +113,10 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
               </Worker>
             </div>
           ) : preview != undefined && preview?.filePath != undefined ? (
-            <div className="w-full relative flex justify-center items-center">
-              <Image src={`/api/media/${preview.id}`} alt={preview?.name} width={500} height={500} />
+            <div className="max-h-[70vh] overflow-y-auto">
+              <div className="w-full relative flex justify-center items-center">
+                <Image src={`/api/media/${preview.id}`} alt={preview?.name} width={500} height={500} />
+              </div>
             </div>
           ) : (
             <></>
@@ -164,12 +157,7 @@ const FilePreview = ({ item, type }: { item: any; type: string }) => {
   if (type === 'mp4')
     return (
       <div className="w-full aspect-video relative">
-        <video
-          className="w-full aspect-video"
-          poster={`/api/media/thumbnail/${item.id}`}
-          src={`/api/media/${item.id}`}
-          controls
-        />
+        <Player playsInline poster={`/api/media/thumbnail/${item.id}`} src={`/api/media/${item.id}`} />
       </div>
     );
   else if (type === 'pdf')

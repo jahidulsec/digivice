@@ -44,22 +44,16 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
           </DialogHeader>
           {preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'mp4' ? (
             <div className="w-full aspect-video relative overflow-hidden">
-              {/* <video
-                className="w-full aspect-video"
-                poster={`/api/media/thumbnail/${preview.id}`}
-                src={`/api/media/${preview.id}`}
-                controls
-              /> */}
               <Player playsInline poster={`/api/media/thumbnail/${preview.id}`} src={`/api/media/${preview.id}`} />
             </div>
           ) : (
             preview != undefined &&
             preview?.filePath != undefined && (
-              <>
-                <div className="w-full max-w-sm aspect-square relative flex justify-center items-center">
-                  <Image src={`/api/media/${preview.id}`} alt={preview?.name} fill objectFit="contain" />
+              <div className="max-h-[70vh] overflow-y-auto">
+                <div className="w-full relative flex justify-center items-center">
+                  <Image src={`/api/media/${preview.id}`} alt={preview?.name} width={500} height={500} />
                 </div>
-              </>
+              </div>
             )
           )}
         </DialogContent>
