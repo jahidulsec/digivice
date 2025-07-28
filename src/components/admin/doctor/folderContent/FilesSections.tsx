@@ -33,6 +33,7 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import Link from 'next/link';
 import { Player } from 'video-react';
+import HlsPlayer from '@/components/player/HlsPlayer';
 
 export default function FilesSections({ contents }: { contents: FolderContent[] }) {
   const [preview, setPreview] = useState<any>();
@@ -102,7 +103,7 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
           </DialogHeader>
           {preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'mp4' ? (
             <div className="w-full aspect-video relative">
-              <Player playsInline poster={`/api/media/thumbnail/${preview.id}`} src={`/api/media/${preview.id}`} />
+              <HlsPlayer autoPlay poster={`/api/media/thumbnail/${preview.id}`} src={`/api/media/${preview.id}`} />
             </div>
           ) : preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'pdf' ? (
             <div className="h-[70vh] preview">
@@ -157,7 +158,7 @@ const FilePreview = ({ item, type }: { item: any; type: string }) => {
   if (type === 'mp4')
     return (
       <div className="w-full aspect-video relative">
-        <Player playsInline poster={`/api/media/thumbnail/${item.id}`} src={`/api/media/${item.id}`} />
+        <HlsPlayer autoPlay poster={`/api/media/thumbnail/${item.id}`} src={`/api/media/${item.id}`} />
       </div>
     );
   else if (type === 'pdf')
