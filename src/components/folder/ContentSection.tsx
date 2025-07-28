@@ -26,7 +26,7 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
               type={item.filePath.split('.').pop() as string}
               onClick={() => {
                 if (item.filePath.split('.').pop() !== 'pdf') {
-                  setPreview(true);
+                  setPreview(item);
                 }
               }}
               item={item}
