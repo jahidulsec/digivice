@@ -6,6 +6,8 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Play, Image as ImageIcon, Film, FileText, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
+import 'video-react/dist/video-react.css';
+import { Player } from 'video-react';
 
 function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
   const [preview, setPreview] = useState<any>();
@@ -42,12 +44,13 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
           </DialogHeader>
           {preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'mp4' ? (
             <div className="w-full aspect-video relative overflow-hidden">
-              <video
+              {/* <video
                 className="w-full aspect-video"
                 poster={`/api/media/thumbnail/${preview.id}`}
                 src={`/api/media/${preview.id}`}
                 controls
-              />
+              /> */}
+              <Player playsInline poster={`/api/media/thumbnail/${preview.id}`} src={`/api/media/${preview.id}`} />
             </div>
           ) : (
             preview != undefined &&
