@@ -5,10 +5,6 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Play, Image as ImageIcon, Film, FileText, ExternalLink } from 'lucide-react';
-import { Viewer, Worker } from '@react-pdf-viewer/core';
-
-import '@react-pdf-viewer/core/lib/styles/index.css';
-import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import Link from 'next/link';
 
 function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
@@ -54,15 +50,6 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
               />
             </div>
           ) : (
-            // : preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'pdf' ? (
-            //   <div className="h-[70vh]">
-            //     <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
-            //       <div className="w-full h-full preview">
-            //         <Viewer plugins={[defaultLayoutPluginInstance]} fileUrl={`/api/media/${preview.id}`} />
-            //       </div>
-            //     </Worker>
-            //   </div>
-            // )
             preview != undefined &&
             preview?.filePath != undefined && (
               <>

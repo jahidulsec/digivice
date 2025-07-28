@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useTransition } from 'react';
-import { EllipsisVertical, Eye, MessageSquareOff, Trash } from 'lucide-react';
+import { EllipsisVertical, ExternalLink, Eye, MessageSquareOff, Trash } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {
@@ -32,15 +32,19 @@ import { thumbnailPlugin } from '@react-pdf-viewer/thumbnail';
 
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+import Link from 'next/link';
+import router from 'next/router';
+import { useRouter } from 'next-nprogress-bar';
 
 export default function FilesSections({ contents }: { contents: FolderContent[] }) {
   const [preview, setPreview] = useState<any>();
   const [delFile, setDelFile] = useState<any>();
 
+  const router = useRouter();
+
   const [isPending, startTransition] = useTransition();
 
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
-  const thumbnailPluginInstance = thumbnailPlugin();
 
   if (contents.length == 0) {
     return (
@@ -88,42 +92,8 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            {item.filePath.split('.').pop() == 'mp4' ? (
-              <div className="w-full aspect-video relative">
-                <video
-                  className="w-full aspect-video"
-                  poster={`/api/media/thumbnail/${item.id}`}
-                  src={`/api/media/${item.id}`}
-                  controls
-                />
-              </div>
-            ) : item.filePath.split('.').pop() == 'pdf' ? (
-              <>
-                {item.thumbnailPath ? (
-                  <div className="relative w-full aspect-video">
-                    <Image src={`/api/media/thumbnail/${item.id}`} alt="thumbail" fill objectFit="cover" />
-                  </div>
-                ) : (
-                  <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
-                    <div className="w-full aspect-video overflow-hidden">
-                      <Viewer fileUrl={`/api/media/${item.id}`} plugins={[thumbnailPluginInstance]} />
-                    </div>
-                  </Worker>
-                )}
-              </>
-            ) : (
-              <>
-                {item.thumbnailPath ? (
-                  <div className="relative w-full aspect-video">
-                    <Image src={`/api/media/thumbnail/${item.id}`} alt="thumbail" fill objectFit="cover" />
-                  </div>
-                ) : (
-                  <div className="w-full aspect-video relative">
-                    <Image src={`/api/media/${item.id}`} alt={item.name} fill objectFit="cover" />
-                  </div>
-                )}
-              </>
-            )}
+
+            <FilePreview type={item.filePath.split('.').pop() as string} item={item} />
           </div>
         ))}
       </div>
@@ -189,3 +159,43 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
     </>
   );
 }
+
+const FilePreview = ({ item, type }: { item: any; type: string }) => {
+  if (type === 'mp4')
+    return (
+      <div className="w-full aspect-video relative">
+        <video
+          className="w-full aspect-video"
+          poster={`/api/media/thumbnail/${item.id}`}
+          src={`/api/media/${item.id}`}
+          controls
+        />
+      </div>
+    );
+  else if (type === 'pdf')
+    return (
+      <Link href={`/api/media/${item.id}`} target="_blank">
+        <div className="w-full aspect-video pointer-events-none">
+          <div className="relative w-full aspect-video">
+            {item.thumbnailPath ? (
+              <Image src={`/api/media/thumbnail/${item.id}`} alt="thumbail" fill objectFit="cover" />
+            ) : (
+              <div className="flex justify-center items-center h-full">
+                <ExternalLink size={50} className="fill-pink-500/20 stroke-pink-400" />
+              </div>
+            )}
+          </div>
+        </div>
+      </Link>
+    );
+  else
+    return (
+      <div className="relative w-full aspect-video">
+        {item.thumbnailPath ? (
+          <Image src={`/api/media/thumbnail/${item.id}`} alt="thumbail" fill objectFit="cover" />
+        ) : (
+          <Image src={`/api/media/${item.id}`} alt={item.name} fill objectFit="cover" />
+        )}
+      </div>
+    );
+};
