@@ -33,6 +33,7 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import Link from 'next/link';
 import { Player } from 'video-react';
+import 'video-react/dist/video-react.css';
 
 export default function FilesSections({ contents }: { contents: FolderContent[] }) {
   const [preview, setPreview] = useState<any>();
