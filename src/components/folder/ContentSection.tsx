@@ -4,19 +4,15 @@ import { FolderContent } from '@prisma/client';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { Play, Image as ImageIcon, Film, FileText } from 'lucide-react';
+import { Play, Image as ImageIcon, Film, FileText, ExternalLink } from 'lucide-react';
 import { Viewer, Worker } from '@react-pdf-viewer/core';
-import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
-import { thumbnailPlugin } from '@react-pdf-viewer/thumbnail';
 
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+import Link from 'next/link';
 
 function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
   const [preview, setPreview] = useState<any>();
-
-  const defaultLayoutPluginInstance = defaultLayoutPlugin();
-  const thumbnailPluginInstance = thumbnailPlugin();
 
   return (
     <>
@@ -24,64 +20,21 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
         {folderContent.map((item) => (
           <div className=" border rounded-md p-5 flex flex-col gap-2 justify-between bg-white" key={item.id}>
             <div className="header flex gap-2 mb-2 items-start text-pink-700 min-w-10">
-              {item.filePath.split('.').pop() == 'mp4' ? (
-                <>
-                  <Film className="size-4 min-w-4" />
-                </>
-              ) : item.filePath.split('.').pop() == 'pdf' ? (
-                <>
-                  <FileText className="size-4 min-w-4" />
-                </>
-              ) : (
-                <>
-                  <ImageIcon className="size-4 min-w-4" />
-                </>
-              )}
+              <FileIcon type={item.filePath.split('.').pop() as string} />
               <h5 className="text-sm line-clamp-2 -mt-1" title={item.name}>
                 {item.name}
               </h5>
             </div>
 
-            {item.filePath.split('.').pop() == 'mp4' ? (
-              <div className="w-full aspect-video relative cursor-pointer" onClick={() => setPreview(item)}>
-                <video
-                  className="w-full aspect-video"
-                  poster={`/api/media/thumbnail/${item.id}`}
-                  src={`/api/media/${item.id}`}
-                />
-                <div className="icon p-5 bg-pink-100 rounded-full absolute top-[50%] -translate-x-[50%] -translate-y-[50%] left-[50%]">
-                  <Play className="size-6 fill-pink-500 stroke-pink-500" />
-                </div>
-              </div>
-            ) : item.filePath.split('.').pop() == 'pdf' ? (
-              <div className="" onClick={() => setPreview(item)}>
-                <div className="w-full aspect-video pointer-events-none">
-                  {item.thumbnailPath ? (
-                    <div className="relative w-full aspect-video">
-                      <Image src={`/api/media/thumbnail/${item.id}`} alt="thumbail" fill objectFit="cover" />
-                    </div>
-                  ) : (
-                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
-                      <div className="w-full aspect-video overflow-hidden">
-                        <Viewer fileUrl={`/api/media/${item.id}`} plugins={[thumbnailPluginInstance]} />
-                      </div>
-                    </Worker>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <>
-                {item.thumbnailPath ? (
-                  <div className="relative w-full aspect-video">
-                    <Image src={`/api/media/thumbnail/${item.id}`} alt="thumbail" fill objectFit="cover" />
-                  </div>
-                ) : (
-                  <div className="w-full aspect-video relative">
-                    <Image src={`/api/media/${item.id}`} alt={item.name} fill objectFit="cover" />
-                  </div>
-                )}
-              </>
-            )}
+            <FilePreview
+              type={item.filePath.split('.').pop() as string}
+              onClick={() => {
+                if (item.filePath.split('.').pop() !== 'pdf') {
+                  setPreview(true);
+                }
+              }}
+              item={item}
+            />
           </div>
         ))}
       </div>
@@ -100,20 +53,21 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
                 controls
               />
             </div>
-          ) : preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'pdf' ? (
-            <div className="h-[70vh]">
-              <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
-                <div className="w-full h-full preview">
-                  <Viewer plugins={[defaultLayoutPluginInstance]} fileUrl={`/api/media/${preview.id}`} />
-                </div>
-              </Worker>
-            </div>
           ) : (
+            // : preview != undefined && preview?.filePath != undefined && preview?.filePath.split('.').pop() == 'pdf' ? (
+            //   <div className="h-[70vh]">
+            //     <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
+            //       <div className="w-full h-full preview">
+            //         <Viewer plugins={[defaultLayoutPluginInstance]} fileUrl={`/api/media/${preview.id}`} />
+            //       </div>
+            //     </Worker>
+            //   </div>
+            // )
             preview != undefined &&
             preview?.filePath != undefined && (
               <>
-                <div className="w-full relative flex justify-center items-center">
-                  <Image src={`/api/media/${preview.id}`} alt={preview?.name} width={500} height={500} />
+                <div className="w-full max-w-sm aspect-square relative flex justify-center items-center">
+                  <Image src={`/api/media/${preview.id}`} alt={preview?.name} fill objectFit="contain" />
                 </div>
               </>
             )
@@ -123,5 +77,53 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
     </>
   );
 }
+
+const FileIcon = ({ type }: { type: string }) => {
+  if (type === 'mp4') return <Film className="size-4 min-w-4" />;
+  else if (type === 'pdf') return <FileText className="size-4 min-w-4" />;
+  else return <ImageIcon className="size-4 min-w-4" />;
+};
+
+const FilePreview = ({ item, type, onClick }: { item: any; type: string; onClick: () => void }) => {
+  if (type === 'mp4')
+    return (
+      <div className="w-full aspect-video relative cursor-pointer" onClick={onClick}>
+        <video
+          className="w-full aspect-video"
+          poster={`/api/media/thumbnail/${item.id}`}
+          src={`/api/media/${item.id}`}
+        />
+        <div className="icon p-5 bg-pink-100 rounded-full absolute top-[50%] -translate-x-[50%] -translate-y-[50%] left-[50%]">
+          <Play className="size-6 fill-pink-500 stroke-pink-500" />
+        </div>
+      </div>
+    );
+  else if (type === 'pdf')
+    return (
+      <Link href={`/api/media/${item.id}`} target="_blank">
+        <div className="w-full aspect-video pointer-events-none">
+          <div className="relative w-full aspect-video">
+            {item.thumbnailPath ? (
+              <Image src={`/api/media/thumbnail/${item.id}`} alt="thumbail" fill objectFit="cover" />
+            ) : (
+              <div className="flex justify-center items-center h-full">
+                <ExternalLink size={50} className="fill-pink-500/20 stroke-pink-400" />
+              </div>
+            )}
+          </div>
+        </div>
+      </Link>
+    );
+  else
+    return (
+      <div className="relative w-full aspect-video" onClick={onClick}>
+        {item.thumbnailPath ? (
+          <Image src={`/api/media/thumbnail/${item.id}`} alt="thumbail" fill objectFit="cover" />
+        ) : (
+          <Image src={`/api/media/${item.id}`} alt={item.name} fill objectFit="cover" />
+        )}
+      </div>
+    );
+};
 
 export default ContentSection;
