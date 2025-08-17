@@ -23,6 +23,9 @@ const DataView = async ({ params }: { params: { id: string } }) => {
     where: { folderId: Number(params.id) },
     orderBy: [
       {
+        isPopular: 'desc',
+      },
+      {
         createdAt: 'desc',
       },
     ],

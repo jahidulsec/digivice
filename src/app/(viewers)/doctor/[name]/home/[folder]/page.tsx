@@ -24,6 +24,9 @@ async function FolderPage({ params }: { params: { name: string; folder: string }
       where: { folderId: Number(params.folder) },
       orderBy: [
         {
+          isPopular: 'desc',
+        },
+        {
           createdAt: 'desc',
         },
       ],

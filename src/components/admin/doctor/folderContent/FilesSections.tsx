@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useTransition } from 'react';
-import { EllipsisVertical, ExternalLink, Eye, MessageSquareOff, Trash } from 'lucide-react';
+import { EllipsisVertical, ExternalLink, Eye, Heart, HeartOff, Trash } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {
@@ -34,6 +34,8 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import Link from 'next/link';
 import { Player } from 'video-react';
 import 'video-react/dist/video-react.css';
+import { NoData } from '@/components/state/NoData';
+import { updateMostPopularStatus } from '@/actions/folder-content';
 
 export default function FilesSections({ contents }: { contents: FolderContent[] }) {
   const [preview, setPreview] = useState<any>();
@@ -44,12 +46,7 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   if (contents.length == 0) {
-    return (
-      <div className="flex justify-center items-center flex-col py-20 text-gray-400 pointer-events-none">
-        <MessageSquareOff className="size-10" />
-        <span className="text-[11px]">No data</span>
-      </div>
-    );
+    return <NoData />;
   }
 
   return (
@@ -75,6 +72,33 @@ export default function FilesSections({ contents }: { contents: FolderContent[] 
                   >
                     <Eye className="size-4" />
                     <span>Preview</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      toast.promise(updateMostPopularStatus(item.id, !Boolean(item.isPopular)), {
+                        success(data) {
+                          if (!data.success) {
+                            throw data;
+                          }
+                          return data.message;
+                        },
+                        error(data) {
+                          return data?.message ?? 'Something went wrong';
+                        },
+                      });
+                    }}
+                  >
+                    {item.isPopular === 1 ? (
+                      <>
+                        <HeartOff className="size-4 mr-2" />
+                        <span>Remove from most popular</span>
+                      </>
+                    ) : (
+                      <>
+                        <Heart className="size-4 mr-2" />
+                        <span>Add to most popular</span>
+                      </>
+                    )}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
