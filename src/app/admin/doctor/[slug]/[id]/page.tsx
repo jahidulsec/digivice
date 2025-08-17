@@ -19,7 +19,14 @@ export default async function FolderContentPage({ params }: { params: { id: stri
 }
 
 const DataView = async ({ params }: { params: { id: string } }) => {
-  const contents = await db.folderContent.findMany({ where: { folderId: Number(params.id) } });
+  const contents = await db.folderContent.findMany({
+    where: { folderId: Number(params.id) },
+    orderBy: [
+      {
+        createdAt: 'desc',
+      },
+    ],
+  });
 
   return <FilesSections contents={contents} />;
 };

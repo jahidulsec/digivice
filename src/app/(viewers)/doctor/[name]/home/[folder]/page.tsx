@@ -20,7 +20,14 @@ async function FolderPage({ params }: { params: { name: string; folder: string }
   };
 
   const getDoctorFolderContent = () => {
-    return db.folderContent.findMany({ where: { folderId: Number(params.folder) } });
+    return db.folderContent.findMany({
+      where: { folderId: Number(params.folder) },
+      orderBy: [
+        {
+          createdAt: 'desc',
+        },
+      ],
+    });
   };
 
   const [folderContent, folder] = await Promise.all([getDoctorFolderContent(), getFolderName()]);
@@ -50,5 +57,3 @@ async function FolderPage({ params }: { params: { name: string; folder: string }
 }
 
 export default FolderPage;
-
-
