@@ -48,7 +48,7 @@ export default async function DoctorHome({ params }: { params: { name: string } 
                         ? infoIcon
                         : item.name.toLowerCase() === 'pdf'
                           ? pdfIcon
-                          : folderIcon
+                          : infoIcon
                   }
                 />
               );

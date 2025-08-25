@@ -14,9 +14,12 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
 
   return (
     <>
-      <div className=" cursor-pointer md:grid-cols-2 lg:grid-cols-3 grid grid-cols-1 justify-center gap-2">
+      <div className="isolate cursor-pointer md:grid-cols-2 lg:grid-cols-3 grid grid-cols-1 justify-center gap-2">
         {folderContent.map((item) => (
-          <div className=" border rounded-md p-5 flex flex-col gap-2 justify-between bg-white" key={item.id}>
+          <div
+            className="relative border rounded-md p-5 flex flex-col gap-2 justify-between bg-background"
+            key={item.id}
+          >
             <div className="header flex gap-2 mb-2 items-start text-pink-700 min-w-10">
               <FileIcon type={item.filePath.split('.').pop() as string} />
               <h5 className="text-sm line-clamp-2 -mt-1" title={item.name}>
@@ -24,15 +27,23 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
               </h5>
             </div>
 
-            <FilePreview
-              type={item.filePath.split('.').pop() as string}
-              onClick={() => {
-                if (item.filePath.split('.').pop() !== 'pdf') {
-                  setPreview(item);
-                }
-              }}
-              item={item}
-            />
+            {item.isPopular ? (
+              <div className="absolute right-6 top-14  z-[1] bg-p3 text-p2 px-4 py-1 rounded-full text-xs font-semibold">
+                Most Popular
+              </div>
+            ) : null}
+
+            <div className="bg-muted rounded-md overflow-hidden">
+              <FilePreview
+                type={item.filePath.split('.').pop() as string}
+                onClick={() => {
+                  if (item.filePath.split('.').pop() !== 'pdf') {
+                    setPreview(item);
+                  }
+                }}
+                item={item}
+              />
+            </div>
           </div>
         ))}
       </div>
@@ -71,7 +82,7 @@ const FileIcon = ({ type }: { type: string }) => {
 const FilePreview = ({ item, type, onClick }: { item: any; type: string; onClick: () => void }) => {
   if (type === 'mp4')
     return (
-      <div className="w-full aspect-video relative cursor-pointer" onClick={onClick}>
+      <div className="w-full aspect-video relative cursor-pointe" onClick={onClick}>
         <video
           className="w-full aspect-video"
           poster={`/api/media/thumbnail/${item.id}`}
