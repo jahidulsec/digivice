@@ -28,7 +28,7 @@ function ContentSection({ folderContent }: { folderContent: FolderContent[] }) {
             </div>
 
             {item.isPopular ? (
-              <div className="absolute right-6 top-14  z-[1] bg-p3 text-p2 px-4 py-1 rounded-full text-xs font-semibold">
+              <div className="absolute text-center right-0 top-0 rounded-b-[5px] rounded-r-[5px]  z-[1] bg-p3 text-p2 px-2 text-[10px] font-semibold">
                 Most Popular
               </div>
             ) : null}
